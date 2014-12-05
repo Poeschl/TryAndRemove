@@ -1,4 +1,4 @@
-package de.poeschl.apps.debuganddelete;
+package de.poeschl.apps.debuganddelete.app.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,9 @@ import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import de.poeschl.apps.debuganddelete.R;
+import de.poeschl.apps.debuganddelete.app.adapter.SimpleAdapter;
+import de.poeschl.apps.debuganddelete.service.broadcastReciever.AppInstall;
 
 
 public class MainActivity extends Activity {
@@ -37,7 +40,7 @@ public class MainActivity extends Activity {
 
     private SimpleAdapter adapter;
 
-    static List<String> incoming;
+    public static List<String> incoming;
 
     private AppInstall receiver;
 

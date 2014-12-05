@@ -1,9 +1,11 @@
-package de.poeschl.apps.debuganddelete;
+package de.poeschl.apps.debuganddelete.app.adapter;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import java.util.List;
+
+import de.poeschl.apps.debuganddelete.R;
 
 /**
  * Created by mpo on 04.12.14.

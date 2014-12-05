@@ -1,10 +1,12 @@
-package de.poeschl.apps.debuganddelete;
+package de.poeschl.apps.debuganddelete.service.broadcastReciever;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
+import de.poeschl.apps.debuganddelete.service.HandleInstallService;
 
 public class AppInstall extends BroadcastReceiver {
 

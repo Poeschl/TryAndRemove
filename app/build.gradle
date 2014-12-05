@@ -1,9 +1,17 @@
 buildscript {
     dependencies {
+        classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     }
 }
 
+// Manifest version information!
+def versionMajor = 0
+def versionMinor = 1
+def versionPatch = 0
+def versionBuild = 0
+
+apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 
 android {
@@ -14,8 +22,9 @@ android {
         applicationId "de.poeschl.apps.debuganddelete"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     }
     buildTypes {
         release {
@@ -30,6 +39,24 @@ android {
     }
 }
 
+apply plugin: 'android-unit-test'
+
+androidUnitTest {
+    testReleaseBuildType true
+    //Run tests for all the build types including non-debuggable (like the Release build type). Only works for Application projects, not Library projects.
+    downloadDependenciesSources false
+    //Download the sources.jar for the production dependencies. `true` by default.
+    downloadDependenciesJavadoc true
+    //Download the javadoc.jar for the production dependencies. `false` by default.
+    downloadTestDependenciesSources false
+    //Download the sources.jar for the test dependencies. `true` by default.
+    downloadTestDependenciesJavadoc true
+    //Download the javadoc.jar for the test dependencies. `false` by default.
+}
+
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
+
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.4'
 }
