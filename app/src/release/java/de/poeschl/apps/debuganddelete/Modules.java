@@ -12,7 +12,7 @@ public class Modules {
 
     static Object[] list(DebugAndDeleteApp app){
         return new Object[] {
-                AppModule.class,
+               new AppModule(app)
         };
     }
 }

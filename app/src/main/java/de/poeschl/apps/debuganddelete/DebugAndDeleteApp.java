@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 
 import dagger.ObjectGraph;
-import hugo.weaving.DebugLog;
 
 /**
  * Created by markus on 05.12.14.
@@ -17,6 +16,7 @@ public class DebugAndDeleteApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        buildObjectGraphAndInject();
 
     }
 
@@ -29,7 +29,6 @@ public class DebugAndDeleteApp extends Application {
         objectGraph.inject(o);
     }
 
-    @DebugLog
     public static DebugAndDeleteApp get(Context context) {
         return (DebugAndDeleteApp) context.getApplicationContext();
     }

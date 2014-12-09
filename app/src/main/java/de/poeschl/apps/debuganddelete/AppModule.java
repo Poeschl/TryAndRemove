@@ -6,16 +6,19 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.debuganddelete.app.activities.ActivityModule;
 
 /**
  * Created by markus on 05.12.14.
  */
 
 @Module(
+        includes = {
+                ActivityModule.class
+        },
         injects = {
                 DebugAndDeleteApp.class
         },
-        complete = false,
         library = true
 )
 public class AppModule {

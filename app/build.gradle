@@ -17,9 +17,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'hugo'
 
 android {
+    signingConfigs {
+        googlePlay {
+            keyAlias 'DebugAndDelete'
+            keyPassword 'n5stpXLIJMU3VxSorhbC'
+            storeFile file('../../Pöschl-Keystore.jks')
+            storePassword 'LwfasDr9H8'
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
         applicationId "de.poeschl.apps.debuganddelete"
         minSdkVersion 15
@@ -32,9 +39,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.googlePlay
+        }
+        debug {
+            applicationIdSuffix '.dev'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7

@@ -1,6 +1,7 @@
 package de.poeschl.apps.debuganddelete.appContainer;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -27,12 +30,14 @@ public class DebugAppContainer implements AppContainer {
     @InjectView(R.id.debug_content)
     ViewGroup content;
 
+    private Application app;
     private Activity activity;
     private Context drawerContext;
     private boolean seenDebugDrawer = false;
 
-    public DebugAppContainer() {
-
+    @Inject
+    public DebugAppContainer(Application app) {
+        this.app = app;
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
@@ -63,6 +64,8 @@ public class MainActivity extends Activity {
         container = appContainer.get(this);
 
         getLayoutInflater().inflate(R.layout.activity_main, container);
+
+        ButterKnife.inject(this);
 
         incoming = new ArrayList<>();
 

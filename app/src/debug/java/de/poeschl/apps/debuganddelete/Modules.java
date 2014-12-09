@@ -10,8 +10,8 @@ public class Modules {
 
     static Object[] list(DebugAndDeleteApp app) {
         return new Object[]{
-                AppModule.class,
-                DebugAppModule.class
+                new AppModule(app),
+                new DebugAppModule()
         };
     }
 }
