@@ -1,6 +1,7 @@
 package de.poeschl.apps.debuganddelete;
 
 import dagger.Module;
+import de.poeschl.apps.debuganddelete.activities.DebugActivityModule;
 
 /**
  * Created by markus on 05.12.14.
@@ -8,7 +9,10 @@ import dagger.Module;
 
 @Module(
         addsTo = AppModule.class,
+        includes = {
+                DebugActivityModule.class
+        },
         overrides = true
 )
-public class DebugAppModule {
+public final class DebugAppModule {
 }

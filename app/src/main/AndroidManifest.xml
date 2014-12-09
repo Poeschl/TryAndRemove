@@ -4,8 +4,9 @@
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme">
+        android:icon="@drawable/app_icon"
+        android:theme="@style/AppTheme"
+        android:name=".DebugAndDeleteApp">
 
         <activity
             android:name=".app.activities.MainActivity"
@@ -19,11 +20,11 @@
 
         <receiver
             android:name=".service.broadcastReciever.AppInstall"
-            android:exported="true"></receiver>
+            android:exported="true" />
 
         <service
             android:name=".service.HandleInstallService"
-            android:exported="false"></service>
+            android:exported="false" />
     </application>
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />

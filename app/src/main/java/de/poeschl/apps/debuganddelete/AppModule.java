@@ -12,9 +12,11 @@ import dagger.Provides;
  */
 
 @Module(
-        injects = (
+        injects = {
                 DebugAndDeleteApp.class
-        )
+        },
+        complete = false,
+        library = true
 )
 public class AppModule {
     private final DebugAndDeleteApp app;

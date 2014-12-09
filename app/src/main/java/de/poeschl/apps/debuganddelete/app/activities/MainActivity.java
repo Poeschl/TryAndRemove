@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,13 +18,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
+import javax.inject.Inject;
+
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import de.poeschl.apps.debuganddelete.DebugAndDeleteApp;
 import de.poeschl.apps.debuganddelete.R;
 import de.poeschl.apps.debuganddelete.app.adapter.SimpleAdapter;
+import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
 import de.poeschl.apps.debuganddelete.service.broadcastReciever.AppInstall;
 
 
@@ -45,13 +49,20 @@ public class MainActivity extends Activity {
     private AppInstall receiver;
 
     private boolean init;
+    private ViewGroup container;
+    @Inject
+    AppContainer appContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        ButterKnife.inject(this);
+        DebugAndDeleteApp app = DebugAndDeleteApp.get(this);
+        app.inject(this);
+
+        container = appContainer.get(this);
+
+        getLayoutInflater().inflate(R.layout.activity_main, container);
 
         incoming = new ArrayList<>();
 

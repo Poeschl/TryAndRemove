@@ -2,6 +2,7 @@ buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     }
 }
 
@@ -13,6 +14,7 @@ def versionBuild = 0
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'hugo'
 
 android {
     compileSdkVersion 21
@@ -56,11 +58,11 @@ androidUnitTest {
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
-
     compile 'com.squareup.dagger:dagger:1.2.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
-
-
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
+    debugCompile 'com.android.support:support-v4:21.0.2'
+    debugCompile 'com.jakewharton.madge:madge:1.1.1'
+    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 }
