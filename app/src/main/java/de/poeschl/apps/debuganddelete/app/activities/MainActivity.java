@@ -1,3 +1,19 @@
+/*
+ * Copyright 2014 Markus Pöschl
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.poeschl.apps.debuganddelete.app.activities;
 
 import android.app.Activity;
@@ -5,25 +21,25 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
-import android.widget.CheckBox;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
+import de.poeschl.apps.debuganddelete.DebugAndDeleteApp;
 import de.poeschl.apps.debuganddelete.R;
 import de.poeschl.apps.debuganddelete.app.adapter.SimpleAdapter;
+import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
 import de.poeschl.apps.debuganddelete.service.broadcastReciever.AppInstall;
 
 
@@ -33,8 +49,6 @@ public class MainActivity extends Activity {
     ToggleButton toggleButton;
     @InjectView(R.id.listView)
     ListView listView;
-    @InjectView(R.id.checkBox)
-    CheckBox debugCheck;
 
     private boolean listeningForApps = false;
 
@@ -45,11 +59,20 @@ public class MainActivity extends Activity {
     private AppInstall receiver;
 
     private boolean init;
+    private ViewGroup container;
+    @Inject
+    AppContainer appContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        DebugAndDeleteApp app = DebugAndDeleteApp.get(this);
+        app.inject(this);
+
+        container = appContainer.get(this);
+
+        getLayoutInflater().inflate(R.layout.activity_main, container);
 
         ButterKnife.inject(this);
 
@@ -80,12 +103,6 @@ public class MainActivity extends Activity {
             incoming.clear();
         }
 
-        try {
-            debugCheck.setChecked(getDebugOption());
-        } catch (IOException e) {
-            Log.e("Debug", "Exception", e);
-        }
-
         init = false;
     }
 
@@ -102,54 +119,6 @@ public class MainActivity extends Activity {
         Log.d("ListenStatus", listeningForApps + "");
     }
 
-    @OnCheckedChanged(R.id.checkBox)
-    void debugChanged(boolean checked) {
-        if (init) {
-            return;
-        }
-
-        int enabled = checked ? 1 : 0;
-        try {
-            setDebugOption(enabled);
-        } catch (IOException e) {
-            Log.e("DEBUG OPTION", "Exception", e);
-        }
-    }
-
-    private void setDebugOption(int enabled) throws IOException {
-
-        Process p = Runtime.getRuntime().exec("su");
-        DataOutputStream stdin = new DataOutputStream(p.getOutputStream());
-
-        //from here all commands are executed with su permissions
-        List<String> commands = new ArrayList<>();
-        commands.add("setprop persist.service.adb.enable " + enabled);
-        if (enabled == 1) {
-            commands.add("start adbd");
-        } else {
-            commands.add("stop adbd");
-        }
-
-        for (String command : commands) {
-            stdin.write((command + "\n").getBytes("UTF-8"));
-            stdin.flush();
-        }
-    }
-
-    private boolean getDebugOption() throws IOException {
-
-        //TODO: read the flag from the shell. The android settings are not updating correctly
-
-        boolean debug = false;
-        try {
-            debug = Settings.Secure.getInt(getContentResolver(), Settings.Secure.ADB_ENABLED) == 1;
-
-        } catch (Settings.SettingNotFoundException e) {
-            Log.e("DEBUG OPTION", "Exception", e);
-        }
-
-        return debug;
-    }
 
     public void registerReceiver() {
         IntentFilter filter = new IntentFilter();

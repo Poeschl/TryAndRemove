@@ -1,7 +1,24 @@
+/*
+ * Copyright 2014 Markus Pöschl
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
+        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     }
 }
 
@@ -9,30 +26,43 @@ buildscript {
 def versionMajor = 0
 def versionMinor = 1
 def versionPatch = 0
-def versionBuild = 0
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'hugo'
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
 android {
+    signingConfigs {
+        googlePlay {
+            //Placeholder for later in the build process
+        }
+    }
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
         applicationId "de.poeschl.apps.debuganddelete"
         minSdkVersion 15
         targetSdkVersion 21
 
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.googlePlay
+        }
+        debug {
+            applicationIdSuffix '.dev'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -53,10 +83,32 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
+def keyStorePath = System.getenv('Android_Keystore_Path')
+
+//Adds dynamic signing stuff during init process
+afterEvaluate { project ->
+    def propsFile = file(keyStorePath + '/DebugAndDelete.keyproperties')
+    def configName = 'googlePlay'
+
+    if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
+        android.signingConfigs[configName].storePassword = props['storePassword']
+        android.signingConfigs[configName].keyAlias = props['keyAlias']
+        android.signingConfigs[configName].keyPassword = props['keyPassword']
+        println("Setup keystore settings.")
+    } else {
+        System.err.println("No " + configName + " keystore settings available");
+    }
+}
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
-
+    compile 'com.squareup.dagger:dagger:1.2.1'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
+    debugCompile 'com.android.support:support-v4:21.0.2'
+    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 }

@@ -1,0 +1,33 @@
+/*
+ * Copyright 2014 Markus Pöschl
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package de.poeschl.apps.debuganddelete.annotations;
+
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+/**
+ * Taken from the sample app u2020 from Jake Wharton.
+ *
+ * @see <a href="https://github.com/JakeWharton/u2020">GitHub</a>
+ */
+@Qualifier
+@Retention(RUNTIME)
+public @interface ScalpelEnabled {
+}
