@@ -22,10 +22,7 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 android {
     signingConfigs {
         googlePlay {
-            keyAlias 'DebugAndDelete'
-            keyPassword 'n5stpXLIJMU3VxSorhbC'
-            storeFile file('../../Pöschl-Keystore.jks')
-            storePassword 'LwfasDr9H8'
+            //Placeholder for later in the build process
         }
     }
     compileSdkVersion 21
@@ -71,7 +68,25 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
+def keyStorePath = System.getenv('Android_Keystore_Path')
 
+//Adds dynamic signing stuff during init process
+afterEvaluate { project ->
+    def propsFile = file(keyStorePath + '/DebugAndDelete.keyproperties')
+    def configName = 'googlePlay'
+
+    if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
+        def props = new Properties()
+        props.load(new FileInputStream(propsFile))
+        android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
+        android.signingConfigs[configName].storePassword = props['storePassword']
+        android.signingConfigs[configName].keyAlias = props['keyAlias']
+        android.signingConfigs[configName].keyPassword = props['keyPassword']
+        println("Setup keystore settings.")
+    } else {
+        System.err.println("No " + configName + " keystore settings available");
+    }
+}
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
