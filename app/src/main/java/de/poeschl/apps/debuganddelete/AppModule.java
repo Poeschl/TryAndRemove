@@ -17,12 +17,18 @@
 package de.poeschl.apps.debuganddelete;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
 import de.poeschl.apps.debuganddelete.activities.ActivityModule;
+import de.poeschl.apps.debuganddelete.broadcastReciever.BroadcastReceiverModule;
+import de.poeschl.apps.debuganddelete.data.DataModule;
+import de.poeschl.apps.debuganddelete.models.ModelModule;
+import de.poeschl.apps.debuganddelete.service.ApplicationDetectionService;
 
 /**
  * Created by markus on 05.12.14.
@@ -30,10 +36,14 @@ import de.poeschl.apps.debuganddelete.activities.ActivityModule;
 
 @Module(
         includes = {
-                ActivityModule.class
+                ActivityModule.class,
+                BroadcastReceiverModule.class,
+                DataModule.class,
+                ModelModule.class
         },
         injects = {
-                DebugAndDeleteApp.class
+                DebugAndDeleteApp.class,
+                ApplicationDetectionService.class
         },
         library = true
 )
@@ -48,5 +58,10 @@ public class AppModule {
     @Singleton
     Application provideApplication() {
         return app;
+    }
+
+    @Provides
+    SharedPreferences provideSharedPreferences() {
+        return app.getSharedPreferences(app.getPackageName(), Context.MODE_PRIVATE);
     }
 }

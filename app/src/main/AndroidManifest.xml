@@ -35,14 +35,11 @@
         </activity>
 
         <receiver
-            android:name=".broadcastReciever.AppInstall"
+            android:name=".broadcastReciever.AppDetectionReceiver"
             android:exported="true" />
 
         <service
-            android:name=".service.HandleInstallService"
+            android:name=".service.ApplicationDetectionService"
             android:exported="false" />
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
 </manifest>

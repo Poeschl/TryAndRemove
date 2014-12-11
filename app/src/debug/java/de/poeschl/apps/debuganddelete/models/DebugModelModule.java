@@ -14,21 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.preferences;
+package de.poeschl.apps.debuganddelete.models;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.debuganddelete.activities.DebugAppContainer;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelEnabled;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.debuganddelete.annotations.SettingsDrawerSeen;
-import de.poeschl.apps.debuganddelete.appContainer.DebugAppContainer;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Markus Pöschl on 09.12.2014.
@@ -40,13 +37,7 @@ import static android.content.Context.MODE_PRIVATE;
         library = true,
         complete = false
 )
-public class PreferenceModule {
-
-    @Provides
-    @Singleton
-    SharedPreferences provideSharedPreferences(Application app) {
-        return app.getSharedPreferences(app.getPackageName(), MODE_PRIVATE);
-    }
+public class DebugModelModule {
 
     @Provides
     @Singleton

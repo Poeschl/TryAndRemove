@@ -14,28 +14,26 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.activities;
-
-import javax.inject.Singleton;
+package de.poeschl.apps.debuganddelete.service;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.interfaces.AppContainer;
+import de.poeschl.apps.debuganddelete.data.MockPackageList;
+import de.poeschl.apps.debuganddelete.interfaces.PackageList;
 
 /**
- * Created by Markus Pöschl on 09.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
         injects = {
-                MainActivity.class,
+                ApplicationDetectionService.class,
         },
-        complete = false,
         library = true
 )
-public class ActivityModule {
+public class ServiceTestModule {
+
     @Provides
-    @Singleton
-    AppContainer provideAppContainer() {
-        return AppContainer.DEFAULT;
+    PackageList providesPackageList() {
+        return new MockPackageList();
     }
 }

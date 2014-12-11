@@ -18,7 +18,8 @@ package de.poeschl.apps.debuganddelete;
 
 import dagger.Module;
 import de.poeschl.apps.debuganddelete.activities.DebugActivityModule;
-import de.poeschl.apps.debuganddelete.preferences.PreferenceModule;
+import de.poeschl.apps.debuganddelete.models.DebugModelModule;
+import de.poeschl.apps.debuganddelete.models.ModelModule;
 
 /**
  * Created by Markus Pöschl on 05.12.14.
@@ -26,11 +27,11 @@ import de.poeschl.apps.debuganddelete.preferences.PreferenceModule;
 @Module(
         addsTo = AppModule.class,
         injects = {
-                PreferenceModule.class
+                ModelModule.class
         },
         includes = {
                 DebugActivityModule.class,
-                PreferenceModule.class
+                DebugModelModule.class
         },
         overrides = true
 )

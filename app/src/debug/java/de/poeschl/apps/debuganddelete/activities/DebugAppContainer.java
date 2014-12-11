@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.appContainer;
+package de.poeschl.apps.debuganddelete.activities;
 
 import android.app.Activity;
 import android.app.Application;
@@ -58,7 +58,8 @@ import de.poeschl.apps.debuganddelete.R;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelEnabled;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.debuganddelete.annotations.SettingsDrawerSeen;
-import de.poeschl.apps.debuganddelete.preferences.BooleanPreference;
+import de.poeschl.apps.debuganddelete.interfaces.AppContainer;
+import de.poeschl.apps.debuganddelete.models.BooleanPreference;
 
 import static butterknife.ButterKnife.findById;
 
