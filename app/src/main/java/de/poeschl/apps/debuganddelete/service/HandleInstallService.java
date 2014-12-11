@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import de.poeschl.apps.debuganddelete.app.activities.MainActivity;
+import de.poeschl.apps.debuganddelete.activities.MainActivity;
 
 public class HandleInstallService extends IntentService {
     // TODO: Rename actions, choose action names that describe tasks that this

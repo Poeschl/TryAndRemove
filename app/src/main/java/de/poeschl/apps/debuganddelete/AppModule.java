@@ -22,7 +22,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.app.activities.ActivityModule;
+import de.poeschl.apps.debuganddelete.activities.ActivityModule;
 
 /**
  * Created by markus on 05.12.14.

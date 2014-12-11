@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.app.adapter;
+package de.poeschl.apps.debuganddelete.adapter;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

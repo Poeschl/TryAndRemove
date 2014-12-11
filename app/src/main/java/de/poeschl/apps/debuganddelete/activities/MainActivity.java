@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.app.activities;
+package de.poeschl.apps.debuganddelete.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -38,9 +38,9 @@ import butterknife.OnClick;
 import butterknife.OnItemClick;
 import de.poeschl.apps.debuganddelete.DebugAndDeleteApp;
 import de.poeschl.apps.debuganddelete.R;
-import de.poeschl.apps.debuganddelete.app.adapter.SimpleAdapter;
-import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
-import de.poeschl.apps.debuganddelete.service.broadcastReciever.AppInstall;
+import de.poeschl.apps.debuganddelete.adapter.SimpleAdapter;
+import de.poeschl.apps.debuganddelete.appContainer.AppContainer;
+import de.poeschl.apps.debuganddelete.broadcastReciever.AppInstall;
 
 
 public class MainActivity extends Activity {

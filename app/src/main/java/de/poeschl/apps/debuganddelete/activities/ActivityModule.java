@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.app.activities;
+package de.poeschl.apps.debuganddelete.activities;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
+import de.poeschl.apps.debuganddelete.appContainer.AppContainer;
 
 /**
  * Created by Markus Pöschl on 09.12.14.

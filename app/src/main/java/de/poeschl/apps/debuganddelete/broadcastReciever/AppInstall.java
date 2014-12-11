@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.service.broadcastReciever;
+package de.poeschl.apps.debuganddelete.broadcastReciever;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

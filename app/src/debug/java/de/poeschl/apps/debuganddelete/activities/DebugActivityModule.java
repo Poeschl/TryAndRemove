@@ -20,7 +20,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
+import de.poeschl.apps.debuganddelete.appContainer.AppContainer;
 import de.poeschl.apps.debuganddelete.appContainer.DebugAppContainer;
 
 /**

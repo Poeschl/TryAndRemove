@@ -58,7 +58,6 @@ import de.poeschl.apps.debuganddelete.R;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelEnabled;
 import de.poeschl.apps.debuganddelete.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.debuganddelete.annotations.SettingsDrawerSeen;
-import de.poeschl.apps.debuganddelete.app.appContainer.AppContainer;
 import de.poeschl.apps.debuganddelete.preferences.BooleanPreference;
 
 import static butterknife.ButterKnife.findById;
