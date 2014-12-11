@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.preferences;
+package de.poeschl.apps.debuganddelete.models;
 
 import android.content.SharedPreferences;
 

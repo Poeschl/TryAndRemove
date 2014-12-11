@@ -20,20 +20,30 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
-import de.poeschl.apps.debuganddelete.service.HandleInstallService;
+import de.poeschl.apps.debuganddelete.service.ApplicationDetectionService;
 
-public class AppInstall extends BroadcastReceiver {
+public class AppDetectionReceiver extends BroadcastReceiver {
 
-    public AppInstall() {
+    private static final String TAG = AppDetectionReceiver.class.getSimpleName();
+
+    public AppDetectionReceiver() {
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "new app installed", Toast.LENGTH_SHORT).show();
-        String intentdata = intent.toUri(Intent.URI_INTENT_SCHEME);
-        Log.e("BCReceiver", "new app installed " + intentdata);
-        HandleInstallService.startActionInstall(context, intentdata);
+        String intentData = intent.toUri(Intent.URI_INTENT_SCHEME);
+        Log.v(TAG, "intent: " + intentData);
+
+        switch (intent.getAction()) {
+            case Intent.ACTION_PACKAGE_ADDED:
+                Log.v(TAG, "Package install");
+                ApplicationDetectionService.startAppInstall(context, intentData);
+                break;
+            case Intent.ACTION_PACKAGE_REMOVED:
+                Log.v(TAG, "Package install");
+                ApplicationDetectionService.startAppRemove(context, intentData);
+                break;
+        }
     }
 }

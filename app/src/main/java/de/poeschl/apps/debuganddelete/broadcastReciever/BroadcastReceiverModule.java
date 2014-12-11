@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.activities;
-
-import javax.inject.Singleton;
+package de.poeschl.apps.debuganddelete.broadcastReciever;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.interfaces.AppContainer;
 
 /**
- * Created by Markus Pöschl on 09.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
-        injects = {
-                MainActivity.class,
-        },
-        complete = false,
         library = true
 )
-public class ActivityModule {
+public class BroadcastReceiverModule {
     @Provides
-    @Singleton
-    AppContainer provideAppContainer() {
-        return AppContainer.DEFAULT;
+    AppDetectionReceiver provideAppDetectionReceiver() {
+        return new AppDetectionReceiver();
     }
 }

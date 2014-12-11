@@ -28,7 +28,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,8 +38,9 @@ import butterknife.OnItemClick;
 import de.poeschl.apps.debuganddelete.DebugAndDeleteApp;
 import de.poeschl.apps.debuganddelete.R;
 import de.poeschl.apps.debuganddelete.adapter.SimpleAdapter;
-import de.poeschl.apps.debuganddelete.appContainer.AppContainer;
-import de.poeschl.apps.debuganddelete.broadcastReciever.AppInstall;
+import de.poeschl.apps.debuganddelete.broadcastReciever.AppDetectionReceiver;
+import de.poeschl.apps.debuganddelete.interfaces.AppContainer;
+import de.poeschl.apps.debuganddelete.interfaces.PackageList;
 
 
 public class MainActivity extends Activity {
@@ -54,14 +54,15 @@ public class MainActivity extends Activity {
 
     private SimpleAdapter adapter;
 
-    public static List<String> incoming;
-
-    private AppInstall receiver;
-
     private boolean init;
+
     private ViewGroup container;
     @Inject
     AppContainer appContainer;
+    @Inject
+    AppDetectionReceiver receiver;
+    @Inject
+    PackageList packageListData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +77,8 @@ public class MainActivity extends Activity {
 
         ButterKnife.inject(this);
 
-        incoming = new ArrayList<>();
-
         adapter = new SimpleAdapter(this, new ArrayList<String>());
         listView.setAdapter(adapter);
-
-        receiver = new AppInstall();
     }
 
     @OnItemClick(R.id.listView)
@@ -98,10 +95,8 @@ public class MainActivity extends Activity {
 
         init = true;
 
-        if (!incoming.isEmpty()) {
-            adapter.addAll(incoming);
-            incoming.clear();
-        }
+        adapter.clear();
+        adapter.addAll(packageListData.getPackages());
 
         init = false;
     }

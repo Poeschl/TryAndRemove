@@ -33,12 +33,11 @@ public class DebugAndDeleteApp extends Application {
         super.onCreate();
 
         buildObjectGraphAndInject();
-
     }
 
     public void buildObjectGraphAndInject() {
         objectGraph = ObjectGraph.create(Modules.list(this));
-        objectGraph.inject(this);
+//        objectGraph.inject(this);
     }
 
     public void inject(Object o) {

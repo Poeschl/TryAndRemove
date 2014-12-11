@@ -14,28 +14,29 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.activities;
+package de.poeschl.apps.debuganddelete.data;
+
+import android.app.Application;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.debuganddelete.interfaces.AppContainer;
+import de.poeschl.apps.debuganddelete.interfaces.PackageList;
 
 /**
- * Created by Markus Pöschl on 09.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
-        injects = {
-                MainActivity.class,
-        },
-        complete = false,
-        library = true
+        library = true,
+        complete = false
 )
-public class ActivityModule {
+public class DataModule {
+
     @Provides
     @Singleton
-    AppContainer provideAppContainer() {
-        return AppContainer.DEFAULT;
+    PackageList providePackageList(SharedPreferences preferences, Application application) {
+        return new SharedPreferencesPackageList(preferences, application);
     }
 }

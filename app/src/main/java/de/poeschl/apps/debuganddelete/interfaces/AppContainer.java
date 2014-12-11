@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.debuganddelete.appContainer;
+package de.poeschl.apps.debuganddelete.interfaces;
 
 import android.app.Activity;
 import android.view.ViewGroup;
