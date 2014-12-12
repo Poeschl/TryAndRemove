@@ -26,7 +26,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +59,7 @@ import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
+import timber.log.Timber;
 
 import static butterknife.ButterKnife.findById;
 
@@ -204,7 +204,7 @@ public class DebugAppContainer implements AppContainer {
                             activity.startActivity(intent);
 
                         } catch (Exception e) {
-                            Log.e("APP INSTALL", e.getMessage(), e);
+                            Timber.e(e, e.getMessage());
                         }
                     }
                 }).start();

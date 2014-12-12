@@ -20,6 +20,7 @@ import android.app.Application;
 import android.content.Context;
 
 import dagger.ObjectGraph;
+import timber.log.Timber;
 
 /**
  * Created by markus on 05.12.14.
@@ -32,12 +33,18 @@ public class TryAndRemoveApp extends Application {
     public void onCreate() {
         super.onCreate();
 
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        } else {
+            //TODO: Add crashlytics debugTree here.
+        }
+
         buildObjectGraphAndInject();
     }
 
     public void buildObjectGraphAndInject() {
         objectGraph = ObjectGraph.create(Modules.list(this));
-//        objectGraph.inject(this);
+        Timber.v("Objectgraph created");
     }
 
     public void inject(Object o) {
