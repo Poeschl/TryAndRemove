@@ -19,24 +19,31 @@ package de.poeschl.apps.tryandremove;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
+
 import dagger.ObjectGraph;
+import de.poeschl.apps.tryandremove.trees.CrashlyticsReportTree;
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 /**
  * Created by markus on 05.12.14.
  */
 public class TryAndRemoveApp extends Application {
-
     private ObjectGraph objectGraph;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+
         } else {
-            //TODO: Add crashlytics debugTree here.
+            Fabric.with(this, new Crashlytics());
+
+            Timber.plant(new CrashlyticsReportTree());
         }
 
         buildObjectGraphAndInject();

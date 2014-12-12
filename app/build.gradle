@@ -23,6 +23,7 @@ buildscript {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+        classpath 'io.fabric.tools:gradle:1.14.4'
     }
 }
 
@@ -33,19 +34,23 @@ def versionPatch = 0
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'hugo'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
 android {
+
     signingConfigs {
         googlePlay {
             //Placeholder for later in the build process
         }
     }
+
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
+
     defaultConfig {
         applicationId "de.poeschl.apps.tryandremove"
         minSdkVersion 15
@@ -57,14 +62,16 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false //Don't forget to set crashlytics up for proguard
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.googlePlay
         }
         debug {
             applicationIdSuffix '.dev'
+            ext.enableCrashlytics = false
         }
     }
     compileOptions {
@@ -87,6 +94,7 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
+
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
 //Adds dynamic signing stuff during init process
@@ -111,6 +119,9 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.jakewharton.timber:timber:2.5.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
+        transitive = true;
+    }
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
