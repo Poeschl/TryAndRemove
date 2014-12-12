@@ -16,6 +16,8 @@
 
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -107,6 +109,7 @@ afterEvaluate { project ->
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
+    compile 'com.jakewharton.timber:timber:2.5.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     testCompile 'junit:junit:4.10'
