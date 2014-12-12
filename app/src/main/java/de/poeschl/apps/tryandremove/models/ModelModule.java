@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.models;
+
+import dagger.Module;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 09.12.2014.
  */
-public class Modules {
+@Module()
+public class ModelModule {
 
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
-    }
 }

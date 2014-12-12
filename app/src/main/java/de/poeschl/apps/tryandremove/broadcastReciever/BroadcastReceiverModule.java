@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.broadcastReciever;
+
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
-public class Modules {
-
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+@Module(
+        library = true
+)
+public class BroadcastReceiverModule {
+    @Provides
+    AppDetectionReceiver provideAppDetectionReceiver() {
+        return new AppDetectionReceiver();
     }
 }

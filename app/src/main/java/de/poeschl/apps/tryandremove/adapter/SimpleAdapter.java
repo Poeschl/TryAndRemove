@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.adapter;
+
+import android.content.Context;
+import android.widget.ArrayAdapter;
+
+import java.util.List;
+
+import de.poeschl.apps.tryandremove.R;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 04.12.14.
  */
-public class Modules {
-
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+public class SimpleAdapter extends ArrayAdapter<String> {
+    public SimpleAdapter(Context context, List<String> objects) {
+        super(context, R.layout.cell, R.id.cell_text, objects);
     }
 }

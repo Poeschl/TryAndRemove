@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.annotations;
+
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 09.12.2014.
  */
-public class Modules {
-
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
-    }
+@Qualifier
+@Retention(RUNTIME)
+public @interface SettingsDrawerSeen {
 }

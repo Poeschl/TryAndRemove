@@ -16,16 +16,14 @@
 
 package de.poeschl.apps.tryandremove;
 
+import android.app.Application;
+import android.test.ApplicationTestCase;
+
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class Modules {
-
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+public class ApplicationTest extends ApplicationTestCase<Application> {
+    public ApplicationTest() {
+        super(Application.class);
     }
 }

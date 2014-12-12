@@ -14,18 +14,20 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.annotations;
+
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Taken from the sample app u2020 from Jake Wharton.
+ *
+ * @see <a href="https://github.com/JakeWharton/u2020">GitHub</a>
  */
-public class Modules {
-
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
-    }
+@Qualifier
+@Retention(RUNTIME)
+public @interface ScalpelWireframeEnabled {
 }

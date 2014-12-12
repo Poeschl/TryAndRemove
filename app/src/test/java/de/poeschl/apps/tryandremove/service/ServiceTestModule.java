@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.service;
+
+import dagger.Module;
+import dagger.Provides;
+import de.poeschl.apps.tryandremove.data.MockPackageList;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
-public class Modules {
+@Module(
+        injects = {
+                ApplicationDetectionService.class,
+        },
+        library = true
+)
+public class ServiceTestModule {
 
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+    @Provides
+    PackageList providesPackageList() {
+        return new MockPackageList();
     }
 }

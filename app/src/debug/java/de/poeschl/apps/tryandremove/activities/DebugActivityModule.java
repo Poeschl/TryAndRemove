@@ -14,18 +14,29 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.activities;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by markus on 09.12.14.
  */
-public class Modules {
 
-    private Modules(){}
+@Module(
+        injects = DebugAppContainer.class,
+        complete = false,
+        library = true,
+        overrides = true
+)
+public class DebugActivityModule {
 
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+    @Provides
+    @Singleton
+    AppContainer provideAppContainer(DebugAppContainer debugAppContainer) {
+        return debugAppContainer;
     }
 }

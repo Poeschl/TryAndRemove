@@ -21,11 +21,13 @@ package de.poeschl.apps.tryandremove;
  */
 public class Modules {
 
-    private Modules(){}
+    private Modules() {
+    }
 
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
+    static Object[] list(TryAndRemoveApp app) {
+        return new Object[]{
+                new AppModule(app),
+                new DebugAppModule()
         };
     }
 }

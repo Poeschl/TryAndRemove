@@ -16,16 +16,25 @@
 
 package de.poeschl.apps.tryandremove;
 
+import dagger.Module;
+import de.poeschl.apps.tryandremove.activities.DebugActivityModule;
+import de.poeschl.apps.tryandremove.models.DebugModelModule;
+import de.poeschl.apps.tryandremove.models.ModelModule;
+
 /**
  * Created by Markus Pöschl on 05.12.14.
  */
-public class Modules {
+@Module(
+        addsTo = AppModule.class,
+        injects = {
+                ModelModule.class
+        },
+        includes = {
+                DebugActivityModule.class,
+                DebugModelModule.class
+        },
+        overrides = true
+)
+public final class DebugAppModule {
 
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
-    }
 }

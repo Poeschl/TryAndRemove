@@ -14,18 +14,29 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.data;
+
+import android.app.Application;
+import android.content.SharedPreferences;
+
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
- * Created by Markus Pöschl on 05.12.14.
+ * Created by Markus Pöschl on 11.12.2014.
  */
-public class Modules {
+@Module(
+        library = true,
+        complete = false
+)
+public class DataModule {
 
-    private Modules(){}
-
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+    @Provides
+    @Singleton
+    PackageList providePackageList(SharedPreferences preferences, Application application) {
+        return new SharedPreferencesPackageList(preferences, application);
     }
 }
