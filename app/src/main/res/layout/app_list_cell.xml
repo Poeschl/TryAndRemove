@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2014 Markus Pöschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,26 +14,24 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    tools:context=".MainActivity">
+    android:layout_height="70dp"
+    android:background="@android:color/darker_gray"
+    android:gravity="center_vertical">
 
-    <ToggleButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/toggleButton"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/app_list_cell_app_icon"
+        android:src="@drawable/app_icon"
+        android:layout_margin="10dp" />
 
-    <ListView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/toggleButton"
-        android:layout_centerHorizontal="true" />
+        android:text="App Name"
+        android:id="@+id/app_list_cell_app_name" />
 
-</RelativeLayout>
+</LinearLayout>

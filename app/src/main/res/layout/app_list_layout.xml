@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/app_list_layout_apps_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/app_list_layout_clear_actions_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
+        android:text="Remove Apps" />
+
+    <Button
+        android:id="@+id/app_list_layout_record_toggle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/appList_bottomLeftButton_margin"
+        android:layout_marginStart="@dimen/appList_bottomLeftButton_margin"
+        android:layout_marginLeft="@dimen/appList_bottomLeftButton_margin"
+        android:text="Record" />
+</RelativeLayout>
