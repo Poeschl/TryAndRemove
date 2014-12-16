@@ -1,5 +1,11 @@
 <resources>
 
-    <!-- Theme for Material Design, < Android 5.0 -->
-    <style name="AppTheme" parent="android:Theme.Material.Light"></style>
+    <!-- Theme for Material Design, > Android 5.0 -->
+    <style name="AppTheme" parent="android:Theme.Material.Light">
+
+    </style>
+
+    <style name="AppTheme.AppList.Button" parent="">
+        <item name="android:elevation">10dp</item>
+    </style>
 </resources>

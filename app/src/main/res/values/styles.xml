@@ -21,4 +21,6 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppTheme.AppList.Button" parent=""></style>
+
 </resources>
