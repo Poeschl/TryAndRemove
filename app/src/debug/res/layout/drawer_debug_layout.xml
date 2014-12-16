@@ -23,7 +23,7 @@
     android:padding="12dp"
     android:columnCount="2"
     tools:ignore="UselessParent"
-    android:background="@android:color/background_light">
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_columnSpan="2"
@@ -43,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:textColor="@android:color/black"
                 style="@android:style/TextAppearance.Holo.Widget.ActionBar.Title" />
 
             <TextView
@@ -55,7 +56,7 @@
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/app_icon" />
+            android:src="@drawable/ic_launcher_app" />
     </LinearLayout>
 
     <!-- CONTEXTUAL SECTION -->
