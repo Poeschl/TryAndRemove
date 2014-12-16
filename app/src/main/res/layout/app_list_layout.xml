@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,10 +21,23 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
+        android:elevation="10dp"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        android:text="Remove Apps" />
+        android:text="Clear List" />
 
     <Button
+        android:id="@+id/app_list_layout_remove_app_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
+        android:text="Remove Apps"
+        android:layout_above="@id/app_list_layout_clear_actions_button" />
+
+    <ToggleButton
         android:id="@+id/app_list_layout_record_toggle_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,5 +47,6 @@
         android:layout_marginBottom="@dimen/appList_bottomLeftButton_margin"
         android:layout_marginStart="@dimen/appList_bottomLeftButton_margin"
         android:layout_marginLeft="@dimen/appList_bottomLeftButton_margin"
-        android:text="Record" />
+        android:background="@drawable/record_drawable"
+        tools:ignore="RelativeOverlap" />
 </RelativeLayout>

@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 
 import javax.inject.Singleton;
 
@@ -63,5 +64,10 @@ public class AppModule {
     @Provides
     SharedPreferences provideSharedPreferences() {
         return app.getSharedPreferences(app.getPackageName(), Context.MODE_PRIVATE);
+    }
+
+    @Provides
+    PackageManager providePackageManager() {
+        return app.getPackageManager();
     }
 }

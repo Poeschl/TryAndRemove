@@ -19,50 +19,46 @@ package de.poeschl.apps.tryandremove.activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.adapter.SimpleAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class MainActivity extends Activity {
+public class AppListActivity extends Activity {
 
-    @InjectView(R.id.toggleButton)
+    @InjectView(R.id.app_list_layout_record_toggle_button)
     ToggleButton toggleButton;
-    @InjectView(R.id.listView)
-    ListView listView;
+    @InjectView(R.id.app_list_layout_apps_listView)
+    RecyclerView appListView;
 
-    private boolean listeningForApps = false;
-
-    private SimpleAdapter adapter;
-
-    private boolean init;
-
-    private ViewGroup container;
     @Inject
     AppContainer appContainer;
     @Inject
     AppDetectionReceiver receiver;
     @Inject
     PackageList packageListData;
+    @Inject
+    AppAdapter appAdapter;
+
+    private ViewGroup container;
+    private BooleanPreference isTracking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,58 +69,56 @@ public class MainActivity extends Activity {
 
         container = appContainer.get(this);
 
-        getLayoutInflater().inflate(R.layout.activity_main, container);
+        getLayoutInflater().inflate(R.layout.app_list_layout, container);
 
         ButterKnife.inject(this);
 
-        adapter = new SimpleAdapter(this, new ArrayList<String>());
-        listView.setAdapter(adapter);
-    }
+        appListView.setAdapter(appAdapter);
+        appListView.setLayoutManager(new LinearLayoutManager(this));
 
-    @OnItemClick(R.id.listView)
-    void onItemClick(int position) {
-        String packageString = adapter.getItem(position);
-
-        Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", packageString, null));
-        startActivity(intent);
+        isTracking = new BooleanPreference(getPreferences(MODE_PRIVATE), "IS_TRACKING", false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        init = true;
-
-        adapter.clear();
-        adapter.addAll(packageListData.getPackages());
-
-        init = false;
+        updatePackageList();
     }
 
-    @OnClick(R.id.toggleButton)
+    private void updatePackageList() {
+        appAdapter.updateAdapter(packageListData);
+    }
+
+    @OnClick(R.id.app_list_layout_record_toggle_button)
     void clickToggle() {
-        if (listeningForApps) {
+        boolean isTrackingBool = isTracking.get();
+        if (isTrackingBool) {
             Toast.makeText(this, "Disable Listener", Toast.LENGTH_SHORT).show();
             unregisterReceiver();
         } else {
             Toast.makeText(this, "Enable Listener", Toast.LENGTH_SHORT).show();
             registerReceiver();
         }
-        listeningForApps = !listeningForApps;
-        Timber.d("Listener Status: " + listeningForApps);
+        Timber.d("Listener Status: " + !isTrackingBool);
+        isTracking.set(!isTrackingBool);
     }
 
 
-    public void registerReceiver() {
+    private void registerReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addDataScheme("package");
         filter.addAction(Intent.ACTION_PACKAGE_ADDED);
         filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 
         registerReceiver(receiver, filter);
     }
 
-    public void unregisterReceiver() {
-        unregisterReceiver(receiver);
+    private void unregisterReceiver() {
+        try {
+            unregisterReceiver(receiver);
+        } catch (IllegalArgumentException e) {
+            Timber.e(e, "App install receiver was unregistered while not registered.");
+        }
     }
 }

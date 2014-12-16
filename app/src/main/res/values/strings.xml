@@ -17,5 +17,6 @@
 <resources>
 
     <string name="app_name">Try and Remove</string>
+    <string name="app_name_not_found">Name not found</string>
 
 </resources>
