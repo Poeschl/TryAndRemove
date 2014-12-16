@@ -103,6 +103,16 @@ public class AppListActivity extends Activity {
         isTracking.set(!isTrackingBool);
     }
 
+    @OnClick(R.id.app_list_layout_clear_actions_button)
+    void clearList() {
+        //TODO: remove all items from packageList
+    }
+
+    @OnClick(R.id.app_list_layout_remove_app_button)
+    void removeAllApps() {
+        //TODO: Go through all apps and delete every app
+    }
+
 
     private void registerReceiver() {
         IntentFilter filter = new IntentFilter();
