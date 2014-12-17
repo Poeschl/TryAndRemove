@@ -18,5 +18,7 @@
 
     <string name="app_name">Try and Remove</string>
     <string name="app_name_not_found">Name not found</string>
+    <string name="app_list_toolbar_action_refresh_title">Refresh list</string>
+    <string name="app_list_toolbar_action_record_title">Toggle record</string>
 
 </resources>

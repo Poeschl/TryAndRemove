@@ -21,8 +21,10 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import javax.inject.Inject;
 
@@ -40,8 +42,6 @@ import timber.log.Timber;
 
 public class AppListActivity extends TryAndRemoveActivity {
 
-    @InjectView(R.id.app_list_layout_record_toggle_button)
-    ToggleButton toggleButton;
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
 
@@ -76,12 +76,28 @@ public class AppListActivity extends TryAndRemoveActivity {
         updatePackageList();
     }
 
-    private void updatePackageList() {
-        appAdapter.updateAdapter(packageListData);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.app_list_toolbar_actions, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
-    @OnClick(R.id.app_list_layout_record_toggle_button)
-    void clickToggle() {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.app_list_toolbar_action_record:
+                toggleRecording();
+                return true;
+            case R.id.app_list_toolbar_action_refresh:
+                updatePackageList();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void toggleRecording() {
         boolean isTrackingBool = isTracking.get();
         if (isTrackingBool) {
             Toast.makeText(this, "Disable Listener", Toast.LENGTH_SHORT).show();
@@ -104,6 +120,9 @@ public class AppListActivity extends TryAndRemoveActivity {
         //TODO: Go through all apps and delete every app
     }
 
+    private void updatePackageList() {
+        appAdapter.updateAdapter(packageListData);
+    }
 
     private void registerReceiver() {
         IntentFilter filter = new IntentFilter();
