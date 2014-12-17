@@ -44,6 +44,7 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
     public void updateAdapter(PackageList packageList) {
         packages.clear();
         packages.addAll(packageList.getPackages());
+        Timber.v("Adapter updated");
         notifyDataSetChanged();
     }
 

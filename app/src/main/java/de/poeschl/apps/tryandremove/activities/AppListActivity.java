@@ -44,6 +44,8 @@ public class AppListActivity extends TryAndRemoveActivity {
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
 
+    MenuItem recordToolbarButton;
+
     @Inject
     AppDetectionReceiver receiver;
     @Inject
@@ -76,9 +78,21 @@ public class AppListActivity extends TryAndRemoveActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver();
+        Timber.v("Called onDestroy - unregister reciever");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.app_list_toolbar_actions, menu);
+
+        recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
+
+        setRecordButtonState(isTracking.get());
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -97,16 +111,24 @@ public class AppListActivity extends TryAndRemoveActivity {
     }
 
     private void toggleRecording() {
-        boolean isTrackingBool = isTracking.get();
-        if (isTrackingBool) {
-            Toast.makeText(this, "Disable Listener", Toast.LENGTH_SHORT).show();
-            unregisterReceiver();
-        } else {
-            Toast.makeText(this, "Enable Listener", Toast.LENGTH_SHORT).show();
+        boolean newTrackState = !isTracking.get();
+        if (newTrackState) {
             registerReceiver();
+        } else {
+            unregisterReceiver();
         }
-        Timber.d("Listener Status: " + !isTrackingBool);
-        isTracking.set(!isTrackingBool);
+        Timber.d("Listener Status: " + newTrackState);
+        setRecordButtonState(newTrackState);
+    }
+
+    private void setRecordButtonState(boolean active) {
+        if (active) {
+            Toast.makeText(this, getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
+            recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
+        } else {
+            Toast.makeText(this, getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
+            recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
+        }
     }
 
     void clearList() {
@@ -129,10 +151,12 @@ public class AppListActivity extends TryAndRemoveActivity {
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 
         registerReceiver(receiver, filter);
+        isTracking.set(true);
     }
 
     private void unregisterReceiver() {
         try {
+            isTracking.set(false);
             unregisterReceiver(receiver);
         } catch (IllegalArgumentException e) {
             Timber.e(e, "App install receiver was unregistered while not registered.");
