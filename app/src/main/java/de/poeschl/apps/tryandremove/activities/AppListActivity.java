@@ -16,13 +16,11 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ViewGroup;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -35,13 +33,12 @@ import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
-import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class AppListActivity extends Activity {
+public class AppListActivity extends TryAndRemoveActivity {
 
     @InjectView(R.id.app_list_layout_record_toggle_button)
     ToggleButton toggleButton;
@@ -49,27 +46,21 @@ public class AppListActivity extends Activity {
     RecyclerView appListView;
 
     @Inject
-    AppContainer appContainer;
-    @Inject
     AppDetectionReceiver receiver;
     @Inject
     PackageList packageListData;
     @Inject
     AppAdapter appAdapter;
 
-    private ViewGroup container;
     private BooleanPreference isTracking;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TryAndRemoveApp app = TryAndRemoveApp.get(this);
-        app.inject(this);
+        TryAndRemoveApp.get(this).inject(this);
 
-        container = appContainer.get(this);
-
-        getLayoutInflater().inflate(R.layout.app_list_layout, container);
+        setupLayout(this);
 
         ButterKnife.inject(this);
 

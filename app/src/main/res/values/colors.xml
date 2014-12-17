@@ -4,7 +4,7 @@
     <color name="primary_dark">#5892BE</color>
     <color name="accent">#5F9ECE</color>
     <color name="textColorPrimary">#fff</color>
-    <color name="windowBackground">#A2BFD6</color>
+    <color name="windowBackground">#ffddddde</color>
     <color name="light_grey">#C2C2C3</color>
     <color name="grey">#9A9B9D</color>
     <color name="dark_grey">#676666</color>
