@@ -49,6 +49,6 @@
         android:layout_marginBottom="@dimen/appList_bottomLeftButton_margin"
         android:layout_marginStart="@dimen/appList_bottomLeftButton_margin"
         android:layout_marginLeft="@dimen/appList_bottomLeftButton_margin"
-        android:background="@drawable/record_drawable"
+        android:background="@drawable/ic_menu_record_drawable"
         tools:ignore="RelativeOverlap" />
 </RelativeLayout>
