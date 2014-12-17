@@ -30,7 +30,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
@@ -110,12 +109,10 @@ public class AppListActivity extends TryAndRemoveActivity {
         isTracking.set(!isTrackingBool);
     }
 
-    @OnClick(R.id.app_list_layout_clear_actions_button)
     void clearList() {
         //TODO: remove all items from packageList
     }
 
-    @OnClick(R.id.app_list_layout_remove_app_button)
     void removeAllApps() {
         //TODO: Go through all apps and delete every app
     }

@@ -35,4 +35,9 @@
 
     <style name="AppTheme.AppList.Button" parent=""></style>
 
+    <style name="AppTheme.FloatingButton">
+        <item name="fab_colorNormal">@color/primary</item>
+        <item name="fab_colorPressed">@color/accent</item>
+    </style>
+
 </resources>

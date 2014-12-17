@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -18,9 +19,8 @@
         android:background="@android:color/transparent"
         android:layout_below="@id/toolbar" />
 
-    <Button
-        style="@style/AppTheme.AppList.Button"
-        android:id="@+id/app_list_layout_clear_actions_button"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/app_list_layout_floating_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -29,18 +29,26 @@
         android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        android:text="Clear List" />
+        fab:fab_addButtonColorNormal="@color/primary"
+        fab:fab_addButtonColorPressed="@color/accent"
+        fab:fab_addButtonPlusIconColor="@color/textColorPrimary"
+        fab:fab_expandDirection="up">
 
-    <Button
-        style="@style/AppTheme.AppList.Button"
-        android:id="@+id/app_list_layout_remove_app_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
-        android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
-        android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        android:text="Remove Apps"
-        android:layout_above="@id/app_list_layout_clear_actions_button" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_icon="@drawable/ic_menu_delete"
+            fab:fab_title="@string/app_list_layout_remove_apps_title"
+            android:id="@+id/app_list_layout_remove_action_button"
+            style="@style/AppTheme.FloatingButton" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_title="@string/app_list_layout_clear_app_list_title"
+            fab:fab_icon="@drawable/ic_menu_clear"
+            android:id="@+id/app_list_layout_clear_action_button"
+            style="@style/AppTheme.FloatingButton" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
 </RelativeLayout>
