@@ -118,13 +118,15 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     private void toggleRecording() {
         boolean newTrackState = !isTracking.get();
+
+        Timber.d("Listener Status: " + newTrackState);
+        setRecordState(newTrackState);
+
         if (newTrackState) {
             registerReceiver();
         } else {
             unregisterReceiver();
         }
-        Timber.d("Listener Status: " + newTrackState);
-        setRecordState(newTrackState);
     }
 
     private void setRecordState(boolean state) {
