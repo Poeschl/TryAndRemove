@@ -22,7 +22,7 @@
     android:gravity="center_vertical"
     android:id="@+id/app_list_cell_root"
     android:padding="8dp"
-    android:layout_marginBottom="3dp"
+    android:layout_marginBottom="1dp"
     android:layout_marginLeft="2dp"
     android:layout_marginRight="2dp">
 
