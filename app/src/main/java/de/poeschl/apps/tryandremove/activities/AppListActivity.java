@@ -36,13 +36,14 @@ import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
+import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class AppListActivity extends TryAndRemoveActivity implements ClearWarningDialogFragment.ButtonListener {
+public class AppListActivity extends TryAndRemoveActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
 
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
@@ -151,7 +152,13 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     @OnClick(R.id.app_list_layout_remove_action_button)
     void removeAllApps() {
-        //TODO: Security answer
+        RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
+        rf.setButtonListener(this);
+        rf.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void onUserConfirmedRemove() {
         appManager.remove(packageListData.getPackages());
     }
 
@@ -177,5 +184,6 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         } catch (IllegalArgumentException e) {
             Timber.e(e, "App install receiver was unregistered while not registered.");
         }
+
     }
 }

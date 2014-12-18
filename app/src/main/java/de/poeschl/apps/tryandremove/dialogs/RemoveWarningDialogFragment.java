@@ -13,9 +13,9 @@ import de.poeschl.apps.tryandremove.R;
 /**
  * Created by Markus Pöschl on 18.12.2014.
  */
-public class ClearWarningDialogFragment extends DialogFragment {
+public class RemoveWarningDialogFragment extends DialogFragment {
 
-    private static final String FRAGMENT_TAG = "ClearWarningDialogFragment";
+    private static final String FRAGMENT_TAG = "RemoveWarningDialogFragment";
 
     private ButtonListener listener;
 
@@ -27,14 +27,14 @@ public class ClearWarningDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.clear_warning_dialog_message))
-                .setPositiveButton(getString(R.string.clear_warning_dialog_agree), new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.remove_warning_dialog_message))
+                .setPositiveButton(getString(R.string.remove_warning_dialog_agree), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        listener.onUserConfirmedClear();
+                        listener.onUserConfirmedRemove();
                         dialog.dismiss();
                     }
                 })
-                .setNegativeButton(getString(R.string.clear_warning_dialog_cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.remove_warning_dialog_cancel), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.dismiss();
                     }
@@ -43,7 +43,7 @@ public class ClearWarningDialogFragment extends DialogFragment {
     }
 
     public static interface ButtonListener {
-        public void onUserConfirmedClear();
+        public void onUserConfirmedRemove();
     }
 
     public void show(FragmentManager manager) {

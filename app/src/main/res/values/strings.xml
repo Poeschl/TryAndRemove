@@ -24,5 +24,11 @@
     <string name="app_list_layout_clear_app_list_title">Clear list</string>
     <string name="app_list_activity_enable_track_toast_message">App tracking active</string>
     <string name="app_list_activity_disable_track_toast_message">App tracking deactivated</string>
+    <string name="clear_warning_dialog_message">Clear app list?</string>
+    <string name="clear_warning_dialog_agree">Clear</string>
+    <string name="clear_warning_dialog_cancel">Cancel</string>
+    <string name="remove_warning_dialog_message">Remove all apps in the list from your phone?</string>
+    <string name="remove_warning_dialog_agree">Remove</string>
+    <string name="remove_warning_dialog_cancel">Cancel</string>
 
 </resources>
