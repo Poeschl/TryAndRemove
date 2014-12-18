@@ -118,7 +118,14 @@ public class AppListActivity extends TryAndRemoveActivity {
             unregisterReceiver();
         }
         Timber.d("Listener Status: " + newTrackState);
-        setRecordButtonState(newTrackState);
+        setRecordState(newTrackState);
+    }
+
+    private void setRecordState(boolean state) {
+        if (isTracking.get() == state) {
+            return;
+        }
+        setRecordButtonState(state);
     }
 
     private void setRecordButtonState(boolean active) {
