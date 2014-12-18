@@ -18,7 +18,13 @@
 
 
 
+
+
 buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
@@ -34,6 +40,11 @@ def versionPatch = 0
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'io.fabric'
 apply plugin: 'hugo'
 
@@ -68,7 +79,7 @@ android {
         }
         debug {
             applicationIdSuffix '.dev'
-            ext.enableCrashlytics = false
+            ext.enableCrashlytics = true
         }
     }
     compileOptions {
@@ -93,21 +104,44 @@ androidUnitTest {
 }
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
-//Adds dynamic signing stuff during init process
+/*
+ * Adds dynamically keys and secret stuff to the project
+ */
 afterEvaluate { project ->
     def propsFile = file(keyStorePath + '/TryAndRemove.keyproperties')
-    def configName = 'googlePlay'
 
-    if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
+
+    def configName = 'googlePlay'
+    if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
-        android.signingConfigs[configName].storePassword = props['storePassword']
-        android.signingConfigs[configName].keyAlias = props['keyAlias']
-        android.signingConfigs[configName].keyPassword = props['keyPassword']
-        println("Setup keystore settings.")
+
+        if (android.signingConfigs.hasProperty(configName)) {
+
+            //Android signing information
+            android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
+            android.signingConfigs[configName].storePassword = props['storePassword']
+            android.signingConfigs[configName].keyAlias = props['keyAlias']
+            android.signingConfigs[configName].keyPassword = props['keyPassword']
+            println("Setup keystore settings.")
+        }
+
+        //Fabric keys
+        File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
+        java.io.FileWriter writer = new FileWriter(crashlyticsProps, false);
+
+        try {
+            writer.write("apiSecret=" + props["crashlytics_appSecret"]);
+            writer.write("\n")
+            writer.write("apiKey=" + props["crashlytics_apiKey"]);
+        } finally {
+            writer.close();
+        }
+        println("Setup crashlytics keys.")
+
+
     } else {
-        System.err.println("No " + configName + " keystore settings available");
+        System.err.println("No " + configName + "  settings available");
     }
 }
 
@@ -115,7 +149,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.jakewharton.timber:timber:2.5.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
         transitive = true;
     }
     compile 'com.android.support:recyclerview-v7:21.0.3'
