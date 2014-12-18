@@ -16,7 +16,7 @@
 
 package de.poeschl.apps.tryandremove.interfaces;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Markus Pöschl on 11.12.2014.
@@ -41,5 +41,7 @@ public interface PackageList {
 
     public boolean contains(String packageName);
 
-    public Set<String> getPackages();
+    public List<String> getPackages();
+
+    public void clear();
 }

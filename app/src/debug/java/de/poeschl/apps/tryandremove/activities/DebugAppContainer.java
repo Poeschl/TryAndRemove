@@ -142,7 +142,7 @@ public class DebugAppContainer implements AppContainer {
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
-                Toast.makeText(drawerContext, "Refresh", Toast.LENGTH_SHORT).show();
+                //For things to do, when the drawer is opened
             }
         });
 

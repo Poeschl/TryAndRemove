@@ -41,16 +41,13 @@ def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
 android {
-
     signingConfigs {
         googlePlay {
             //Placeholder for later in the build process
         }
     }
-
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
-
     defaultConfig {
         applicationId "de.poeschl.apps.tryandremove"
         minSdkVersion 15
@@ -94,7 +91,6 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
-
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
 //Adds dynamic signing stuff during init process
@@ -122,9 +118,12 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
         transitive = true;
     }
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.getbase:floatingactionbutton:1.3.0'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
-    debugCompile 'com.android.support:support-v4:21.0.2'
+    debugCompile 'com.android.support:support-v4:21.0.3'
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 }

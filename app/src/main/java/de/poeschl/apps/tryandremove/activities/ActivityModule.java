@@ -16,18 +16,24 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
+import android.app.Application;
+import android.content.pm.PackageManager;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
  * Created by Markus Pöschl on 09.12.14.
  */
 @Module(
         injects = {
-                MainActivity.class,
+                AppListActivity.class,
+                TryAndRemoveActivity.class
         },
         complete = false,
         library = true
@@ -37,5 +43,10 @@ public class ActivityModule {
     @Singleton
     AppContainer provideAppContainer() {
         return AppContainer.DEFAULT;
+    }
+
+    @Provides
+    AppAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
+        return new AppAdapter(packageList, manager, app);
     }
 }
