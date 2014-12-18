@@ -41,7 +41,7 @@ public class AppDetectionReceiver extends BroadcastReceiver {
                 ApplicationDetectionService.startAppInstall(context, intentData);
                 break;
             case Intent.ACTION_PACKAGE_REMOVED:
-                Log.v(TAG, "Package install");
+                Log.v(TAG, "Package uninstall");
                 ApplicationDetectionService.startAppRemove(context, intentData);
                 break;
         }

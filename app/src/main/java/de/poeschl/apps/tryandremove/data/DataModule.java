@@ -16,9 +16,6 @@
 
 package de.poeschl.apps.tryandremove.data;
 
-import android.app.Application;
-import android.content.SharedPreferences;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -29,6 +26,9 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
  * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
+        injects = {
+                SharedPreferencesPackageList.class
+        },
         library = true,
         complete = false
 )
@@ -36,7 +36,7 @@ public class DataModule {
 
     @Provides
     @Singleton
-    PackageList providePackageList(SharedPreferences preferences, Application application) {
-        return new SharedPreferencesPackageList(preferences, application);
+    PackageList providePackageList(SharedPreferencesPackageList sharedPreferencesPackageList) {
+        return sharedPreferencesPackageList;
     }
 }

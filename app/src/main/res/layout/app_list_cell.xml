@@ -15,14 +15,31 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="70dp"
+    android:background="@color/white"
+    android:gravity="center_vertical"
+    android:id="@+id/app_list_cell_root"
+    android:padding="8dp"
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp">
+
+<ImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/app_list_cell_app_icon"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:src="@drawable/ic_launcher_app" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/cell_text"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:text="App Name"
+        android:id="@+id/app_list_cell_app_name" />
+
 </LinearLayout>

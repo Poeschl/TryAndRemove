@@ -16,15 +16,16 @@
 
 package de.poeschl.apps.tryandremove.data;
 
-import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
@@ -35,26 +36,27 @@ public class SharedPreferencesPackageList implements PackageList {
     static final String PREF_PACKAGE_LIST = "PREF_PACKAGE_LIST";
 
     private SharedPreferences preferences;
+    private AppManager appManager;
 
-    SharedPreferencesPackageList(SharedPreferences preferences, Application app) {
+    @Inject
+    SharedPreferencesPackageList(SharedPreferences preferences, AppManager appManager) {
         this.preferences = preferences;
+        this.appManager = appManager;
 
         //Check if these packages still exist on system
-        validatePackages(app.getPackageManager());
+        validatePackages();
     }
 
     /**
      * Check if the app are really installed right now. Removes them if not found by the package manager.
-     *
-     * @param pm The Android package manager.
      */
-    void validatePackages(PackageManager pm) {
-        Set<String> savedPackages = getPackages();
+    void validatePackages() {
+        List<String> savedPackages = getPackages();
 
         List<String> packagesToRemove = new LinkedList<>();
 
         for (String packageStr : savedPackages) {
-            if (!packageExists(pm, packageStr)) {
+            if (!appManager.exists(packageStr)) {
                 packagesToRemove.add(packageStr);
             }
         }
@@ -64,14 +66,6 @@ public class SharedPreferencesPackageList implements PackageList {
         }
     }
 
-    private boolean packageExists(PackageManager pm, String packageName) {
-        try {
-            pm.getPackageInfo(packageName, PackageManager.GET_META_DATA);
-            return true;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
 
     /**
      * @param packageName The package string of the new package.
@@ -80,9 +74,9 @@ public class SharedPreferencesPackageList implements PackageList {
      */
     @Override
     public boolean addPackage(String packageName) {
-        Set<String> saved = preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>());
+        Set<String> saved = getSavedSet();
         boolean success = saved.add(packageName);
-        preferences.edit().putStringSet(PREF_PACKAGE_LIST, saved).apply();
+        saveSet(saved);
         return success;
     }
 
@@ -93,20 +87,33 @@ public class SharedPreferencesPackageList implements PackageList {
      */
     @Override
     public boolean removePackage(String packageName) {
-        Set<String> saved = preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>());
+        Set<String> saved = getSavedSet();
         boolean success = saved.remove(packageName);
-        preferences.edit().putStringSet(PREF_PACKAGE_LIST, saved).apply();
+        saveSet(saved);
         return success;
     }
 
     @Override
     public boolean contains(String packageName) {
-        Set<String> saved = preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>());
+        Set<String> saved = getSavedSet();
         return saved.contains(packageName);
     }
 
     @Override
-    public Set<String> getPackages() {
+    public List<String> getPackages() {
+        return new LinkedList<>(preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()));
+    }
+
+    @Override
+    public void clear() {
+        saveSet(new HashSet<String>());
+    }
+
+    private Set<String> getSavedSet() {
         return preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>());
+    }
+
+    private void saveSet(Set<String> set) {
+        preferences.edit().putStringSet(PREF_PACKAGE_LIST, set).apply();
     }
 }
