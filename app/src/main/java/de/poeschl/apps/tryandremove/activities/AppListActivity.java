@@ -30,10 +30,12 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
+import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
@@ -52,6 +54,8 @@ public class AppListActivity extends TryAndRemoveActivity {
     PackageList packageListData;
     @Inject
     AppAdapter appAdapter;
+    @Inject
+    AppManager appManager;
 
     private BooleanPreference isTracking;
 
@@ -61,7 +65,7 @@ public class AppListActivity extends TryAndRemoveActivity {
 
         TryAndRemoveApp.get(this).inject(this);
 
-        setupLayout(this);
+        setupLayout(this, R.layout.app_list_layout);
 
         ButterKnife.inject(this);
 
@@ -131,12 +135,17 @@ public class AppListActivity extends TryAndRemoveActivity {
         }
     }
 
+    @OnClick(R.id.app_list_layout_clear_action_button)
     void clearList() {
-        //TODO: remove all items from packageList
+        //TODO: security answer
+        packageListData.clear();
+        updatePackageList();
     }
 
+    @OnClick(R.id.app_list_layout_remove_action_button)
     void removeAllApps() {
-        //TODO: Go through all apps and delete every app
+        //TODO: Security answer
+        appManager.remove(packageListData.getPackages());
     }
 
     private void updatePackageList() {

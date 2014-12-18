@@ -30,6 +30,7 @@ import de.poeschl.apps.tryandremove.broadcastReciever.BroadcastReceiverModule;
 import de.poeschl.apps.tryandremove.data.DataModule;
 import de.poeschl.apps.tryandremove.models.ModelModule;
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
+import de.poeschl.apps.tryandremove.utils.UtilsModule;
 
 /**
  * Created by markus on 05.12.14.
@@ -40,7 +41,8 @@ import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
                 ActivityModule.class,
                 BroadcastReceiverModule.class,
                 DataModule.class,
-                ModelModule.class
+                ModelModule.class,
+                UtilsModule.class
         },
         injects = {
                 TryAndRemoveApp.class,

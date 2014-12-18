@@ -34,9 +34,9 @@ public class TryAndRemoveActivity extends ActionBarActivity {
         TryAndRemoveApp.get(this).inject(this);
     }
 
-    protected void setupLayout(Activity activity) {
+    protected void setupLayout(Activity activity, int layout) {
         ViewGroup container = appContainer.get(this);
-        getLayoutInflater().inflate(R.layout.app_list_layout, container);
+        getLayoutInflater().inflate(layout, container);
 
         ButterKnife.inject(this);
 
