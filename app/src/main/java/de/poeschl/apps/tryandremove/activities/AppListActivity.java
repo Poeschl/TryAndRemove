@@ -35,13 +35,14 @@ import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
+import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class AppListActivity extends TryAndRemoveActivity {
+public class AppListActivity extends TryAndRemoveActivity implements ClearWarningDialogFragment.ButtonListener {
 
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
@@ -137,7 +138,13 @@ public class AppListActivity extends TryAndRemoveActivity {
 
     @OnClick(R.id.app_list_layout_clear_action_button)
     void clearList() {
-        //TODO: security answer
+        ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
+        wf.setButtonListener(this);
+        wf.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void onUserConfirmedClear() {
         packageListData.clear();
         updatePackageList();
     }
