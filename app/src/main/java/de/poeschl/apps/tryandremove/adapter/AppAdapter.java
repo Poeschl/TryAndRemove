@@ -1,11 +1,9 @@
 package de.poeschl.apps.tryandremove.adapter;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,8 +85,8 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 //TODO: Make selector for single action
-                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", itemPackage, null));
-                v.getContext().startActivity(intent);
+//                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", itemPackage, null));
+//                v.getContext().startActivity(intent);
             }
         });
     }
