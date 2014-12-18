@@ -1,4 +1,4 @@
-Debug and Delete
+Try and Remove
 ================
 
 This is the repository of my little android app which should help developers to remove a bunch of apps at once from the phone.
