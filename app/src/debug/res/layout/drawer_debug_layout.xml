@@ -94,12 +94,11 @@
         android:text="Remove ext."
         style="@style/Widget.DebugDrawer.RowTitle" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Remove"
+    <Spinner
+        android:layout_height="40dp"
+        android:layout_width="120dp"
         android:layout_gravity="start|center_vertical"
-        android:id="@+id/debug_app_remove_button" />
+        android:id="@+id/debug_app_remove_spinner" />
 
 
     <!-- USER INTERFACE SECTION -->

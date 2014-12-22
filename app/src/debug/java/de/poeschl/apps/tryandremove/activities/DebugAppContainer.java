@@ -30,8 +30,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,12 +58,14 @@ import butterknife.InjectView;
 import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.adapters.RemoveAppAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsMockMode;
 import de.poeschl.apps.tryandremove.annotations.ScalpelEnabled;
 import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
@@ -81,8 +86,8 @@ public class DebugAppContainer implements AppContainer {
     Switch appMockModeSwitch;
     @InjectView(R.id.debug_app_install_button)
     Button appInstallButton;
-    @InjectView(R.id.debug_app_remove_button)
-    Button appRemoveButton;
+    @InjectView(R.id.debug_app_remove_spinner)
+    Spinner appRemoveSpinner;
 
     @InjectView(R.id.debug_ui_scalpel)
     Switch uiScalpelView;
@@ -117,6 +122,7 @@ public class DebugAppContainer implements AppContainer {
     private Context drawerContext;
     private BooleanPreference seenDebugDrawer;
     private AppDetectionReceiver appDetectionReceiver;
+    PackageList packageList;
 
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
@@ -130,6 +136,7 @@ public class DebugAppContainer implements AppContainer {
                              @IsMockMode BooleanPreference mockMode,
                              @SettingsDrawerSeen BooleanPreference seenDebugDrawer,
                              AppDetectionReceiver appDetectionReceiver,
+                             PackageList packageList,
                              Application app) {
         this.app = app;
         this.scalpelEnabled = scalpel;
@@ -138,6 +145,7 @@ public class DebugAppContainer implements AppContainer {
         this.mockMode = mockMode;
         this.appDetectionReceiver = appDetectionReceiver;
         lastAddedMockedIndex = 0;
+        this.packageList = packageList;
     }
 
     @Override
@@ -158,7 +166,11 @@ public class DebugAppContainer implements AppContainer {
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
-                //For things to do, when the drawer is opened
+                Adapter temp = appRemoveSpinner.getAdapter();
+                if (temp != null) {
+                    RemoveAppAdapter removeAppAdapter = (RemoveAppAdapter) temp;
+                    removeAppAdapter.updateAdapter(packageList);
+                }
             }
         });
 
@@ -190,8 +202,8 @@ public class DebugAppContainer implements AppContainer {
                     if (appDetectionReceiver.isRegistered()) {
                         Intent dummyInstall = new Intent(Intent.ACTION_PACKAGE_ADDED);
                         dummyInstall.setData(Uri.parse("package:com.example.markus.Added " + lastAddedMockedIndex++));
-
-                        appDetectionReceiver.onReceive(app.getApplicationContext(), dummyInstall);
+                        appDetectionReceiver.onReceive(v.getContext(), dummyInstall);
+                        Timber.v("Install mocked app");
                     }
                 } else {
                     new Thread(new Runnable() {
@@ -226,6 +238,7 @@ public class DebugAppContainer implements AppContainer {
                                 intent.setDataAndType(Uri.fromFile(copiedApk),
                                         "application/vnd.android.package-archive");
                                 activity.startActivity(intent);
+                                Timber.v("Install real app.");
 
                             } catch (Exception e) {
                                 Timber.e(e, e.getMessage());
@@ -236,21 +249,51 @@ public class DebugAppContainer implements AppContainer {
             }
         });
 
-        appRemoveButton.setOnClickListener(new View.OnClickListener() {
+        appRemoveSpinner.setAdapter(new RemoveAppAdapter(packageList, drawerContext));
+        appRemoveSpinner.setSelection(0);
+        appRemoveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String removePackage = (String) appRemoveSpinner.getAdapter().getItem(position);
+
+                //If the selected item is the default item, do nothing.
+                if (removePackage.equals(RemoveAppAdapter.DEFAULT_STRING)) {
+                    return;
+                }
+
                 if (mockMode.get()) {
                     if (appDetectionReceiver.isRegistered()) {
-                        //TODO: Add right intent and context
-//                        appDetectionReceiver.onReceive();
+                        Intent dummyRemove = new Intent(Intent.ACTION_PACKAGE_REMOVED);
+                        dummyRemove.setData(Uri.parse("package:" + removePackage));
+                        lastAddedMockedIndex--;
+                        appDetectionReceiver.onReceive(view.getContext(), dummyRemove);
                     }
                 } else {
-
-                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", "com.example.markus.dummy", null));
-                    v.getContext().startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", removePackage, null));
+                    view.getContext().startActivity(intent);
                 }
             }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //Do nothing.
+            }
         });
+//        appRemoveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (mockMode.get()) {
+//                    if (appDetectionReceiver.isRegistered()) {
+//                        //TODO: Add right intent and context
+////                        appDetectionReceiver.onReceive();
+//                    }
+//                } else {
+//
+//                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", "com.example.markus.dummy", null));
+//                    v.getContext().startActivity(intent);
+//                }
+//            }
+//        });
 
         boolean mockModeActive = mockMode.get();
         appMockModeSwitch.setChecked(mockModeActive);
