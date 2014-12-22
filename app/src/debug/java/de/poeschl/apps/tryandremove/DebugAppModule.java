@@ -16,10 +16,19 @@
 
 package de.poeschl.apps.tryandremove;
 
+import android.app.Application;
+import android.content.pm.PackageManager;
+
 import dagger.Module;
+import dagger.Provides;
 import de.poeschl.apps.tryandremove.activities.DebugActivityModule;
+import de.poeschl.apps.tryandremove.annotations.IsMockMode;
+import de.poeschl.apps.tryandremove.data.DebugDataModule;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.models.DebugModelModule;
 import de.poeschl.apps.tryandremove.models.ModelModule;
+import de.poeschl.apps.tryandremove.utils.DebugUtilsModule;
+import de.poeschl.apps.tryandremove.utils.MockPackageManager;
 
 /**
  * Created by Markus Pöschl on 05.12.14.
@@ -31,10 +40,20 @@ import de.poeschl.apps.tryandremove.models.ModelModule;
         },
         includes = {
                 DebugActivityModule.class,
-                DebugModelModule.class
+                DebugModelModule.class,
+                DebugUtilsModule.class,
+                DebugDataModule.class
         },
         overrides = true
 )
 public final class DebugAppModule {
+
+    @Provides
+    PackageManager providePackageManager(Application application, @IsMockMode BooleanPreference isMockMode, MockPackageManager mockPackageManager) {
+        if (isMockMode.get()) {
+            return mockPackageManager;
+        }
+        return application.getPackageManager();
+    }
 
 }

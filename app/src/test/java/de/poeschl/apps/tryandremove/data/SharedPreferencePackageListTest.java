@@ -31,12 +31,12 @@ import org.robolectric.shadows.ShadowPreferenceManager;
 import java.util.HashSet;
 import java.util.Set;
 
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_0;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_1;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_2;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_3;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_NOT_ADDED;
 import static de.poeschl.apps.tryandremove.data.SharedPreferencesPackageList.PREF_PACKAGE_LIST;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_0;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_1;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_2;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_3;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_NOT_ADDED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

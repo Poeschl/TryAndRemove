@@ -27,9 +27,9 @@ import org.robolectric.annotation.Config;
 
 import dagger.ObjectGraph;
 
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_0;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_2;
-import static de.poeschl.apps.tryandremove.data.MockPackageList.TEST_PACKAGE_NOT_ADDED;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_0;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_2;
+import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_NOT_ADDED;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

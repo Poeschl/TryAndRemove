@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.service;
+package de.poeschl.apps.tryandremove.annotations;
 
-import dagger.Module;
-import dagger.Provides;
-import de.poeschl.apps.tryandremove.data.TestMockPackageList;
-import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 11.12.2014.
+ * Created by markus on 22.12.14.
  */
-@Module(
-        injects = {
-                ApplicationDetectionService.class,
-        },
-        library = true
-)
-public class ServiceTestModule {
-
-    @Provides
-    PackageList providesPackageList() {
-        return new TestMockPackageList();
-    }
+@Qualifier
+@Retention(RUNTIME)
+public @interface IsMockMode {
 }

@@ -54,6 +54,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
+import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.annotations.IsMockMode;
 import de.poeschl.apps.tryandremove.annotations.ScalpelEnabled;
 import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
@@ -76,6 +78,8 @@ public class DebugAppContainer implements AppContainer {
 
     @InjectView(R.id.debug_app_install_button)
     Button appInstallButton;
+    @InjectView(R.id.debug_app_mock_mode)
+    Switch appMockModeSwitch;
 
     @InjectView(R.id.debug_ui_scalpel)
     Switch uiScalpelView;
@@ -112,16 +116,20 @@ public class DebugAppContainer implements AppContainer {
 
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
+    private final BooleanPreference mockMode;
+
 
     @Inject
     public DebugAppContainer(@ScalpelEnabled BooleanPreference scalpel,
                              @ScalpelWireframeEnabled BooleanPreference scalpelWireframe,
+                             @IsMockMode BooleanPreference mockMode,
                              @SettingsDrawerSeen BooleanPreference seenDebugDrawer,
                              Application app) {
         this.app = app;
         this.scalpelEnabled = scalpel;
         this.scalpelWireframeEnabled = scalpelWireframe;
         this.seenDebugDrawer = seenDebugDrawer;
+        this.mockMode = mockMode;
     }
 
     @Override
@@ -211,6 +219,18 @@ public class DebugAppContainer implements AppContainer {
             }
         });
 
+        boolean mockModeActive = mockMode.get();
+        appMockModeSwitch.setChecked(mockModeActive);
+        appInstallButton.setEnabled(!mockModeActive);
+        appMockModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mockMode.set(isChecked);
+                appInstallButton.setEnabled(!isChecked);
+                restartApp();
+            }
+        });
+
     }
 
     private void setUpScalpel() {
@@ -289,6 +309,13 @@ public class DebugAppContainer implements AppContainer {
             default:
                 return "unknown";
         }
+    }
+
+    private void restartApp() {
+        Intent newApp = new Intent(app, AppListActivity.class);
+        newApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        app.startActivity(newApp);
+        TryAndRemoveApp.get(app).buildObjectGraphAndInject();
     }
 
 }

@@ -14,26 +14,35 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.service;
+package de.poeschl.apps.tryandremove.data;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.data.TestMockPackageList;
+import de.poeschl.apps.tryandremove.annotations.IsMockMode;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
 /**
  * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
         injects = {
-                ApplicationDetectionService.class,
+                MockPackageList.class
         },
-        library = true
+        library = true,
+        complete = false,
+        overrides = true
 )
-public class ServiceTestModule {
+public class DebugDataModule {
 
     @Provides
-    PackageList providesPackageList() {
-        return new TestMockPackageList();
+    @Singleton
+    PackageList providePackageList(SharedPreferencesPackageList sharedPreferencesPackageList, @IsMockMode BooleanPreference mockMode, MockPackageList mockPackageList) {
+        if (mockMode.get()) {
+            return mockPackageList;
+        }
+        return sharedPreferencesPackageList;
     }
 }

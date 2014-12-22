@@ -16,50 +16,59 @@
 
 package de.poeschl.apps.tryandremove.data;
 
-import java.util.HashSet;
-import java.util.Set;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import timber.log.Timber;
 
 /**
- * Return mocking data.
- * Created by Markus Pöschl on 11.12.2014.
+ * Created by Markus Pöschl on 22.12.14.
  */
 public class MockPackageList implements PackageList {
 
-    public static final String TEST_PACKAGE_0 = "com.dummy.0";
-    public static final String TEST_PACKAGE_1 = "com.dummy.1";
-    public static final String TEST_PACKAGE_2 = "com.dummy.2";
-    public static final String TEST_PACKAGE_3 = "com.dummy.3";
+    List<String> apps;
 
-    public static final String TEST_PACKAGE_NOT_ADDED = "com.dummy.new0";
-
-    private Set<String> stringSet = new HashSet<>();
-
-    public MockPackageList() {
-        stringSet.add(TEST_PACKAGE_0);
-        stringSet.add(TEST_PACKAGE_1);
-        stringSet.add(TEST_PACKAGE_2);
-        stringSet.add(TEST_PACKAGE_3);
+    @Inject
+    public MockPackageList(PackageManager packageManager) {
+        apps = new LinkedList<>();
+        for (PackageInfo info : packageManager.getInstalledPackages(PackageManager.GET_META_DATA)) {
+            apps.add(info.packageName);
+        }
+        Timber.v("Switch to mocked app list");
     }
 
     @Override
     public boolean addPackage(String packageName) {
-        return stringSet.add(packageName);
+        if (!apps.contains(packageName)) {
+            return apps.add(packageName);
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean removePackage(String packageName) {
-        return stringSet.remove(packageName);
+        return apps.remove(packageName);
     }
 
     @Override
     public boolean contains(String packageName) {
-        return stringSet.contains(packageName);
+        return apps.contains(packageName);
     }
 
     @Override
-    public Set<String> getPackages() {
-        return stringSet;
+    public List<String> getPackages() {
+        return apps;
+    }
+
+    @Override
+    public void clear() {
+        apps.clear();
     }
 }

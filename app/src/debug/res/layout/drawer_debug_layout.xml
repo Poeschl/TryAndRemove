@@ -79,6 +79,16 @@
         android:layout_gravity="start|center_vertical"
         android:id="@+id/debug_app_install_button" />
 
+    <TextView
+        android:layout_gravity="start|center_vertical"
+        android:text="App Mock Mode"
+        style="@style/Widget.DebugDrawer.RowTitle" />
+
+    <Switch
+        android:id="@+id/debug_app_mock_mode"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DebugDrawer.RowWidget" />
+
 
     <!-- USER INTERFACE SECTION -->
 
