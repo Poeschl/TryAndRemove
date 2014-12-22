@@ -136,6 +136,7 @@ public class DebugAppContainer implements AppContainer {
         this.scalpelWireframeEnabled = scalpelWireframe;
         this.seenDebugDrawer = seenDebugDrawer;
         this.mockMode = mockMode;
+        this.appDetectionReceiver = appDetectionReceiver;
         lastAddedMockedIndex = 0;
     }
 
@@ -187,8 +188,10 @@ public class DebugAppContainer implements AppContainer {
             public void onClick(View v) {
                 if (mockMode.get()) {
                     if (appDetectionReceiver.isRegistered()) {
-                        //TODO: Add right intent and context
-//                        appDetectionReceiver.onReceive();
+                        Intent dummyInstall = new Intent(Intent.ACTION_PACKAGE_ADDED);
+                        dummyInstall.setData(Uri.parse("package:com.example.markus.Added " + lastAddedMockedIndex++));
+
+                        appDetectionReceiver.onReceive(app.getApplicationContext(), dummyInstall);
                     }
                 } else {
                     new Thread(new Runnable() {

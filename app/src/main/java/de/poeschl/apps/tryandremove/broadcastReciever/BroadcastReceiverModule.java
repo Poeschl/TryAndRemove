@@ -16,6 +16,8 @@
 
 package de.poeschl.apps.tryandremove.broadcastReciever;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -27,6 +29,7 @@ import dagger.Provides;
 )
 public class BroadcastReceiverModule {
     @Provides
+    @Singleton
     AppDetectionReceiver provideAppDetectionReceiver() {
         return new AppDetectionReceiver();
     }

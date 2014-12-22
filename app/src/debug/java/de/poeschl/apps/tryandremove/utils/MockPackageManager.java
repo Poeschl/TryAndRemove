@@ -36,6 +36,8 @@ import timber.log.Timber;
  */
 public class MockPackageManager extends android.test.mock.MockPackageManager {
 
+    private static final String MOCK_PACKAGE = "de.mock.Dummy";
+
     private Application app;
     private List<PackageInfo> mockedApps;
 
@@ -53,8 +55,8 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
             PackageInfo temp = new PackageInfo();
             temp.applicationInfo = appInfo;
 
-            temp.packageName = "de.mock.dummy" + i;
-            temp.applicationInfo.nonLocalizedLabel = temp.packageName + " Label";
+            temp.packageName = MOCK_PACKAGE + i;
+            temp.applicationInfo.nonLocalizedLabel = temp.packageName.substring(temp.packageName.lastIndexOf('.') + 1, temp.packageName.length());
             mockedApps.add(temp);
         }
     }
@@ -84,10 +86,19 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
     public ApplicationInfo getApplicationInfo(String packageName, int flags) throws NameNotFoundException {
         ApplicationInfo result = null;
 
-        for (PackageInfo info : mockedApps) {
-            if (info.packageName.equals(packageName)) {
-                result = info.applicationInfo;
-                break;
+        if (packageName.contains("Added")) {
+            ApplicationInfo appInfo = new ApplicationInfo();
+            appInfo.icon = android.R.drawable.ic_dialog_alert;
+
+            appInfo.nonLocalizedLabel = packageName.substring(packageName.lastIndexOf('.') + 1, packageName.length());
+            result = appInfo;
+
+        } else {
+            for (PackageInfo info : mockedApps) {
+                if (info.packageName.equals(packageName)) {
+                    result = info.applicationInfo;
+                    break;
+                }
             }
         }
         return result;
