@@ -69,7 +69,17 @@
 
     <TextView
         android:layout_gravity="start|center_vertical"
-        android:text="Install Dummy"
+        android:text="App Mock Mode"
+        style="@style/Widget.DebugDrawer.RowTitle" />
+
+    <Switch
+        android:id="@+id/debug_app_mock_mode"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DebugDrawer.RowWidget" />
+
+    <TextView
+        android:layout_gravity="start|center_vertical"
+        android:text="Install"
         style="@style/Widget.DebugDrawer.RowTitle" />
 
     <Button
@@ -81,13 +91,15 @@
 
     <TextView
         android:layout_gravity="start|center_vertical"
-        android:text="App Mock Mode"
+        android:text="Remove ext."
         style="@style/Widget.DebugDrawer.RowTitle" />
 
-    <Switch
-        android:id="@+id/debug_app_mock_mode"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remove"
         android:layout_gravity="start|center_vertical"
-        style="@style/Widget.DebugDrawer.RowWidget" />
+        android:id="@+id/debug_app_remove_button" />
 
 
     <!-- USER INTERFACE SECTION -->

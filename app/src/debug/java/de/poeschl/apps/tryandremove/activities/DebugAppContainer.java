@@ -59,6 +59,7 @@ import de.poeschl.apps.tryandremove.annotations.IsMockMode;
 import de.poeschl.apps.tryandremove.annotations.ScalpelEnabled;
 import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
+import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
@@ -76,10 +77,12 @@ public class DebugAppContainer implements AppContainer {
     @InjectView(R.id.debug_content)
     ScalpelFrameLayout scalpelFrameLayout;
 
-    @InjectView(R.id.debug_app_install_button)
-    Button appInstallButton;
     @InjectView(R.id.debug_app_mock_mode)
     Switch appMockModeSwitch;
+    @InjectView(R.id.debug_app_install_button)
+    Button appInstallButton;
+    @InjectView(R.id.debug_app_remove_button)
+    Button appRemoveButton;
 
     @InjectView(R.id.debug_ui_scalpel)
     Switch uiScalpelView;
@@ -113,23 +116,27 @@ public class DebugAppContainer implements AppContainer {
     private Activity activity;
     private Context drawerContext;
     private BooleanPreference seenDebugDrawer;
+    private AppDetectionReceiver appDetectionReceiver;
 
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
     private final BooleanPreference mockMode;
 
+    private int lastAddedMockedIndex;
 
     @Inject
     public DebugAppContainer(@ScalpelEnabled BooleanPreference scalpel,
                              @ScalpelWireframeEnabled BooleanPreference scalpelWireframe,
                              @IsMockMode BooleanPreference mockMode,
                              @SettingsDrawerSeen BooleanPreference seenDebugDrawer,
+                             AppDetectionReceiver appDetectionReceiver,
                              Application app) {
         this.app = app;
         this.scalpelEnabled = scalpel;
         this.scalpelWireframeEnabled = scalpelWireframe;
         this.seenDebugDrawer = seenDebugDrawer;
         this.mockMode = mockMode;
+        lastAddedMockedIndex = 0;
     }
 
     @Override
@@ -178,55 +185,76 @@ public class DebugAppContainer implements AppContainer {
         appInstallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        AssetManager assetManager = activity.getAssets();
+                if (mockMode.get()) {
+                    if (appDetectionReceiver.isRegistered()) {
+                        //TODO: Add right intent and context
+//                        appDetectionReceiver.onReceive();
+                    }
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AssetManager assetManager = activity.getAssets();
 
-                        try {
-                            File copiedApk = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/temp.apk");
+                            try {
+                                File copiedApk = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/temp.apk");
 
-                            if (!copiedApk.exists()) {
-                                InputStream in = assetManager.open("app-debug.apk");
-                                OutputStream out = new FileOutputStream(copiedApk);
+                                if (!copiedApk.exists()) {
+                                    InputStream in = assetManager.open("app-debug.apk");
+                                    OutputStream out = new FileOutputStream(copiedApk);
 
-                                byte[] buffer = new byte[1024];
+                                    byte[] buffer = new byte[1024];
 
-                                int read;
-                                while ((read = in.read(buffer)) != -1) {
-                                    out.write(buffer, 0, read);
+                                    int read;
+                                    while ((read = in.read(buffer)) != -1) {
+                                        out.write(buffer, 0, read);
+                                    }
+
+                                    in.close();
+                                    in = null;
+
+                                    out.flush();
+                                    out.close();
+                                    out = null;
+
                                 }
 
-                                in.close();
-                                in = null;
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(copiedApk),
+                                        "application/vnd.android.package-archive");
+                                activity.startActivity(intent);
 
-                                out.flush();
-                                out.close();
-                                out = null;
-
+                            } catch (Exception e) {
+                                Timber.e(e, e.getMessage());
                             }
-
-                            Intent intent = new Intent(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(copiedApk),
-                                    "application/vnd.android.package-archive");
-                            activity.startActivity(intent);
-
-                        } catch (Exception e) {
-                            Timber.e(e, e.getMessage());
                         }
+                    }).start();
+                }
+            }
+        });
+
+        appRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mockMode.get()) {
+                    if (appDetectionReceiver.isRegistered()) {
+                        //TODO: Add right intent and context
+//                        appDetectionReceiver.onReceive();
                     }
-                }).start();
+                } else {
+
+                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", "com.example.markus.dummy", null));
+                    v.getContext().startActivity(intent);
+                }
             }
         });
 
         boolean mockModeActive = mockMode.get();
         appMockModeSwitch.setChecked(mockModeActive);
-        appInstallButton.setEnabled(!mockModeActive);
         appMockModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 mockMode.set(isChecked);
-                appInstallButton.setEnabled(!isChecked);
                 restartApp();
             }
         });
