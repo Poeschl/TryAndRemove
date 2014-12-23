@@ -60,6 +60,7 @@ import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapters.RemoveAppAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsMockMode;
+import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.annotations.ScalpelEnabled;
 import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
@@ -127,6 +128,7 @@ public class DebugAppContainer implements AppContainer {
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
     private final BooleanPreference mockMode;
+    private final BooleanPreference tracking;
 
     private int lastAddedMockedIndex;
 
@@ -135,6 +137,7 @@ public class DebugAppContainer implements AppContainer {
                              @ScalpelWireframeEnabled BooleanPreference scalpelWireframe,
                              @IsMockMode BooleanPreference mockMode,
                              @SettingsDrawerSeen BooleanPreference seenDebugDrawer,
+                             @IsTracking BooleanPreference isTracking,
                              AppDetectionReceiver appDetectionReceiver,
                              PackageList packageList,
                              Application app) {
@@ -146,6 +149,7 @@ public class DebugAppContainer implements AppContainer {
         this.appDetectionReceiver = appDetectionReceiver;
         lastAddedMockedIndex = 0;
         this.packageList = packageList;
+        this.tracking = isTracking;
     }
 
     @Override
@@ -170,6 +174,7 @@ public class DebugAppContainer implements AppContainer {
                 if (temp != null) {
                     RemoveAppAdapter removeAppAdapter = (RemoveAppAdapter) temp;
                     removeAppAdapter.updateAdapter(packageList);
+                    appRemoveSpinner.setSelection(0);
                 }
             }
         });
@@ -250,7 +255,6 @@ public class DebugAppContainer implements AppContainer {
         });
 
         appRemoveSpinner.setAdapter(new RemoveAppAdapter(packageList, drawerContext));
-        appRemoveSpinner.setSelection(0);
         appRemoveSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -279,21 +283,7 @@ public class DebugAppContainer implements AppContainer {
                 //Do nothing.
             }
         });
-//        appRemoveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mockMode.get()) {
-//                    if (appDetectionReceiver.isRegistered()) {
-//                        //TODO: Add right intent and context
-////                        appDetectionReceiver.onReceive();
-//                    }
-//                } else {
-//
-//                    Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", "com.example.markus.dummy", null));
-//                    v.getContext().startActivity(intent);
-//                }
-//            }
-//        });
+
 
         boolean mockModeActive = mockMode.get();
         appMockModeSwitch.setChecked(mockModeActive);
@@ -388,6 +378,7 @@ public class DebugAppContainer implements AppContainer {
     private void restartApp() {
         Intent newApp = new Intent(app, AppListActivity.class);
         newApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        tracking.set(false);
         app.startActivity(newApp);
         TryAndRemoveApp.get(app).buildObjectGraphAndInject();
     }

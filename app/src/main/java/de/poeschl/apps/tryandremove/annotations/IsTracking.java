@@ -14,27 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.models;
+package de.poeschl.apps.tryandremove.annotations;
 
-import android.content.SharedPreferences;
+import java.lang.annotation.Retention;
 
-import dagger.Module;
-import dagger.Provides;
-import de.poeschl.apps.tryandremove.annotations.IsTracking;
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 09.12.2014.
+ * Created by Markus Pöschl on 23.12.14.
  */
-@Module(
-        complete = false,
-        library = true
-)
-public class ModelModule {
-
-    @Provides
-    @IsTracking
-    BooleanPreference provideTrackingBoolean(SharedPreferences sharedPreferences) {
-        return new BooleanPreference(sharedPreferences, "IS_TRACKING", false);
-    }
-
+@Qualifier
+@Retention(RUNTIME)
+public @interface IsTracking {
 }
