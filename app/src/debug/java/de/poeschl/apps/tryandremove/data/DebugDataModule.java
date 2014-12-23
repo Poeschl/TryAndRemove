@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.broadcastReciever;
+package de.poeschl.apps.tryandremove.data;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.tryandremove.annotations.IsMockMode;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
 /**
  * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
-        library = true
+        injects = {
+                MockPackageList.class
+        },
+        library = true,
+        complete = false,
+        overrides = true
 )
-public class BroadcastReceiverModule {
+public class DebugDataModule {
+
     @Provides
     @Singleton
-    AppDetectionReceiver provideAppDetectionReceiver() {
-        return new AppDetectionReceiver();
+    PackageList providePackageList(SharedPreferencesPackageList sharedPreferencesPackageList, @IsMockMode BooleanPreference mockMode, MockPackageList mockPackageList) {
+        if (mockMode.get()) {
+            return mockPackageList;
+        }
+        return sharedPreferencesPackageList;
     }
 }

@@ -34,6 +34,7 @@ import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
@@ -58,8 +59,9 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
     AppAdapter appAdapter;
     @Inject
     AppManager appManager;
-
-    private BooleanPreference isTracking;
+    @Inject
+    @IsTracking
+    BooleanPreference isTracking;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +75,6 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
         appListView.setAdapter(appAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(this));
-
-        isTracking = new BooleanPreference(getPreferences(MODE_PRIVATE), "IS_TRACKING", false);
     }
 
     @Override
@@ -182,17 +182,18 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
         filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
 
-        registerReceiver(receiver, filter);
+        receiver.setRegistered(true);
         isTracking.set(true);
+        registerReceiver(receiver, filter);
     }
 
     private void unregisterReceiver() {
         try {
             isTracking.set(false);
+            receiver.setRegistered(false);
             unregisterReceiver(receiver);
         } catch (IllegalArgumentException e) {
             Timber.e(e, "App install receiver was unregistered while not registered.");
         }
-
     }
 }

@@ -103,7 +103,6 @@ public class ApplicationDetectionService extends IntentService {
         }
     }
 
-
     @DebugLog
     String extractPackageString(String intentData) {
         String packagePre = "intent:";

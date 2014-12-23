@@ -26,8 +26,18 @@ import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 public class AppDetectionReceiver extends BroadcastReceiver {
 
     private static final String TAG = AppDetectionReceiver.class.getSimpleName();
+    private boolean registered;
 
     public AppDetectionReceiver() {
+        registered = false;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
     }
 
     @Override

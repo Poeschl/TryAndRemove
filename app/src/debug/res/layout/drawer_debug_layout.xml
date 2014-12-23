@@ -69,7 +69,17 @@
 
     <TextView
         android:layout_gravity="start|center_vertical"
-        android:text="Install Dummy"
+        android:text="App Mock Mode"
+        style="@style/Widget.DebugDrawer.RowTitle" />
+
+    <Switch
+        android:id="@+id/debug_app_mock_mode"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DebugDrawer.RowWidget" />
+
+    <TextView
+        android:layout_gravity="start|center_vertical"
+        android:text="Install"
         style="@style/Widget.DebugDrawer.RowTitle" />
 
     <Button
@@ -78,6 +88,17 @@
         android:text="Install"
         android:layout_gravity="start|center_vertical"
         android:id="@+id/debug_app_install_button" />
+
+    <TextView
+        android:layout_gravity="start|center_vertical"
+        android:text="Remove ext."
+        style="@style/Widget.DebugDrawer.RowTitle" />
+
+    <Spinner
+        android:layout_height="40dp"
+        android:layout_width="120dp"
+        android:layout_gravity="start|center_vertical"
+        android:id="@+id/debug_app_remove_spinner" />
 
 
     <!-- USER INTERFACE SECTION -->

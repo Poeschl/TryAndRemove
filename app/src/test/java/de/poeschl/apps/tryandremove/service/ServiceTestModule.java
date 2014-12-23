@@ -18,7 +18,7 @@ package de.poeschl.apps.tryandremove.service;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.data.MockPackageList;
+import de.poeschl.apps.tryandremove.data.TestMockPackageList;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
@@ -34,6 +34,6 @@ public class ServiceTestModule {
 
     @Provides
     PackageList providesPackageList() {
-        return new MockPackageList();
+        return new TestMockPackageList();
     }
 }

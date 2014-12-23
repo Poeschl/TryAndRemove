@@ -22,7 +22,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.activities.DebugAppContainer;
+import de.poeschl.apps.tryandremove.annotations.IsMockMode;
 import de.poeschl.apps.tryandremove.annotations.ScalpelEnabled;
 import de.poeschl.apps.tryandremove.annotations.ScalpelWireframeEnabled;
 import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
@@ -31,9 +31,6 @@ import de.poeschl.apps.tryandremove.annotations.SettingsDrawerSeen;
  * Created by Markus Pöschl on 09.12.2014.
  */
 @Module(
-        injects = {
-                DebugAppContainer.class
-        },
         library = true,
         complete = false
 )
@@ -58,5 +55,11 @@ public class DebugModelModule {
     @SettingsDrawerSeen
     BooleanPreference provideSettingsDrawerSeen(SharedPreferences preferences) {
         return new BooleanPreference(preferences, "debug_settings_seen", false);
+    }
+
+    @Provides
+    @IsMockMode
+    BooleanPreference provideIsMockMode(SharedPreferences preferences) {
+        return new BooleanPreference(preferences, "debug_mock_mode_boolean", false);
     }
 }
