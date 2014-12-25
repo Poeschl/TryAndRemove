@@ -20,7 +20,7 @@ This is in the main a private project to learn something more about some librari
 Change log
 ===========
 
-See [change log file](changelog.md)
+See [change log file](src/master/changelog.md)
 
 License
 =========
