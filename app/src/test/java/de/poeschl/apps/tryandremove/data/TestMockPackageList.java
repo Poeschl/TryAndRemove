@@ -66,4 +66,9 @@ public class TestMockPackageList implements PackageList {
     public void clear() {
         stringSet.clear();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return stringSet.isEmpty();
+    }
 }

@@ -44,4 +44,6 @@ public interface PackageList {
     public List<String> getPackages();
 
     public void clear();
+
+    public boolean isEmpty();
 }

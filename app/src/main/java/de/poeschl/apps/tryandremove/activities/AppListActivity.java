@@ -26,6 +26,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -48,6 +50,8 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
+    @InjectView(R.id.app_list_layout_floating_menu)
+    FloatingActionsMenu floatMenu;
 
     MenuItem recordToolbarButton;
 
@@ -148,27 +152,33 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     @OnClick(R.id.app_list_layout_clear_action_button)
     void clearList() {
-        ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
-        wf.setButtonListener(this);
-        wf.show(getSupportFragmentManager());
+        if (!packageListData.isEmpty()) {
+            ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
+            wf.setButtonListener(this);
+            wf.show(getSupportFragmentManager());
+        }
     }
 
     @Override
     public void onUserConfirmedClear() {
         packageListData.clear();
         updatePackageList();
+        floatMenu.collapse();
     }
 
     @OnClick(R.id.app_list_layout_remove_action_button)
     void removeAllApps() {
-        RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
-        rf.setButtonListener(this);
-        rf.show(getSupportFragmentManager());
+        if (!packageListData.isEmpty()) {
+            RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
+            rf.setButtonListener(this);
+            rf.show(getSupportFragmentManager());
+        }
     }
 
     @Override
     public void onUserConfirmedRemove() {
         appManager.remove(packageListData.getPackages());
+        floatMenu.collapse();
     }
 
     private void updatePackageList() {
