@@ -36,6 +36,7 @@ apply plugin: 'hugo'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+project.ext.set("gitSha", gitSha)
 
 android {
     signingConfigs {
@@ -62,6 +63,10 @@ android {
             minifyEnabled false //Don't forget to set crashlytics up for proguard
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.googlePlay
+
+            applicationVariants.all { variant ->
+                renameReleasePackage(variant, defaultConfig)
+            }
         }
         debug {
             applicationIdSuffix '.dev'
@@ -96,7 +101,6 @@ def keyStorePath = System.getenv('Android_Keystore_Path')
 afterEvaluate { project ->
     def propsFile = file(keyStorePath + '/TryAndRemove.keyproperties')
 
-
     def configName = 'googlePlay'
     if (propsFile.exists()) {
         def props = new Properties()
@@ -128,6 +132,19 @@ afterEvaluate { project ->
 
     } else {
         System.err.println("No " + configName + "  settings available");
+    }
+}
+
+/*
+ * Gives the output apks the right names. Automatic file name convection.
+ */
+
+def renameReleasePackage(variant, defaultConfig) {
+    variant.outputs.each { output ->
+        def fileName = "Try And Remove - " + defaultConfig.versionName + " - " + project.gitSha + ".apk";
+
+        def file = output.packageApplication.outputFile
+        output.packageApplication.outputFile = new File(file.parent, fileName)
     }
 }
 
