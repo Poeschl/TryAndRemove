@@ -15,17 +15,6 @@
  */
 
 
-
-
-
-
-
-
-
-
-
-
-
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
@@ -134,7 +123,7 @@ afterEvaluate { project ->
 
         //Fabric keys
         File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
-        java.io.FileWriter writer = new FileWriter(crashlyticsProps, false);
+        FileWriter writer = new FileWriter(crashlyticsProps, false);
 
         try {
             writer.write("apiSecret=" + props["crashlytics_appSecret"]);
