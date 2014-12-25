@@ -101,7 +101,7 @@ public class SharedPreferencesPackageList implements PackageList {
 
     @Override
     public List<String> getPackages() {
-        return new LinkedList<>(preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()));
+        return new LinkedList<>(getSavedSet());
     }
 
     @Override

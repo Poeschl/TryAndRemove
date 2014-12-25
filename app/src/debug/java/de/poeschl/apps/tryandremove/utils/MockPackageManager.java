@@ -44,7 +44,7 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
     @Inject
     public MockPackageManager(Application app) {
         this.app = app;
-        Timber.v("Use mocked package manager");
+        Timber.v("Init mocked package manager");
 
         mockedApps = new ArrayList<>();
 

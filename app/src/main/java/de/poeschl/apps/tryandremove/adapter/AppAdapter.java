@@ -86,16 +86,18 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
             Timber.e(e, "Package not found");
         }
 
-        Drawable appIcon = packageManager.getDefaultActivityIcon();
         String appName = app.getString(R.string.app_name_not_found);
 
         if (appInfo != null) {
-            appIcon = appInfo.loadIcon(packageManager);
+            Drawable appIcon = appInfo.loadIcon(packageManager);
             appName = appInfo.loadLabel(packageManager).toString();
-        }
 
-        holder.appIcon.setImageDrawable(appIcon);
-        holder.appName.setText(appName);
+            holder.appIcon.setImageDrawable(appIcon);
+            holder.appName.setText(appName);
+        } else {
+            Timber.w("No matching app found - hide cell");
+            holder.hide();
+        }
 
         holder.setClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +132,10 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
 
         public void setClickListener(View.OnClickListener clickListener) {
             cellRoot.setOnClickListener(clickListener);
+        }
+
+        public void hide() {
+            cellRoot.setVisibility(View.GONE);
         }
     }
 

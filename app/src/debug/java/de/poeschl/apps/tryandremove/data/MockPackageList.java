@@ -40,7 +40,6 @@ public class MockPackageList implements PackageList {
         for (PackageInfo info : packageManager.getInstalledPackages(PackageManager.GET_META_DATA)) {
             apps.add(info.packageName);
         }
-        Timber.v("Switch to mocked app list");
     }
 
     @Override
@@ -64,6 +63,7 @@ public class MockPackageList implements PackageList {
 
     @Override
     public List<String> getPackages() {
+        Timber.v("Get mocked app list");
         return apps;
     }
 
