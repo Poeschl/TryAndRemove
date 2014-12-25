@@ -47,7 +47,8 @@ public class MockAppManager implements AppManager {
 
     @Override
     public void remove(String appPackage) {
-        ApplicationDetectionService.startAppRemove(app, appPackage);
+        String pareFormattedPackage = "intent:" + appPackage + "#Intent";
+        ApplicationDetectionService.startAppRemove(app, pareFormattedPackage);
     }
 
     @Override

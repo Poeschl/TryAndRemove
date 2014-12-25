@@ -116,4 +116,9 @@ public class SharedPreferencesPackageList implements PackageList {
     private void saveSet(Set<String> set) {
         preferences.edit().putStringSet(PREF_PACKAGE_LIST, set).apply();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return getSavedSet().isEmpty();
+    }
 }

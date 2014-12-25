@@ -71,4 +71,9 @@ public class MockPackageList implements PackageList {
     public void clear() {
         apps.clear();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return apps.isEmpty();
+    }
 }
