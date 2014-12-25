@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Apache 2.0 Pöschl" />
+  <settings default="">
+    <module2copyright>
+      <element module="Android Files" copyright="Apache 2.0 Poeschl" />
+    </module2copyright>
+  </settings>
 </component>

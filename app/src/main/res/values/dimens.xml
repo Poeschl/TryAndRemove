@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2014 Markus Pöschl
+  ~ Copyright (c) 2014 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,8 @@
   -->
 
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">8dp</dimen>
+
+    <dimen name="appList_bottomRightButton_margin">5dp</dimen>
+    <dimen name="appList_bottomLeftButton_margin">5dp</dimen>
 </resources>

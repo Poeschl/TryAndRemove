@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Markus Pöschl
+ * Copyright (c) 2014 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+        classpath 'io.fabric.tools:gradle:1.14.4'
     }
 }
 
@@ -29,10 +31,12 @@ def versionPatch = 0
 
 apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'hugo'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+project.ext.set("gitSha", gitSha)
 
 android {
     signingConfigs {
@@ -43,7 +47,7 @@ android {
     compileSdkVersion 21
     buildToolsVersion "21.1.1"
     defaultConfig {
-        applicationId "de.poeschl.apps.debuganddelete"
+        applicationId "de.poeschl.apps.tryandremove"
         minSdkVersion 15
         targetSdkVersion 21
 
@@ -53,14 +57,20 @@ android {
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled false //Don't forget to set crashlytics up for proguard
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.googlePlay
+
+            applicationVariants.all { variant ->
+                renameReleasePackage(variant, defaultConfig)
+            }
         }
         debug {
             applicationIdSuffix '.dev'
+            ext.enableCrashlytics = false
         }
     }
     compileOptions {
@@ -85,30 +95,72 @@ androidUnitTest {
 }
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
-//Adds dynamic signing stuff during init process
+/*
+ * Adds dynamically keys and secret stuff to the project
+ */
 afterEvaluate { project ->
-    def propsFile = file(keyStorePath + '/DebugAndDelete.keyproperties')
-    def configName = 'googlePlay'
+    def propsFile = file(keyStorePath + '/TryAndRemove.keyproperties')
 
-    if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
+    def configName = 'googlePlay'
+    if (propsFile.exists()) {
         def props = new Properties()
         props.load(new FileInputStream(propsFile))
-        android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
-        android.signingConfigs[configName].storePassword = props['storePassword']
-        android.signingConfigs[configName].keyAlias = props['keyAlias']
-        android.signingConfigs[configName].keyPassword = props['keyPassword']
-        println("Setup keystore settings.")
+
+        if (android.signingConfigs.hasProperty(configName)) {
+
+            //Android signing information
+            android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
+            android.signingConfigs[configName].storePassword = props['storePassword']
+            android.signingConfigs[configName].keyAlias = props['keyAlias']
+            android.signingConfigs[configName].keyPassword = props['keyPassword']
+            println("Setup keystore settings.")
+        }
+
+        //Fabric keys
+        File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
+        FileWriter writer = new FileWriter(crashlyticsProps, false);
+
+        try {
+            writer.write("apiSecret=" + props["crashlytics_appSecret"]);
+            writer.write("\n")
+            writer.write("apiKey=" + props["crashlytics_apiKey"]);
+        } finally {
+            writer.close();
+        }
+        println("Setup crashlytics keys.")
+
+
     } else {
-        System.err.println("No " + configName + " keystore settings available");
+        System.err.println("No " + configName + "  settings available");
+    }
+}
+
+/*
+ * Gives the output apks the right names. Automatic file name convection.
+ */
+
+def renameReleasePackage(variant, defaultConfig) {
+    variant.outputs.each { output ->
+        def fileName = "Try And Remove - " + defaultConfig.versionName + " - " + project.gitSha + ".apk";
+
+        def file = output.packageApplication.outputFile
+        output.packageApplication.outputFile = new File(file.parent, fileName)
     }
 }
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
+    compile 'com.jakewharton.timber:timber:2.5.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+        transitive = true;
+    }
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.getbase:floatingactionbutton:1.4.0'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
-    debugCompile 'com.android.support:support-v4:21.0.2'
+    debugCompile 'com.android.support:support-v4:21.0.3'
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 }

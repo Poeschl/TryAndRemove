@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2014 Markus Pöschl
+  ~ Copyright (c) 2014 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,19 @@
 
 <resources>
 
-    <string name="app_name">Debug and Delete</string>
+    <string name="app_name">Try and Remove</string>
+    <string name="app_name_not_found">Name not found</string>
+    <string name="app_list_toolbar_action_refresh_title">Refresh list</string>
+    <string name="app_list_toolbar_action_record_title">Toggle record</string>
+    <string name="app_list_layout_remove_apps_title">Remove all shown apps</string>
+    <string name="app_list_layout_clear_app_list_title">Clear list</string>
+    <string name="app_list_activity_enable_track_toast_message">App tracking active</string>
+    <string name="app_list_activity_disable_track_toast_message">App tracking deactivated</string>
+    <string name="clear_warning_dialog_message">Clear app list?</string>
+    <string name="clear_warning_dialog_agree">Clear</string>
+    <string name="clear_warning_dialog_cancel">Cancel</string>
+    <string name="remove_warning_dialog_message">Remove all apps in the list from your phone?</string>
+    <string name="remove_warning_dialog_agree">Remove</string>
+    <string name="remove_warning_dialog_cancel">Cancel</string>
 
 </resources>

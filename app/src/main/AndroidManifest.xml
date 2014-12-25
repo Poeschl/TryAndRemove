@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright 2014 Markus Pöschl
+  ~ Copyright (c) 2014 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.poeschl.apps.debuganddelete">
+    package="de.poeschl.apps.tryandremove">
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
-        android:icon="@drawable/app_icon"
+        android:icon="@drawable/ic_launcher_app"
         android:theme="@style/AppTheme"
-        android:name=".DebugAndDeleteApp">
+        android:name=".TryAndRemoveApp">
 
         <activity
-            android:name=".app.activities.MainActivity"
+            android:name=".activities.AppListActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,14 +35,11 @@
         </activity>
 
         <receiver
-            android:name=".service.broadcastReciever.AppInstall"
+            android:name=".broadcastReciever.AppDetectionReceiver"
             android:exported="true" />
 
         <service
-            android:name=".service.HandleInstallService"
+            android:name=".service.ApplicationDetectionService"
             android:exported="false" />
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
 </manifest>
