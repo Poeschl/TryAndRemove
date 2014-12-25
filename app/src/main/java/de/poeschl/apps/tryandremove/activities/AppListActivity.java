@@ -199,9 +199,12 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     private void unregisterReceiver() {
         try {
+            if (receiver.isRegistered()) {
+                unregisterReceiver(receiver);
+            }
             isTracking.set(false);
             receiver.setRegistered(false);
-            unregisterReceiver(receiver);
+
         } catch (IllegalArgumentException e) {
             Timber.e(e, "App install receiver was unregistered while not registered.");
         }
