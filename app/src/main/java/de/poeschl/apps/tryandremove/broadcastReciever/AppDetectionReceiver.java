@@ -19,13 +19,12 @@ package de.poeschl.apps.tryandremove.broadcastReciever;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
+import timber.log.Timber;
 
 public class AppDetectionReceiver extends BroadcastReceiver {
 
-    private static final String TAG = AppDetectionReceiver.class.getSimpleName();
     private boolean registered;
 
     public AppDetectionReceiver() {
@@ -43,15 +42,15 @@ public class AppDetectionReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String intentData = intent.toUri(Intent.URI_INTENT_SCHEME);
-        Log.v(TAG, "intent: " + intentData);
+        Timber.v("intent: " + intentData);
 
         switch (intent.getAction()) {
             case Intent.ACTION_PACKAGE_ADDED:
-                Log.v(TAG, "Package install");
+                Timber.d("Package install received");
                 ApplicationDetectionService.startAppInstall(context, intentData);
                 break;
             case Intent.ACTION_PACKAGE_REMOVED:
-                Log.v(TAG, "Package uninstall");
+                Timber.d("Package uninstall received");
                 ApplicationDetectionService.startAppRemove(context, intentData);
                 break;
         }
