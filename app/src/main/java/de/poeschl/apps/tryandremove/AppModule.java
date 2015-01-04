@@ -28,6 +28,7 @@ import dagger.Provides;
 import de.poeschl.apps.tryandremove.activities.ActivityModule;
 import de.poeschl.apps.tryandremove.broadcastReciever.BroadcastReceiverModule;
 import de.poeschl.apps.tryandremove.data.DataModule;
+import de.poeschl.apps.tryandremove.fragments.FragmentsModule;
 import de.poeschl.apps.tryandremove.models.ModelModule;
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 import de.poeschl.apps.tryandremove.utils.UtilsModule;
@@ -42,7 +43,8 @@ import de.poeschl.apps.tryandremove.utils.UtilsModule;
                 BroadcastReceiverModule.class,
                 DataModule.class,
                 ModelModule.class,
-                UtilsModule.class
+                UtilsModule.class,
+                FragmentsModule.class
         },
         injects = {
                 TryAndRemoveApp.class,

@@ -16,18 +16,12 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.Optional;
-import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 
@@ -35,10 +29,6 @@ import de.poeschl.apps.tryandremove.interfaces.AppContainer;
  * Created by Markus Pöschl on 17.12.2014.
  */
 public class TryAndRemoveActivity extends ActionBarActivity {
-
-    @Optional
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
 
     @Inject
     AppContainer appContainer;
@@ -50,14 +40,9 @@ public class TryAndRemoveActivity extends ActionBarActivity {
         TryAndRemoveApp.get(this).inject(this);
     }
 
-    protected void setupLayout(Activity activity, int layout) {
+    protected void setupLayout(int layout) {
         ViewGroup container = appContainer.get(this);
+        //Inflate navigation drawer layout
         getLayoutInflater().inflate(layout, container);
-
-        ButterKnife.inject(this);
-
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
     }
 }

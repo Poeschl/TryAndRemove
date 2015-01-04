@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.activities;
+package de.poeschl.apps.tryandremove.fragments;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
@@ -35,6 +40,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.activities.TryAndRemoveActivity;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
@@ -46,12 +52,14 @@ import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class AppListActivity extends TryAndRemoveActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
+public class AppListFragment extends Fragment implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
 
     @InjectView(R.id.app_list_layout_apps_listView)
     RecyclerView appListView;
     @InjectView(R.id.app_list_layout_floating_menu)
     FloatingActionsMenu floatMenu;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
 
     MenuItem recordToolbarButton;
 
@@ -67,43 +75,49 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
     @IsTracking
     BooleanPreference isTracking;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        TryAndRemoveApp.get(this).inject(this);
-
-        setupLayout(this, R.layout.app_list_layout);
-
-        ButterKnife.inject(this);
-
-        appListView.setAdapter(appAdapter);
-        appListView.setLayoutManager(new LinearLayoutManager(this));
+    public static Fragment newInstance() {
+        Fragment fragment = new AppListFragment();
+        return fragment;
     }
 
     @Override
-    protected void onResume() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.activity_app_list, container, false);
+
+        ButterKnife.inject(this, root);
+
+        ((TryAndRemoveActivity) getActivity()).setSupportActionBar(toolbar);
+        toolbar.setTitle(R.string.app_name);
+
+        appListView.setAdapter(appAdapter);
+        appListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        TryAndRemoveApp.get(getActivity()).inject(this);
+
+        return root;
+    }
+
+    @Override
+    public void onResume() {
         super.onResume();
         updatePackageList();
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         unregisterReceiver();
         Timber.v("Called onDestroy - unregister reciever");
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.app_list_toolbar_actions, menu);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.app_list_toolbar_actions, menu);
 
         recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
 
         setRecordButtonState(isTracking.get());
-
-        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -142,10 +156,10 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
     private void setRecordButtonState(boolean active) {
         if (active) {
-            Toast.makeText(this, getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
             recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
         } else {
-            Toast.makeText(this, getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
             recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
         }
     }
@@ -155,7 +169,7 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         if (!packageListData.isEmpty()) {
             ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
             wf.setButtonListener(this);
-            wf.show(getSupportFragmentManager());
+            wf.show(getFragmentManager());
         }
     }
 
@@ -171,7 +185,7 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         if (!packageListData.isEmpty()) {
             RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
             rf.setButtonListener(this);
-            rf.show(getSupportFragmentManager());
+            rf.show(getFragmentManager());
         }
     }
 
@@ -194,13 +208,13 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
 
         receiver.setRegistered(true);
         isTracking.set(true);
-        registerReceiver(receiver, filter);
+        getActivity().registerReceiver(receiver, filter);
     }
 
     private void unregisterReceiver() {
         try {
             if (receiver.isRegistered()) {
-                unregisterReceiver(receiver);
+                getActivity().unregisterReceiver(receiver);
             }
             isTracking.set(false);
             receiver.setRegistered(false);

@@ -30,5 +30,6 @@
     <string name="remove_warning_dialog_message">Remove all apps in the list from your phone?</string>
     <string name="remove_warning_dialog_agree">Remove</string>
     <string name="remove_warning_dialog_cancel">Cancel</string>
+    <string name="navigation_drawer_private_policy_title">Private policy</string>
 
 </resources>

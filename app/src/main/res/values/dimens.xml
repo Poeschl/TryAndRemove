@@ -19,4 +19,6 @@
 
     <dimen name="appList_bottomRightButton_margin">5dp</dimen>
     <dimen name="appList_bottomLeftButton_margin">5dp</dimen>
+    <dimen name="navigation_drawer_title_offset">72dp</dimen>
+    <dimen name="navigation_drawer_side_offset">16dp</dimen>
 </resources>
