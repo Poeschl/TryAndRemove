@@ -16,25 +16,16 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.AppListActivity">
-
-    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:layout_alignParentTop="true" />
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/app_list_layout_apps_listView"
+        android:id="@+id/app_list_layout_apps_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:layout_below="@id/toolbar" />
+        android:layout_alignParentTop="true" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/app_list_layout_floating_menu"

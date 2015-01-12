@@ -17,19 +17,12 @@
 package de.poeschl.apps.tryandremove.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -40,45 +33,26 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.activities.TryAndRemoveActivity;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
-import de.poeschl.apps.tryandremove.annotations.IsTracking;
-import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import de.poeschl.apps.tryandremove.models.BooleanPreference;
-import timber.log.Timber;
 
 
 public class AppListFragment extends Fragment implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
 
-    @InjectView(R.id.app_list_layout_apps_listView)
+    @InjectView(R.id.app_list_layout_apps_recyclerView)
     RecyclerView appListView;
     @InjectView(R.id.app_list_layout_floating_menu)
     FloatingActionsMenu floatMenu;
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
 
-    MenuItem recordToolbarButton;
-
-    @Inject
-    AppDetectionReceiver receiver;
     @Inject
     PackageList packageListData;
     @Inject
     AppAdapter appAdapter;
     @Inject
     AppManager appManager;
-    @Inject
-    @IsTracking
-    BooleanPreference isTracking;
-
-    public static Fragment newInstance() {
-        Fragment fragment = new AppListFragment();
-        return fragment;
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,9 +60,6 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
         View root = inflater.inflate(R.layout.activity_app_list, container, false);
 
         ButterKnife.inject(this, root);
-
-        ((TryAndRemoveActivity) getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
 
         appListView.setAdapter(appAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -102,66 +73,6 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
     public void onResume() {
         super.onResume();
         updatePackageList();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver();
-        Timber.v("Called onDestroy - unregister reciever");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
-        menuInflater.inflate(R.menu.app_list_toolbar_actions, menu);
-
-        recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
-
-        setRecordButtonState(isTracking.get());
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.app_list_toolbar_action_record:
-                toggleRecording();
-                return true;
-            case R.id.app_list_toolbar_action_refresh:
-                updatePackageList();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void toggleRecording() {
-        boolean newTrackState = !isTracking.get();
-
-        Timber.d("Listener Status: " + newTrackState);
-        setRecordState(newTrackState);
-
-        if (newTrackState) {
-            registerReceiver();
-        } else {
-            unregisterReceiver();
-        }
-    }
-
-    private void setRecordState(boolean state) {
-        if (isTracking.get() == state) {
-            return;
-        }
-        setRecordButtonState(state);
-    }
-
-    private void setRecordButtonState(boolean active) {
-        if (active) {
-            Toast.makeText(getActivity(), getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
-        } else {
-            Toast.makeText(getActivity(), getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
-        }
     }
 
     @OnClick(R.id.app_list_layout_clear_action_button)
@@ -195,32 +106,7 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
         floatMenu.collapse();
     }
 
-    private void updatePackageList() {
+    public void updatePackageList() {
         appAdapter.updateAdapter(packageListData);
-    }
-
-    private void registerReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addDataScheme("package");
-        filter.addAction(Intent.ACTION_PACKAGE_ADDED);
-        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
-        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
-
-        receiver.setRegistered(true);
-        isTracking.set(true);
-        getActivity().registerReceiver(receiver, filter);
-    }
-
-    private void unregisterReceiver() {
-        try {
-            if (receiver.isRegistered()) {
-                getActivity().unregisterReceiver(receiver);
-            }
-            isTracking.set(false);
-            receiver.setRegistered(false);
-
-        } catch (IllegalArgumentException e) {
-            Timber.e(e, "App install receiver was unregistered while not registered.");
-        }
     }
 }

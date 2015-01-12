@@ -16,7 +16,10 @@
 
 package de.poeschl.apps.tryandremove.fragments;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Created by Markus Pöschl on 04.01.15.
@@ -29,4 +32,9 @@ import dagger.Module;
         library = true
 )
 public class FragmentsModule {
+    @Provides
+    @Singleton
+    AppListFragment providesAppListFragment() {
+        return new AppListFragment();
+    }
 }
