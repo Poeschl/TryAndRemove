@@ -85,6 +85,7 @@ public class MainActivity extends TryAndRemoveActivity {
         setUpTopPart();
         setUpBottomPart();
 
+
         openAppList();
     }
 
@@ -191,9 +192,11 @@ public class MainActivity extends TryAndRemoveActivity {
         if (displayMode != Mode.APP_LIST) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.content, appListFragment);
+//            ft.add(R.id.mainContent,appListFragment);
+            ft.replace(R.id.mainContent, appListFragment);
             ft.commit();
 
+            Timber.v("Show App list");
             displayMode = Mode.APP_LIST;
         }
     }

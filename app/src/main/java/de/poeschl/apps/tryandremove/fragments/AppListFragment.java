@@ -60,11 +60,10 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
         View root = inflater.inflate(R.layout.activity_app_list, container, false);
 
         ButterKnife.inject(this, root);
+        TryAndRemoveApp.get(getActivity()).inject(this);
 
         appListView.setAdapter(appAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        TryAndRemoveApp.get(getActivity()).inject(this);
 
         return root;
     }
