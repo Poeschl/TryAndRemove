@@ -26,7 +26,8 @@ import dagger.Provides;
  */
 @Module(
         injects = {
-                AppListFragment.class
+                AppListFragment.class,
+                PrivatePolicyFragment.class
         },
         complete = false,
         library = true
