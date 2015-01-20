@@ -14,9 +14,9 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -26,22 +26,15 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/accent"
+        android:layout_marginTop="8dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/navigation_drawer_bottom_recyclerView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/accent"
-            android:layout_marginTop="8dp" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/navigation_drawer_bottom_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent" />
-    </LinearLayout>
-</RelativeLayout>
+        android:background="@android:color/transparent" />
+</LinearLayout>

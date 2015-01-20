@@ -16,12 +16,14 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
-import android.app.FragmentManager;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -45,22 +47,24 @@ import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.fragments.AppListFragment;
 import de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment;
 import de.poeschl.apps.tryandremove.interfaces.NavigationDrawerListener;
+import de.poeschl.apps.tryandremove.layoutManager.SmallLayoutManager;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
 public class MainActivity extends TryAndRemoveActivity implements NavigationDrawerListener<MainActivity.Mode> {
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     @InjectView(R.id.navigation_drawer_top_recyclerView)
     RecyclerView topRecyclerView;
     @InjectView(R.id.navigation_drawer_bottom_recyclerView)
     RecyclerView bottomRecyclerView;
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
     private MenuItem recordToolbarButton;
+    private ActionBarDrawerToggle drawerToggle;
 
     @Inject
     AppDetectionReceiver receiver;
@@ -74,7 +78,6 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     PrivatePolicyFragment privatePolicyFragment;
 
     private FrameLayout navigationDrawer;
-    private Mode displayMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,11 +96,20 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name_not_found);
+        drawerToggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerListener(drawerToggle);
+
         setUpTopNavPart();
         setUpBottomNavPart();
 
         setViewMode(Mode.APP_LIST);
+    }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
     }
 
     @Override
@@ -107,6 +119,14 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         Timber.v("Called onDestroy - unregister receiver");
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 1) {
+            getFragmentManager().popBackStackImmediate();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -132,6 +152,11 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onNavigationItemClick(Mode targetViewMode) {
+        setViewMode(targetViewMode);
     }
 
     private void setRecordButtonState(boolean active) {
@@ -166,18 +191,27 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
 
     private void setUpTopNavPart() {
         topRecyclerView.setHasFixedSize(true);
-        topRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        topRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        List<de.poeschl.apps.tryandremove.models.MenuItem> upItemList = new ArrayList<>();
+        upItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
+                getString(R.string.navigation_drawer_app_list_title), R.drawable.ic_launcher_app, Mode.APP_LIST));
+
+        NavigationItemAdapter<Mode> adapter = new NavigationItemAdapter<>(upItemList);
+        adapter.setNavigationListener(this);
+        topRecyclerView.setAdapter(adapter);
     }
 
     private void setUpBottomNavPart() {
         bottomRecyclerView.setHasFixedSize(true);
-        bottomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        bottomRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         List<de.poeschl.apps.tryandremove.models.MenuItem> bottomItemList = new ArrayList<>();
-        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<Mode>(getString(
-                R.string.navigation_drawer_private_policy_title), R.drawable.ic_menu_info, Mode.PRIVATE_POLICY));
+        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
+                getString(R.string.navigation_drawer_private_policy_title), R.drawable.ic_menu_info, Mode.PRIVATE_POLICY));
 
-        NavigationItemAdapter adapter = new NavigationItemAdapter<Mode>(bottomItemList);
+
+        NavigationItemAdapter<Mode> adapter = new NavigationItemAdapter<>(bottomItemList);
         adapter.setNavigationListener(this);
         bottomRecyclerView.setAdapter(adapter);
     }
@@ -208,35 +242,41 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     }
 
     private void setViewMode(Mode viewMode) {
-        if (displayMode != viewMode) {
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
 
-            if (drawerLayout.isDrawerVisible(navigationDrawer)) {
-                drawerLayout.closeDrawers();
-            }
+        switch (viewMode) {
+            case APP_LIST:
+                openFragment(appListFragment);
+                break;
+            case PRIVATE_POLICY:
+                openFragment(privatePolicyFragment);
+                break;
+        }
 
-            switch (viewMode) {
-                case APP_LIST:
-                    ft.replace(R.id.mainContent, appListFragment);
-                    break;
-                case PRIVATE_POLICY:
-                    ft.replace(R.id.mainContent, privatePolicyFragment);
-                    ft.addToBackStack(null);
-                    break;
+        Timber.v("Show " + viewMode.name());
+
+        if (drawerLayout.isDrawerVisible(navigationDrawer)) {
+            drawerLayout.closeDrawers();
+        }
+    }
+
+    private void openFragment(Fragment fragment) {
+        boolean resumed = getFragmentManager().popBackStackImmediate(fragment.getClass().getName(), 0);
+        boolean onTop = getFragmentManager().getBackStackEntryCount() > 0
+                && getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName().equals(fragment.getClass().getName());
+
+        if (!resumed && !onTop) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.mainContent, fragment);
+            ft.addToBackStack(fragment.getClass().getName());
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             }
 
             ft.commit();
 
-            Timber.v("Show " + viewMode.name());
-            displayMode = viewMode;
-
+            Timber.v("Init " + fragment.getClass().getSimpleName());
         }
-    }
-
-    @Override
-    public void onNavigationItemClick(Mode targetViewMode) {
-        setViewMode(targetViewMode);
     }
 
     enum Mode {

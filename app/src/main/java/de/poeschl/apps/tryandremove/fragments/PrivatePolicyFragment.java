@@ -18,7 +18,9 @@ package de.poeschl.apps.tryandremove.fragments;
 
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,15 @@ public class PrivatePolicyFragment extends Fragment {
         ButterKnife.inject(this, root);
 
         webView.loadUrl("file:///android_asset/PrivacyPolicy.html");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade in = new Fade(Fade.IN);
+            Fade out = new Fade(Fade.OUT);
+            setEnterTransition(in);
+            setReenterTransition(in);
+            setReturnTransition(out);
+            setExitTransition(out);
+        }
 
         return root;
     }

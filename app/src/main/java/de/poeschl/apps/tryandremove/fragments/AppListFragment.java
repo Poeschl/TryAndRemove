@@ -17,9 +17,11 @@
 package de.poeschl.apps.tryandremove.fragments;
 
 import android.app.Fragment;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.activities.TryAndRemoveActivity;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
@@ -66,6 +69,16 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
         appListView.setLayoutManager(new LinearLayoutManager(getActivity()));
         appListView.setHasFixedSize(true);
 
+        //Different transition for < API 21 is in the MainActivity
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Fade in = new Fade(Fade.IN);
+            Fade out = new Fade(Fade.OUT);
+            setEnterTransition(in);
+            setReenterTransition(in);
+            setReturnTransition(out);
+            setExitTransition(out);
+        }
+
         return root;
     }
 
@@ -73,6 +86,12 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
     public void onResume() {
         super.onResume();
         updatePackageList();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((TryAndRemoveActivity) getActivity()).getSupportActionBar();
     }
 
     @OnClick(R.id.app_list_layout_clear_action_button)
