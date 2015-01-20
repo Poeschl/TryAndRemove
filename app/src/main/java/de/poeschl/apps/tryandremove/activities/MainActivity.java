@@ -38,6 +38,7 @@ import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.fragments.AppListFragment;
+import de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
@@ -61,6 +62,8 @@ public class MainActivity extends TryAndRemoveActivity {
 
     @Inject
     AppListFragment appListFragment;
+    @Inject
+    PrivatePolicyFragment privatePolicyFragment;
 
     private FrameLayout navigationDrawer;
     private Mode displayMode;
@@ -192,7 +195,6 @@ public class MainActivity extends TryAndRemoveActivity {
         if (displayMode != Mode.APP_LIST) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-//            ft.add(R.id.mainContent,appListFragment);
             ft.replace(R.id.mainContent, appListFragment);
             ft.commit();
 
@@ -201,7 +203,20 @@ public class MainActivity extends TryAndRemoveActivity {
         }
     }
 
+    private void openPrivatePolicy() {
+        if (displayMode != Mode.PRIVATE_POLICY) {
+            FragmentManager fragmentManager = getFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.mainContent, appListFragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+            Timber.v("Show Private Policy");
+            displayMode = Mode.APP_LIST;
+        }
+    }
+
     private enum Mode {
-        APP_LIST;
+        APP_LIST, PRIVATE_POLICY;
     }
 }

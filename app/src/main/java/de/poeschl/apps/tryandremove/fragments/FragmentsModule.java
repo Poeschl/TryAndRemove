@@ -38,4 +38,10 @@ public class FragmentsModule {
     AppListFragment providesAppListFragment() {
         return new AppListFragment();
     }
+
+    @Provides
+    @Singleton
+    PrivatePolicyFragment providesPrivatePolicyFragment() {
+        return new PrivatePolicyFragment();
+    }
 }
