@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -174,9 +174,8 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         bottomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         List<de.poeschl.apps.tryandremove.models.MenuItem> bottomItemList = new ArrayList<>();
-        //TODO: Add right icon for private policy
         bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<Mode>(getString(
-                R.string.navigation_drawer_private_policy_title), R.drawable.ic_launcher_app, Mode.PRIVATE_POLICY));
+                R.string.navigation_drawer_private_policy_title), R.drawable.ic_menu_info, Mode.PRIVATE_POLICY));
 
         NavigationItemAdapter adapter = new NavigationItemAdapter<Mode>(bottomItemList);
         adapter.setNavigationListener(this);
@@ -213,6 +212,10 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
 
+            if (drawerLayout.isDrawerVisible(navigationDrawer)) {
+                drawerLayout.closeDrawers();
+            }
+
             switch (viewMode) {
                 case APP_LIST:
                     ft.replace(R.id.mainContent, appListFragment);
@@ -222,9 +225,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
                     ft.addToBackStack(null);
                     break;
             }
-            if (drawerLayout.isDrawerVisible(navigationDrawer)) {
-                drawerLayout.closeDrawers();
-            }
+
             ft.commit();
 
             Timber.v("Show " + viewMode.name());
