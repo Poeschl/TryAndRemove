@@ -1,0 +1,43 @@
+body {
+	font-family: sans-serif;
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-top: 2em;
+}
+
+h1 {
+	font-size: 15pt;
+	font-style: normal;
+	font-weight: bold;
+	text-decoration: none;
+	margin-bottom: 2em;
+}
+
+h2 {
+	margin-top: 2em;
+	font-size: 13pt;
+	font-style: normal;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+h3 {
+	margin-top: 1em;
+	font-size: 11pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: underline;
+}
+
+p {
+	font-size: 11pt;
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+ul {
+	margin-left: 2em;
+}

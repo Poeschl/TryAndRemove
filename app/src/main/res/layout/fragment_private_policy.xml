@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,11 +14,16 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="activity_horizontal_margin">8dp</dimen>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment">
 
-    <dimen name="appList_bottomRightButton_margin">5dp</dimen>
-    <dimen name="appList_bottomLeftButton_margin">5dp</dimen>
-    <dimen name="navigation_drawer_title_offset">72dp</dimen>
-    <dimen name="navigation_drawer_side_offset">16dp</dimen>
-</resources>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/private_policy_layout_policy_webView"
+        android:layout_gravity="center" />
+</FrameLayout>

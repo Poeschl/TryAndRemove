@@ -68,7 +68,7 @@ public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.app_list_cell, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_list, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
 

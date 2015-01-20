@@ -166,7 +166,7 @@ public class DebugAppContainer implements AppContainer {
         // Inject after inflating the drawer layout so its views are available to inject.
         ButterKnife.inject(this, activity);
 
-        drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.END);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -376,7 +376,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     private void restartApp() {
-        Intent newApp = new Intent(app, AppListActivity.class);
+        Intent newApp = new Intent(app, MainActivity.class);
         newApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         tracking.set(false);
         app.startActivity(newApp);

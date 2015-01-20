@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,39 +14,34 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.activities;
-
-import android.app.Application;
-import android.content.pm.PackageManager;
+package de.poeschl.apps.tryandremove.fragments;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
-import de.poeschl.apps.tryandremove.interfaces.AppContainer;
-import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
 /**
- * Created by Markus Pöschl on 09.12.14.
+ * Created by Markus Pöschl on 04.01.15.
  */
 @Module(
         injects = {
-                MainActivity.class,
-                TryAndRemoveActivity.class
+                AppListFragment.class,
+                PrivatePolicyFragment.class
         },
         complete = false,
         library = true
 )
-public class ActivityModule {
+public class FragmentsModule {
     @Provides
     @Singleton
-    AppContainer provideAppContainer() {
-        return AppContainer.DEFAULT;
+    AppListFragment providesAppListFragment() {
+        return new AppListFragment();
     }
 
     @Provides
-    AppAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
-        return new AppAdapter(packageList, manager, app);
+    @Singleton
+    PrivatePolicyFragment providesPrivatePolicyFragment() {
+        return new PrivatePolicyFragment();
     }
 }
