@@ -46,13 +46,14 @@ import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.fragments.AppListFragment;
 import de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment;
+import de.poeschl.apps.tryandremove.interfaces.FragmentChangeListener;
 import de.poeschl.apps.tryandremove.interfaces.NavigationDrawerListener;
 import de.poeschl.apps.tryandremove.layoutManager.SmallLayoutManager;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class MainActivity extends TryAndRemoveActivity implements NavigationDrawerListener<MainActivity.Mode> {
+public class MainActivity extends TryAndRemoveActivity implements NavigationDrawerListener<MainActivity.Mode>, FragmentChangeListener {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -64,19 +65,20 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     DrawerLayout drawerLayout;
 
     private MenuItem recordToolbarButton;
-    private ActionBarDrawerToggle drawerToggle;
+    private MenuItem reloadToolbarButton;
 
+    private ActionBarDrawerToggle drawerToggle;
     @Inject
     AppDetectionReceiver receiver;
+
     @Inject
     @IsTracking
     BooleanPreference isTracking;
-
     @Inject
     AppListFragment appListFragment;
+
     @Inject
     PrivatePolicyFragment privatePolicyFragment;
-
     private FrameLayout navigationDrawer;
 
     @Override
@@ -94,7 +96,6 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         ButterKnife.inject(this);
 
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name_not_found);
         drawerToggle.setDrawerIndicatorEnabled(true);
@@ -103,6 +104,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         setUpTopNavPart();
         setUpBottomNavPart();
 
+        setUpToolbar(Mode.APP_LIST);
         setViewMode(Mode.APP_LIST);
     }
 
@@ -134,6 +136,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         getMenuInflater().inflate(R.menu.app_list_toolbar_actions, menu);
 
         recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
+        reloadToolbarButton = menu.findItem(R.id.app_list_toolbar_action_refresh);
 
         setRecordButtonState(isTracking.get());
 
@@ -157,6 +160,15 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     @Override
     public void onNavigationItemClick(Mode targetViewMode) {
         setViewMode(targetViewMode);
+    }
+
+    @Override
+    public void onFragmentChange(Fragment currentFragment) {
+        if (currentFragment.getClass().equals(appListFragment.getClass())) {
+            setUpToolbar(Mode.APP_LIST);
+        } else if (currentFragment.getClass().equals(privatePolicyFragment.getClass())) {
+            setUpToolbar(Mode.PRIVATE_POLICY);
+        }
     }
 
     private void setRecordButtonState(boolean active) {
@@ -241,6 +253,26 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         }
     }
 
+    private void setUpToolbar(Mode mode) {
+        switch (mode) {
+            case APP_LIST:
+                toolbar.setTitle(R.string.app_name);
+                if (recordToolbarButton != null && reloadToolbarButton != null) {
+                    recordToolbarButton.setVisible(true);
+                    reloadToolbarButton.setVisible(true);
+                }
+                break;
+            case PRIVATE_POLICY:
+                toolbar.setTitle(R.string.navigation_drawer_private_policy_title);
+                if (recordToolbarButton != null && reloadToolbarButton != null) {
+
+                    recordToolbarButton.setVisible(false);
+                    reloadToolbarButton.setVisible(false);
+                }
+                break;
+        }
+    }
+
     private void setViewMode(Mode viewMode) {
 
         switch (viewMode) {
@@ -277,6 +309,8 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
 
             Timber.v("Init " + fragment.getClass().getSimpleName());
         }
+
+        this.onFragmentChange(fragment);
     }
 
     enum Mode {
