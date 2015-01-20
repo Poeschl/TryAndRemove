@@ -32,7 +32,7 @@
             android:background="?attr/colorPrimary" />
 
         <FrameLayout
-            android:id="@+id/mainContent"
+            android:id="@+id/mainontent"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

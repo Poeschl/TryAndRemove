@@ -64,6 +64,7 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
 
         appListView.setAdapter(appAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        appListView.setHasFixedSize(true);
 
         return root;
     }

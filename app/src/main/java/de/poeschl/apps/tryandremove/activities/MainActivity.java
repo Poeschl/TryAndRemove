@@ -21,6 +21,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,21 +30,26 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.adapter.NavigationItemAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.fragments.AppListFragment;
 import de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment;
+import de.poeschl.apps.tryandremove.interfaces.NavigationDrawerListener;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class MainActivity extends TryAndRemoveActivity {
+public class MainActivity extends TryAndRemoveActivity implements NavigationDrawerListener<MainActivity.Mode> {
 
     @InjectView(R.id.navigation_drawer_top_recyclerView)
     RecyclerView topRecyclerView;
@@ -51,8 +57,10 @@ public class MainActivity extends TryAndRemoveActivity {
     RecyclerView bottomRecyclerView;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
-    MenuItem recordToolbarButton;
+    private MenuItem recordToolbarButton;
 
     @Inject
     AppDetectionReceiver receiver;
@@ -85,11 +93,11 @@ public class MainActivity extends TryAndRemoveActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
-        setUpTopPart();
-        setUpBottomPart();
+        setUpTopNavPart();
+        setUpBottomNavPart();
 
+        setViewMode(Mode.APP_LIST);
 
-        openAppList();
     }
 
     @Override
@@ -156,14 +164,23 @@ public class MainActivity extends TryAndRemoveActivity {
         setRecordButtonState(state);
     }
 
-    private void setUpTopPart() {
+    private void setUpTopNavPart() {
         topRecyclerView.setHasFixedSize(true);
         topRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void setUpBottomPart() {
+    private void setUpBottomNavPart() {
         bottomRecyclerView.setHasFixedSize(true);
         bottomRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<de.poeschl.apps.tryandremove.models.MenuItem> bottomItemList = new ArrayList<>();
+        //TODO: Add right icon for private policy
+        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<Mode>(getString(
+                R.string.navigation_drawer_private_policy_title), R.drawable.ic_launcher_app, Mode.PRIVATE_POLICY));
+
+        NavigationItemAdapter adapter = new NavigationItemAdapter<Mode>(bottomItemList);
+        adapter.setNavigationListener(this);
+        bottomRecyclerView.setAdapter(adapter);
     }
 
     private void registerReceiver() {
@@ -191,32 +208,37 @@ public class MainActivity extends TryAndRemoveActivity {
         }
     }
 
-    private void openAppList() {
-        if (displayMode != Mode.APP_LIST) {
+    private void setViewMode(Mode viewMode) {
+        if (displayMode != viewMode) {
             FragmentManager fragmentManager = getFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.mainContent, appListFragment);
+
+            switch (viewMode) {
+                case APP_LIST:
+                    ft.replace(R.id.mainContent, appListFragment);
+                    break;
+                case PRIVATE_POLICY:
+                    ft.replace(R.id.mainContent, privatePolicyFragment);
+                    ft.addToBackStack(null);
+                    break;
+            }
+            if (drawerLayout.isDrawerVisible(navigationDrawer)) {
+                drawerLayout.closeDrawers();
+            }
             ft.commit();
 
-            Timber.v("Show App list");
-            displayMode = Mode.APP_LIST;
+            Timber.v("Show " + viewMode.name());
+            displayMode = viewMode;
+
         }
     }
 
-    private void openPrivatePolicy() {
-        if (displayMode != Mode.PRIVATE_POLICY) {
-            FragmentManager fragmentManager = getFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.mainContent, appListFragment);
-            ft.addToBackStack(null);
-            ft.commit();
-
-            Timber.v("Show Private Policy");
-            displayMode = Mode.APP_LIST;
-        }
+    @Override
+    public void onNavigationItemClick(Mode targetViewMode) {
+        setViewMode(targetViewMode);
     }
 
-    private enum Mode {
+    enum Mode {
         APP_LIST, PRIVATE_POLICY;
     }
 }
