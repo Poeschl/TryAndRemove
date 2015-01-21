@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -330,10 +331,10 @@ public class DebugAppContainer implements AppContainer {
 
         try {
             // Parse ISO8601-format time into local time.
-            DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
             inFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date buildTime = inFormat.parse(BuildConfig.BUILD_TIME);
-            buildDateView.setText(new SimpleDateFormat("yyyy-MM-dd kk:mm").format(buildTime));
+            buildDateView.setText(new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.US).format(buildTime));
         } catch (ParseException e) {
             throw new RuntimeException("Unable to decode build time: " + BuildConfig.BUILD_TIME, e);
         }

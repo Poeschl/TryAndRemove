@@ -203,7 +203,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         topRecyclerView.setHasFixedSize(true);
         topRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        List<de.poeschl.apps.tryandremove.models.MenuItem> upItemList = new ArrayList<>();
+        List<de.poeschl.apps.tryandremove.models.MenuItem<Mode>> upItemList = new ArrayList<>();
         upItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
                 getString(R.string.navigation_drawer_app_list_title), R.drawable.ic_launcher_app, Mode.APP_LIST));
 
@@ -216,7 +216,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         bottomRecyclerView.setHasFixedSize(true);
         bottomRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
-        List<de.poeschl.apps.tryandremove.models.MenuItem> bottomItemList = new ArrayList<>();
+        List<de.poeschl.apps.tryandremove.models.MenuItem<Mode>> bottomItemList = new ArrayList<>();
         bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
                 getString(R.string.navigation_drawer_private_policy_title), R.drawable.ic_menu_info, Mode.PRIVATE_POLICY));
 
