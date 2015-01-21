@@ -30,7 +30,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +75,6 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     BooleanPreference isTracking;
     @Inject
     AppListFragment appListFragment;
-
     @Inject
     PrivatePolicyFragment privatePolicyFragment;
     private FrameLayout navigationDrawer;
@@ -173,10 +171,10 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
 
     private void setRecordButtonState(boolean active) {
         if (active) {
-            Toast.makeText(this, getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
+            Timber.d("App tracking activated");
             recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
         } else {
-            Toast.makeText(this, getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
+            Timber.d("App tracking deactivated");
             recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
         }
     }
