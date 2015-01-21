@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,8 @@ project.ext.set("gitSha", gitSha)
 android {
     signingConfigs {
         googlePlay {
-            //Placeholder for later in the build process
+            //Placeholder which gets automatically filled during project sync. Needs the right setting file.
+            //This settings is not in the source control, because it contains sensitive information.
         }
     }
     compileSdkVersion 21
@@ -93,6 +94,8 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
+
+//Get environment variable of keystore settings folder location.
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
 /*
@@ -131,12 +134,12 @@ afterEvaluate { project ->
 
 
     } else {
-        System.err.println("No " + configName + "  settings available");
+        System.err.println("File " + propsFile.name + " for key setup not available");
     }
 }
 
 /*
- * Gives the output apks the right names. Automatic file name convection.
+ * Gives the output apks the right names. Automatic file name convention.
  */
 
 def renameReleasePackage(variant, defaultConfig) {
