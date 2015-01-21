@@ -36,10 +36,10 @@ import de.poeschl.apps.tryandremove.models.MenuItem;
  */
 public class NavigationItemAdapter<T> extends RecyclerView.Adapter<NavigationItemAdapter.ViewHolder> {
 
-    private List<MenuItem> itemList;
+    private List<MenuItem<T>> itemList;
     private NavigationDrawerListener<T> navListener;
 
-    public NavigationItemAdapter(List<MenuItem> menuItems) {
+    public NavigationItemAdapter(List<MenuItem<T>> menuItems) {
         this.itemList = menuItems;
     }
 

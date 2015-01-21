@@ -16,6 +16,7 @@
 
 package de.poeschl.apps.tryandremove.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,15 +72,20 @@ public class AppListFragment extends Fragment implements ClearWarningDialogFragm
 
         //Different transition for < API 21 is in the MainActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Fade in = new Fade(Fade.IN);
-            Fade out = new Fade(Fade.OUT);
-            setEnterTransition(in);
-            setReenterTransition(in);
-            setReturnTransition(out);
-            setExitTransition(out);
+            setLollipopTransitions();
         }
 
         return root;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setLollipopTransitions() {
+        Fade in = new Fade(Fade.IN);
+        Fade out = new Fade(Fade.OUT);
+        setEnterTransition(in);
+        setReenterTransition(in);
+        setReturnTransition(out);
+        setExitTransition(out);
     }
 
     @Override

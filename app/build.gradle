@@ -15,6 +15,8 @@
  */
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -39,14 +41,17 @@ def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone(
 project.ext.set("gitSha", gitSha)
 
 android {
+
+    compileSdkVersion 21
+    buildToolsVersion "21.1.1"
+
     signingConfigs {
         googlePlay {
             //Placeholder which gets automatically filled during project sync. Needs the right setting file.
             //This settings is not in the source control, because it contains sensitive information.
         }
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+
     defaultConfig {
         applicationId "de.poeschl.apps.tryandremove"
         minSdkVersion 15
@@ -59,11 +64,18 @@ android {
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
     }
 
+    lintOptions {
+        lintConfig file("lint.xml")
+        checkReleaseBuilds true
+        abortOnError true
+    }
+
     buildTypes {
         release {
             minifyEnabled false //Don't forget to set crashlytics up for proguard
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.googlePlay
+
 
             applicationVariants.all { variant ->
                 renameReleasePackage(variant, defaultConfig)
@@ -74,6 +86,7 @@ android {
             ext.enableCrashlytics = false
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
