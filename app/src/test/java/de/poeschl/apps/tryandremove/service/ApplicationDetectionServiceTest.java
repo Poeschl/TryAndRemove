@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,9 @@ import org.robolectric.annotation.Config;
 
 import dagger.ObjectGraph;
 
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_0;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_2;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_NOT_ADDED;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_0;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_2;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_NOT_ADDED;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;

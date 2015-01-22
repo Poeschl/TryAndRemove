@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 public class MockAppManager implements AppManager {
 
     private Application app;
+    private String notExistingApp = "";
 
     @Inject
     public MockAppManager(Application app) {
@@ -40,9 +41,13 @@ public class MockAppManager implements AppManager {
 
     }
 
+    public void setNotExistingApp(String appPackage) {
+        this.notExistingApp = appPackage;
+    }
+
     @Override
     public boolean exists(String appPackage) {
-        return true;
+        return !notExistingApp.equals(appPackage);
     }
 
     @Override
