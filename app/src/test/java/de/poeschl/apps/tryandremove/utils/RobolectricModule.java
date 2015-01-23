@@ -18,6 +18,7 @@ package de.poeschl.apps.tryandremove.utils;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 
 import org.robolectric.Robolectric;
 import org.robolectric.shadows.ShadowPreferenceManager;
@@ -37,6 +38,12 @@ public class RobolectricModule {
     @Provides
     SharedPreferences provideSharedPreferences(@RoboMock Application application) {
         return ShadowPreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
+    }
+
+    @RoboMock
+    @Provides
+    PackageManager providePackageManager() {
+        return Robolectric.application.getPackageManager();
     }
 
     @RoboMock

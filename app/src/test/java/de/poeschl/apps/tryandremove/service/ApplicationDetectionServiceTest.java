@@ -29,7 +29,9 @@ import dagger.ObjectGraph;
 import de.poeschl.apps.tryandremove.modules.ApplicationDetectionServiceTestModule;
 
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_0;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_1;
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_2;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_3;
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_NOT_ADDED;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -56,6 +58,11 @@ public class ApplicationDetectionServiceTest {
     public void setUp() {
         testClass = new ApplicationDetectionService();
         objectGraph.inject(testClass);
+
+        testClass.packageList.addPackage(TEST_PACKAGE_1);
+        testClass.packageList.addPackage(TEST_PACKAGE_2);
+        testClass.packageList.addPackage(TEST_PACKAGE_3);
+
     }
 
     @Test

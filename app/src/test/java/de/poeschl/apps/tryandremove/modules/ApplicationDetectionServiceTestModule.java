@@ -17,12 +17,14 @@
 package de.poeschl.apps.tryandremove.modules;
 
 import android.app.Application;
+import android.content.pm.PackageManager;
 
 import dagger.Module;
 import dagger.Provides;
 import de.poeschl.apps.tryandremove.mock.MockModule;
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 import de.poeschl.apps.tryandremove.utils.RoboMock;
+import de.poeschl.apps.tryandremove.utils.RobolectricModule;
 
 /**
  * Created by Markus Pöschl on 11.12.2014.
@@ -32,7 +34,8 @@ import de.poeschl.apps.tryandremove.utils.RoboMock;
                 ApplicationDetectionService.class
         },
         includes = {
-                MockModule.class
+                MockModule.class,
+                RobolectricModule.class
         },
         library = true,
         complete = false
@@ -42,5 +45,10 @@ public class ApplicationDetectionServiceTestModule {
     @Provides
     Application providesApplication(@RoboMock Application application) {
         return application;
+    }
+
+    @Provides
+    PackageManager providesPackageManager(@RoboMock PackageManager packageManager) {
+        return packageManager;
     }
 }

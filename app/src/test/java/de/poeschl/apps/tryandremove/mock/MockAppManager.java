@@ -18,8 +18,6 @@ package de.poeschl.apps.tryandremove.mock;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 
 /**
@@ -31,7 +29,6 @@ public class MockAppManager implements AppManager {
 
     private String notExistingApp = "";
 
-    @Inject
     public MockAppManager() {
 
     }

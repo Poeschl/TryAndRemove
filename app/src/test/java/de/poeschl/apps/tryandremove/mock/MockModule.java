@@ -16,33 +16,21 @@
 
 package de.poeschl.apps.tryandremove.mock;
 
-import android.content.pm.PackageManager;
-
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.data.MockPackageList;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import de.poeschl.apps.tryandremove.modules.ApplicationDetectionServiceTestModule;
 
 /**
  * Created by Markus Pöschl on 22.01.2015.
  */
 @Module(
-        injects = {
-                ApplicationDetectionServiceTestModule.class
-        },
         library = true
 )
 public class MockModule {
     @Provides
-    PackageList providesPackageList(PackageManager packageManager) {
-        return new MockPackageList(packageManager);
-    }
-
-    @Provides
-    PackageManager providePackageManager() {
-        return new MockPackageManager();
+    PackageList providesPackageList() {
+        return new MockPackageList();
     }
 
     @Provides
