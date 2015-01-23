@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,11 @@ import java.util.List;
  * Created by Markus Pöschl on 11.12.2014.
  */
 public interface PackageList {
+
+    /**
+     * Check if the app are really installed right now. Removes them if not found by the package manager.
+     */
+    public void validatePackages();
 
     /**
      * Adds a package to the list.

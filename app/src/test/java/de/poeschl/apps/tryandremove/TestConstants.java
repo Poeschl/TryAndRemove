@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,26 +14,17 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.service;
-
-import dagger.Module;
-import dagger.Provides;
-import de.poeschl.apps.tryandremove.data.TestMockPackageList;
-import de.poeschl.apps.tryandremove.interfaces.PackageList;
+package de.poeschl.apps.tryandremove;
 
 /**
- * Created by Markus Pöschl on 11.12.2014.
+ * Created by Markus Pöschl on 22.01.2015.
  */
-@Module(
-        injects = {
-                ApplicationDetectionService.class,
-        },
-        library = true
-)
-public class ServiceTestModule {
+public class TestConstants {
 
-    @Provides
-    PackageList providesPackageList() {
-        return new TestMockPackageList();
-    }
+    public static final String TEST_PACKAGE_0 = "package 0";
+    public static final String TEST_PACKAGE_1 = "package 1";
+    public static final String TEST_PACKAGE_2 = "package 2";
+    public static final String TEST_PACKAGE_3 = "package 3";
+
+    public static final String TEST_PACKAGE_NOT_ADDED = "added new";
 }

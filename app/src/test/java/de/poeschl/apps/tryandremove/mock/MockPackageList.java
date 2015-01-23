@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,61 +14,62 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.data;
+package de.poeschl.apps.tryandremove.mock;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import timber.log.Timber;
 
 /**
- * Return mocking data.
- * Created by Markus Pöschl on 11.12.2014.
+ * Created by Markus Pöschl on 22.12.14.
  */
-public class TestMockPackageList implements PackageList {
+public class MockPackageList implements PackageList {
 
-    public static final String TEST_PACKAGE_0 = "com.dummy.0";
-    public static final String TEST_PACKAGE_1 = "com.dummy.1";
-    public static final String TEST_PACKAGE_2 = "com.dummy.2";
-    public static final String TEST_PACKAGE_3 = "com.dummy.3";
+    List<String> apps;
 
-    public static final String TEST_PACKAGE_NOT_ADDED = "com.dummy.new0";
+    public MockPackageList() {
+        apps = new LinkedList<>();
+    }
 
-    private List<String> stringSet = new LinkedList<>();
-
-    public TestMockPackageList() {
-        stringSet.add(TEST_PACKAGE_0);
-        stringSet.add(TEST_PACKAGE_1);
-        stringSet.add(TEST_PACKAGE_2);
-        stringSet.add(TEST_PACKAGE_3);
+    @Override
+    public void validatePackages() {
+        //All packages are valid, for the sake of mocking.
     }
 
     @Override
     public boolean addPackage(String packageName) {
-        return stringSet.add(packageName);
+        if (!apps.contains(packageName)) {
+            return apps.add(packageName);
+        } else {
+            return false;
+        }
     }
 
     @Override
     public boolean removePackage(String packageName) {
-        return stringSet.remove(packageName);
+        return apps.remove(packageName);
     }
 
     @Override
     public boolean contains(String packageName) {
-        return stringSet.contains(packageName);
+        return apps.contains(packageName);
     }
 
     @Override
     public List<String> getPackages() {
-        return stringSet;
+        Timber.v("Get mocked app list");
+        return apps;
     }
 
+    @Override
     public void clear() {
-        stringSet.clear();
+        apps.clear();
     }
 
     @Override
     public boolean isEmpty() {
-        return stringSet.isEmpty();
+        return apps.isEmpty();
     }
 }

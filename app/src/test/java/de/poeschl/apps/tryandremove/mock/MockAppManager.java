@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.utils;
-
-import android.app.Application;
+package de.poeschl.apps.tryandremove.mock;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
-import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 
 /**
  * This manager mocks the app management from android and manually call the specific service methods.
@@ -32,12 +27,9 @@ import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
  */
 public class MockAppManager implements AppManager {
 
-    private Application app;
     private String notExistingApp = "";
 
-    @Inject
-    public MockAppManager(Application app) {
-        this.app = app;
+    public MockAppManager() {
 
     }
 
@@ -53,7 +45,7 @@ public class MockAppManager implements AppManager {
     @Override
     public void remove(String appPackage) {
         String pareFormattedPackage = "intent:" + appPackage + "#Intent";
-        ApplicationDetectionService.startAppRemove(app, pareFormattedPackage);
+//        ApplicationDetectionService.startAppRemove(app, pareFormattedPackage);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class SharedPreferencesPackageList implements PackageList {
     /**
      * Check if the app are really installed right now. Removes them if not found by the package manager.
      */
-    void validatePackages() {
+    public void validatePackages() {
         List<String> savedPackages = getPackages();
 
         List<String> packagesToRemove = new LinkedList<>();

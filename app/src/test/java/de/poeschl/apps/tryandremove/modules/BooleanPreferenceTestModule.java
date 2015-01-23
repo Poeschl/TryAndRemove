@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.models;
-
-import android.content.SharedPreferences;
+package de.poeschl.apps.tryandremove.modules;
 
 import dagger.Module;
-import dagger.Provides;
-import de.poeschl.apps.tryandremove.annotations.IsTracking;
+import de.poeschl.apps.tryandremove.models.BooleanPreferenceTest;
+import de.poeschl.apps.tryandremove.utils.RobolectricModule;
 
 /**
- * Created by Markus Pöschl on 09.12.2014.
+ * Created by Markus Pöschl on 23.01.15.
  */
 @Module(
-        complete = false,
-        library = true
+        injects = {
+                BooleanPreferenceTest.class
+        },
+        includes = {
+                RobolectricModule.class
+        }
 )
-public class ModelModule {
-
-    private static final String IS_TRACKING_KEY = "IS_TRACKING";
-
-    @Provides
-    @IsTracking
-    BooleanPreference provideTrackingBoolean(SharedPreferences sharedPreferences) {
-        return new BooleanPreference(sharedPreferences, IS_TRACKING_KEY, false);
-    }
-
+public class BooleanPreferenceTestModule {
 }
