@@ -24,7 +24,7 @@ import dagger.Provides;
 import de.poeschl.apps.tryandremove.data.MockPackageList;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import de.poeschl.apps.tryandremove.service.ServiceTestModule;
+import de.poeschl.apps.tryandremove.modules.ApplicationDetectionServiceTestModule;
 import de.poeschl.apps.tryandremove.utils.MockAppManager;
 import de.poeschl.apps.tryandremove.utils.MockPackageManager;
 import de.poeschl.apps.tryandremove.utils.RoboMock;
@@ -38,7 +38,7 @@ import de.poeschl.apps.tryandremove.utils.RobolectricModule;
                 RobolectricModule.class,
         },
         injects = {
-                ServiceTestModule.class
+                ApplicationDetectionServiceTestModule.class
         },
         library = true
 )

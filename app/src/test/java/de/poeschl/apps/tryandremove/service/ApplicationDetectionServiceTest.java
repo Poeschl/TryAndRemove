@@ -26,6 +26,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import dagger.ObjectGraph;
+import de.poeschl.apps.tryandremove.modules.ApplicationDetectionServiceTestModule;
 
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_0;
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_2;
@@ -48,7 +49,7 @@ public class ApplicationDetectionServiceTest {
 
     @BeforeClass
     public static void setUpClass() {
-        objectGraph = ObjectGraph.create(ServiceTestModule.class);
+        objectGraph = ObjectGraph.create(ApplicationDetectionServiceTestModule.class);
     }
 
     @Before

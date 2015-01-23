@@ -35,6 +35,7 @@ import javax.inject.Inject;
 import dagger.ObjectGraph;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.mock.Mock;
+import de.poeschl.apps.tryandremove.modules.SharedPreferencePackageListTestModule;
 import de.poeschl.apps.tryandremove.utils.MockAppManager;
 import de.poeschl.apps.tryandremove.utils.RoboMock;
 
@@ -69,7 +70,7 @@ public class SharedPreferencePackageListTest {
 
     @BeforeClass
     public static void setUpClass() {
-        objectGraph = ObjectGraph.create(DataTestModule.class);
+        objectGraph = ObjectGraph.create(SharedPreferencePackageListTestModule.class);
     }
 
     @SuppressLint("CommitPrefEdits")

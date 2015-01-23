@@ -14,17 +14,24 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.data;
+package de.poeschl.apps.tryandremove.modules;
+
+import android.app.Application;
 
 import dagger.Module;
+import dagger.Provides;
+import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.mock.Mock;
 import de.poeschl.apps.tryandremove.mock.MockModule;
+import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
+import de.poeschl.apps.tryandremove.utils.RoboMock;
 
 /**
- * Created by Markus Pöschl on 21.01.2015.
+ * Created by Markus Pöschl on 11.12.2014.
  */
 @Module(
         injects = {
-                SharedPreferencePackageListTest.class,
+                ApplicationDetectionService.class
         },
         includes = {
                 MockModule.class
@@ -32,5 +39,15 @@ import de.poeschl.apps.tryandremove.mock.MockModule;
         library = true,
         complete = false
 )
-public class DataTestModule {
+public class ApplicationDetectionServiceTestModule {
+
+    @Provides
+    PackageList providesPackageList(@Mock PackageList packageList) {
+        return packageList;
+    }
+
+    @Provides
+    Application providesApplication(@RoboMock Application application) {
+        return application;
+    }
 }
