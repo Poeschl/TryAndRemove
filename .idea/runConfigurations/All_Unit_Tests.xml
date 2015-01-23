@@ -9,7 +9,7 @@
     <option name="TEST_OBJECT" value="directory" />
     <option name="VM_PARAMETERS" value="-Dandroid.manifest=&quot;$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml&quot; -Dandroid.resources=&quot;$PROJECT_DIR$/app/build/test-resources/Debug/res&quot; -Dandroid.package=&quot;de.poeschl.apps.tryandremove&quot; -Dandroid.assets=&quot;$PROJECT_DIR$/app/build/intermediates/assets/debug&quot; " />
     <option name="PARAMETERS" value="" />
-    <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/app" />
+    <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
     <option name="ENV_VARIABLES" />
     <option name="PASS_PARENT_ENVS" value="true" />
     <option name="TEST_SEARCH_SCOPE">

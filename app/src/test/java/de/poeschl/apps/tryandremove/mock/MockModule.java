@@ -16,7 +16,6 @@
 
 package de.poeschl.apps.tryandremove.mock;
 
-import android.app.Application;
 import android.content.pm.PackageManager;
 
 import dagger.Module;
@@ -25,38 +24,29 @@ import de.poeschl.apps.tryandremove.data.MockPackageList;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.modules.ApplicationDetectionServiceTestModule;
-import de.poeschl.apps.tryandremove.utils.MockAppManager;
-import de.poeschl.apps.tryandremove.utils.MockPackageManager;
-import de.poeschl.apps.tryandremove.utils.RoboMock;
-import de.poeschl.apps.tryandremove.utils.RobolectricModule;
 
 /**
  * Created by Markus Pöschl on 22.01.2015.
  */
 @Module(
-        includes = {
-                RobolectricModule.class,
-        },
         injects = {
                 ApplicationDetectionServiceTestModule.class
         },
         library = true
 )
 public class MockModule {
-    @Mock
     @Provides
     PackageList providesPackageList(PackageManager packageManager) {
         return new MockPackageList(packageManager);
     }
 
     @Provides
-    PackageManager providePackageManager(@RoboMock Application application) {
-        return new MockPackageManager(application);
+    PackageManager providePackageManager() {
+        return new MockPackageManager();
     }
 
-    @Mock
     @Provides
-    AppManager providesAppManager(@RoboMock Application application) {
-        return new MockAppManager(application);
+    AppManager providesAppManager() {
+        return new MockAppManager();
     }
 }

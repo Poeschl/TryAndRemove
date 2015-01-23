@@ -20,8 +20,6 @@ import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import de.poeschl.apps.tryandremove.mock.Mock;
 import de.poeschl.apps.tryandremove.mock.MockModule;
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 import de.poeschl.apps.tryandremove.utils.RoboMock;
@@ -40,11 +38,6 @@ import de.poeschl.apps.tryandremove.utils.RoboMock;
         complete = false
 )
 public class ApplicationDetectionServiceTestModule {
-
-    @Provides
-    PackageList providesPackageList(@Mock PackageList packageList) {
-        return packageList;
-    }
 
     @Provides
     Application providesApplication(@RoboMock Application application) {

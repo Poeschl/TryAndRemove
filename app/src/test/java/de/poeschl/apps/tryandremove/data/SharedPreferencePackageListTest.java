@@ -34,9 +34,8 @@ import javax.inject.Inject;
 
 import dagger.ObjectGraph;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
-import de.poeschl.apps.tryandremove.mock.Mock;
+import de.poeschl.apps.tryandremove.mock.MockAppManager;
 import de.poeschl.apps.tryandremove.modules.SharedPreferencePackageListTestModule;
-import de.poeschl.apps.tryandremove.utils.MockAppManager;
 import de.poeschl.apps.tryandremove.utils.RoboMock;
 
 import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_0;
@@ -62,7 +61,6 @@ public class SharedPreferencePackageListTest {
     @Inject
     SharedPreferences mockedPreferences;
 
-    @Mock
     @Inject
     AppManager mockedAppManager;
 

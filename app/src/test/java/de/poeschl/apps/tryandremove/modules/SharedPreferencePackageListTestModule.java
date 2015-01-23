@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove.modules;
 import dagger.Module;
 import de.poeschl.apps.tryandremove.data.SharedPreferencePackageListTest;
 import de.poeschl.apps.tryandremove.mock.MockModule;
+import de.poeschl.apps.tryandremove.utils.RobolectricModule;
 
 /**
  * Created by Markus Pöschl on 21.01.2015.
@@ -28,7 +29,8 @@ import de.poeschl.apps.tryandremove.mock.MockModule;
                 SharedPreferencePackageListTest.class,
         },
         includes = {
-                MockModule.class
+                MockModule.class,
+                RobolectricModule.class
         },
         library = true,
         complete = false
