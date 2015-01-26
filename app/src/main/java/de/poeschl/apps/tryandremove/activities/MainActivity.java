@@ -63,21 +63,22 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    private MenuItem recordToolbarButton;
-    private MenuItem reloadToolbarButton;
-
-    private ActionBarDrawerToggle drawerToggle;
     @Inject
     AppDetectionReceiver receiver;
-
     @Inject
     @IsTracking
     BooleanPreference isTracking;
+
     @Inject
     AppListFragment appListFragment;
     @Inject
     PrivatePolicyFragment privatePolicyFragment;
+
     private FrameLayout navigationDrawer;
+    private MenuItem recordToolbarButton;
+    private MenuItem reloadToolbarButton;
+
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

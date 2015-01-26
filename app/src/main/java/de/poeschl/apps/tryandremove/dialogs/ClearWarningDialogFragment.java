@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,11 +58,11 @@ public class ClearWarningDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public static interface ButtonListener {
-        public void onUserConfirmedClear();
-    }
-
     public void show(FragmentManager manager) {
         super.show(manager, FRAGMENT_TAG);
+    }
+
+    public static interface ButtonListener {
+        public void onUserConfirmedClear();
     }
 }

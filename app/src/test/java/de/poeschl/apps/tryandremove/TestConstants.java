@@ -27,4 +27,7 @@ public class TestConstants {
     public static final String TEST_PACKAGE_3 = "package 3";
 
     public static final String TEST_PACKAGE_NOT_ADDED = "added new";
+
+    private TestConstants() {
+    }
 }

@@ -43,6 +43,7 @@ import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
@@ -77,6 +78,8 @@ import static butterknife.ButterKnife.findById;
  * Created by markus on 05.12.14.
  */
 public class DebugAppContainer implements AppContainer {
+
+    public static final int TOAST_TIME = 1000;
 
     @InjectView(R.id.debug_drawer_layout)
     DrawerLayout drawerLayout;
@@ -119,12 +122,13 @@ public class DebugAppContainer implements AppContainer {
     TextView deviceApiView;
 
 
+    PackageList packageList;
+
     private final Application app;
     private Activity activity;
     private Context drawerContext;
     private BooleanPreference seenDebugDrawer;
     private AppDetectionReceiver appDetectionReceiver;
-    PackageList packageList;
 
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
@@ -182,13 +186,13 @@ public class DebugAppContainer implements AppContainer {
 
         // If you have not seen the debug drawer before, show it with a message
         if (!seenDebugDrawer.get()) {
-            drawerLayout.postDelayed(new Runnable() {
+            boolean b = drawerLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     drawerLayout.openDrawer(Gravity.END);
                     Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
                 }
-            }, 1000);
+            }, TOAST_TIME);
             seenDebugDrawer.set(true);
         }
 
@@ -246,7 +250,7 @@ public class DebugAppContainer implements AppContainer {
                                 activity.startActivity(intent);
                                 Timber.v("Install real app.");
 
-                            } catch (Exception e) {
+                            } catch (IOException e) {
                                 Timber.e(e, e.getMessage());
                             }
                         }
