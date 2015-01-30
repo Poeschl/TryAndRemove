@@ -23,6 +23,8 @@
 
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -126,6 +128,21 @@ checkstyle {
     configFile new File("${project.projectDir}/../checkstyle/checkstyle.xml")
     reportsDir new File("${project.projectDir}/build/outputs")
     toolVersion "6.2"
+}
+
+//Add checkstyle execution on debug and release build
+assembleRelease {
+    it.dependsOn 'checkstyle'
+}
+assembleDebug {
+    it.dependsOn 'checkstyle'
+}
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+
+    classpath = files()
 }
 
 //Get environment variable of keystore settings folder location.
