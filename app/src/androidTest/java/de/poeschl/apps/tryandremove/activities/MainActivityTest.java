@@ -19,12 +19,12 @@ package de.poeschl.apps.tryandremove.activities;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityInstrumentationTestCase2;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
 import de.poeschl.apps.tryandremove.R;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -33,7 +33,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class MainActivityTest extends BaseInstrumentTestCase<MainActivity> {
 
     public MainActivityTest() {
         super(MainActivity.class);
@@ -44,6 +44,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         getActivity();
+        Thread.sleep(500);
     }
 
     @Test
@@ -52,12 +53,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         onView(withId(R.id.app_list_toolbar_action_refresh)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void testRightFragmentOnStart() {
-        //Checks for the list clear menu to determine the right fragment.
-        onView(withId(R.id.app_list_layout_floating_menu)).check(matches(isDisplayed()));
-    }
-
+    /**
+     * Checks if the floating menu is visible on app start.
+     */
     @Test
     public void testFloatingButtonExists() {
         int floatMenuId = R.id.app_list_layout_floating_menu;
