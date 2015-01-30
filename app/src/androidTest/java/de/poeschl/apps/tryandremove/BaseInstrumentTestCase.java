@@ -17,6 +17,8 @@
 package de.poeschl.apps.tryandremove;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -27,9 +29,10 @@ import org.junit.Before;
  */
 public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
-    public static final int ACTIVITY_START_WAIT_TIME = 300;
+    public static final int WAIT_TIME = 300;
+    protected T testActivity;
 
-    public BaseInstrumentTestCase(Class testClass) {
+    public BaseInstrumentTestCase(Class<T> testClass) {
         super(testClass);
     }
 
@@ -38,12 +41,25 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
     protected void setUp() throws Exception {
         super.setUp();
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        getActivity();
-        Thread.sleep(ACTIVITY_START_WAIT_TIME);
+        testActivity = getActivity();
+        waitTime();
     }
 
     @Override
     public T getActivity() {
         return super.getActivity();
+    }
+
+    public void setMockMode(boolean enabled) {
+        SharedPreferences prefs = getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE);
+        prefs.edit().putBoolean("debug_mock_mode_boolean", enabled).commit();
+    }
+
+    public void waitTime() {
+        try {
+            Thread.sleep(WAIT_TIME);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

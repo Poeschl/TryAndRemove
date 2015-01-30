@@ -312,7 +312,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         this.onFragmentChange(fragment);
     }
 
-    enum Mode {
+    public enum Mode {
         APP_LIST, PRIVATE_POLICY;
     }
 }
