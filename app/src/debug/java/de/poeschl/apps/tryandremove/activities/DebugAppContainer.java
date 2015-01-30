@@ -184,12 +184,12 @@ public class DebugAppContainer implements AppContainer {
             }
         });
 
-        // If you have not seen the debug drawer before, show it with a message
+        // If you have not seen the debug drawer before, show a message
         if (!seenDebugDrawer.get()) {
             boolean b = drawerLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawerLayout.openDrawer(Gravity.END);
+//                    drawerLayout.openDrawer(Gravity.END);
                     Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
                 }
             }, TOAST_TIME);

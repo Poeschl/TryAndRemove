@@ -54,9 +54,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     @Test
     public void testRightFragmentOnStart() {
-        //Checks for the recycler view on start.
-        //TODO: Check the list fragment on start with switching to mock mode and check for items in the recycler view
-
+        //Checks for the list clear menu to determine the right fragment.
+        onView(withId(R.id.app_list_layout_floating_menu)).check(matches(isDisplayed()));
     }
 
     @Test
