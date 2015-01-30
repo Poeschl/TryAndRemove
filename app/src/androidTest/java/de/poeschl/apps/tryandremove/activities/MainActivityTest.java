@@ -16,52 +16,21 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.action.ViewActions;
-import android.support.test.runner.AndroidJUnit4;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
-import de.poeschl.apps.tryandremove.R;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
-@RunWith(AndroidJUnit4.class)
 public class MainActivityTest extends BaseInstrumentTestCase<MainActivity> {
 
     public MainActivityTest() {
         super(MainActivity.class);
     }
 
-    @Before
     public void setUp() throws Exception {
         super.setUp();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
         getActivity();
-        Thread.sleep(500);
     }
 
-    @Test
-    public void testToolbarStateOnStart() {
-        onView(withId(R.id.app_list_toolbar_action_record)).check(matches(isDisplayed()));
-        onView(withId(R.id.app_list_toolbar_action_refresh)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Checks if the floating menu is visible on app start.
-     */
-    @Test
-    public void testFloatingButtonExists() {
-        int floatMenuId = R.id.app_list_layout_floating_menu;
-
-        onView(withId(floatMenuId)).check(matches(isDisplayed()));
-        onView(withId(floatMenuId)).perform(ViewActions.click());
-        onView(withId(floatMenuId)).perform(ViewActions.click());
+    public void testStart() {
+        solo.assertCurrentActivity("Assume MainActivity on start", "MainActivity");
     }
 }

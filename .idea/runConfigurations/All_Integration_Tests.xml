@@ -2,7 +2,7 @@
   <configuration default="false" name="All Integration Tests" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
     <module name="app" />
     <option name="TESTING_TYPE" value="1" />
-    <option name="INSTRUMENTATION_RUNNER_CLASS" value="android.support.test.runner.AndroidJUnitRunner" />
+    <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
     <option name="METHOD_NAME" value="" />
     <option name="CLASS_NAME" value="" />
     <option name="PACKAGE_NAME" value="de.poeschl.apps.tryandremove" />

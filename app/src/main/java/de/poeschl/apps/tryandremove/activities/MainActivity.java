@@ -297,7 +297,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
 
         if (!resumed && !onTop) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.mainContent, fragment);
+            ft.replace(R.id.mainContent, fragment, fragment.getClass().getSimpleName());
             ft.addToBackStack(fragment.getClass().getName());
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {

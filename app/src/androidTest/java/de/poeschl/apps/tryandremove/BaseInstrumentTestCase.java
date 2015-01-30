@@ -19,30 +19,35 @@ package de.poeschl.apps.tryandremove;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.test.InstrumentationRegistry;
 import android.test.ActivityInstrumentationTestCase2;
 
-import org.junit.Before;
+import com.robotium.solo.Solo;
+
 
 /**
  * Created by Markus Pöschl on 30.01.15.
  */
 public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
-    public static final int WAIT_TIME = 300;
-    protected T testActivity;
+    public static final int TIMEOUT = 500;
+
+    protected Solo solo;
 
     public BaseInstrumentTestCase(Class<T> testClass) {
         super(testClass);
     }
 
-    @Before
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-        testActivity = getActivity();
-        waitTime();
+        solo = new Solo(getInstrumentation());
+        getActivity();
+    }
+
+    @Override
+    public void tearDown() throws Exception {
+        solo.finishOpenedActivities();
+        super.tearDown();
     }
 
     @Override
@@ -53,13 +58,5 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
     public void setMockMode(boolean enabled) {
         SharedPreferences prefs = getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE);
         prefs.edit().putBoolean("debug_mock_mode_boolean", enabled).commit();
-    }
-
-    public void waitTime() {
-        try {
-            Thread.sleep(WAIT_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
