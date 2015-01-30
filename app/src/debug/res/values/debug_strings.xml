@@ -18,5 +18,5 @@
 
 <resources>
     <string name="development_settings">Development Settings</string>
-    <string name="debug_drawer_welcome">Debug settings are available in this drawer.</string>
+    <string name="debug_drawer_welcome">Debug settings are available in the right debug drawer.</string>
 </resources>

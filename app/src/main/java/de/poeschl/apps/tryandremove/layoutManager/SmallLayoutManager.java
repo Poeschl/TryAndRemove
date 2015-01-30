@@ -27,11 +27,11 @@ import android.view.ViewGroup;
  */
 public class SmallLayoutManager extends LinearLayoutManager {
 
+    private int[] mMeasuredDimension = new int[2];
+
     public SmallLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
-
-    private int[] mMeasuredDimension = new int[2];
 
     @Override
     public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state,

@@ -63,21 +63,22 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    private MenuItem recordToolbarButton;
-    private MenuItem reloadToolbarButton;
-
-    private ActionBarDrawerToggle drawerToggle;
     @Inject
     AppDetectionReceiver receiver;
-
     @Inject
     @IsTracking
     BooleanPreference isTracking;
+
     @Inject
     AppListFragment appListFragment;
     @Inject
     PrivatePolicyFragment privatePolicyFragment;
+
     private FrameLayout navigationDrawer;
+    private MenuItem recordToolbarButton;
+    private MenuItem reloadToolbarButton;
+
+    private ActionBarDrawerToggle drawerToggle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -296,7 +297,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
 
         if (!resumed && !onTop) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.mainContent, fragment);
+            ft.replace(R.id.mainContent, fragment, fragment.getClass().getSimpleName());
             ft.addToBackStack(fragment.getClass().getName());
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -311,7 +312,7 @@ public class MainActivity extends TryAndRemoveActivity implements NavigationDraw
         this.onFragmentChange(fragment);
     }
 
-    enum Mode {
+    public enum Mode {
         APP_LIST, PRIVATE_POLICY;
     }
 }

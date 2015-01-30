@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
         android:id="@+id/app_list_toolbar_action_record"
         android:icon="@drawable/ic_menu_record_drawable"
         app:showAsAction="always"
-        android:title="@string/app_list_toolbar_action_record_title" />
+        android:title="@string/app_list_toolbar_action_record_title"/>
 
     <item
         android:id="@+id/app_list_toolbar_action_refresh"

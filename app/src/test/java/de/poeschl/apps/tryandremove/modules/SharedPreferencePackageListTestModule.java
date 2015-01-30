@@ -26,7 +26,7 @@ import de.poeschl.apps.tryandremove.utils.RobolectricModule;
  */
 @Module(
         injects = {
-                SharedPreferencePackageListTest.class,
+                SharedPreferencePackageListTest.class
         },
         includes = {
                 MockModule.class,
