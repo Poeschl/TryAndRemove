@@ -21,6 +21,8 @@
 
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -116,6 +118,14 @@ androidUnitTest {
     //Download the sources.jar for the test dependencies. `true` by default.
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
+}
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+    configFile new File("${project.projectDir}/../checkstyle/checkstyle.xml")
+    reportsDir new File("${project.projectDir}/build/outputs")
+    toolVersion "6.2"
 }
 
 //Get environment variable of keystore settings folder location.
