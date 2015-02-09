@@ -17,32 +17,29 @@
 package de.poeschl.apps.tryandremove.activities;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.ViewGroup;
+import android.webkit.WebView;
 
-import javax.inject.Inject;
-
-import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.interfaces.AppContainer;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import de.poeschl.apps.tryandremove.R;
 
 /**
- * Created by Markus Pöschl on 17.12.2014.
+ * Created by Markus Pöschl on 09.02.15.
  */
-public class TryAndRemoveActivity extends ActionBarActivity {
+public class PrivacyPolicyActivity extends NavigationActivity {
 
-    @Inject
-    AppContainer appContainer;
+    @InjectView(R.id.private_policy_layout_policy_webView)
+    WebView webView;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TryAndRemoveApp.get(this).inject(this);
-    }
+        setupLayout(R.layout.activity_privacy_policy);
 
-    protected void setupLayout(int layout) {
-        ViewGroup container = appContainer.get(this);
-        //Inflate navigation drawer layout
-        getLayoutInflater().inflate(layout, container);
+        ButterKnife.inject(this);
+
+        webView.loadUrl("file:///android_asset/PrivacyPolicy.html");
     }
 }

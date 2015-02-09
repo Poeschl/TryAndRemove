@@ -15,17 +15,17 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/app_list_layout_apps_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"/>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/app_list_layout_floating_menu"
@@ -39,13 +39,13 @@
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
         style="@style/AppTheme.FloatingMenuButton">
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_icon="@drawable/ic_menu_delete"
             fab:fab_title="@string/app_list_layout_remove_apps_title"
             android:id="@+id/app_list_layout_remove_action_button"
-            style="@style/AppTheme.FloatingButton" />
+            style="@style/AppTheme.FloatingButton"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
@@ -53,7 +53,7 @@
             fab:fab_title="@string/app_list_layout_clear_app_list_title"
             fab:fab_icon="@drawable/ic_menu_clear"
             android:id="@+id/app_list_layout_clear_action_button"
-            style="@style/AppTheme.FloatingButton" />
+            style="@style/AppTheme.FloatingButton"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

@@ -19,10 +19,10 @@ package de.poeschl.apps.tryandremove.activities;
 
 import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
 
-public class MainActivityTest extends BaseInstrumentTestCase<MainActivity> {
+public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity> {
 
-    public MainActivityTest() {
-        super(MainActivity.class);
+    public AppListActivityTest() {
+        super(AppListActivity.class);
     }
 
     public void setUp() throws Exception {
