@@ -19,7 +19,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="@color/white"
+    android:background="@color/background"
     android:gravity="center_vertical"
     android:id="@+id/app_list_cell_root"
     android:padding="8dp"

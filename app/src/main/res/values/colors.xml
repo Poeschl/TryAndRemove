@@ -15,10 +15,19 @@
   -->
 
 <resources>
-    <color name="primary">#5F9ECE</color>
-    <color name="primary_dark">#5892BE</color>
-    <color name="accent">#ff5c87b7</color>
-    <color name="textColorPrimary">#fff</color>
-    <color name="windowBackground">#ffddddde</color>
-    <color name="white">#fff</color>
+    <color name="primary_main">#9E9E9E</color>
+    <color name="primary_light">#EEEEEE</color>
+    <color name="primary_dark">#616161</color>
+
+    <color name="accent_main">#2979FF</color>
+    <color name="accent_light">#82B1FF</color>
+    <color name="accent_dark">#2962FF</color>
+
+    <color name="primary_text">#DE000000</color>
+    <color name="secondary_text">#89000000</color>
+    <color name="disabled">#66000000</color>
+    <color name="hint">@color/disabled</color>
+    <color name="divider">#1E000000</color>
+
+    <color name="background">#fff</color>
 </resources>
