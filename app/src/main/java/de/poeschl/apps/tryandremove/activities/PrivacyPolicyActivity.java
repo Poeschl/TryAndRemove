@@ -38,6 +38,8 @@ public class PrivacyPolicyActivity extends NavigationActivity {
 
         setupLayout(R.layout.activity_privacy_policy);
 
+        setToolbarIndicatorToUp();
+
         ButterKnife.inject(this);
 
         webView.loadUrl("file:///android_asset/PrivacyPolicy.html");

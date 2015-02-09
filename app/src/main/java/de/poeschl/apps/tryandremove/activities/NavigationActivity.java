@@ -101,6 +101,13 @@ public class NavigationActivity extends ActionBarActivity implements NavigationD
         getLayoutInflater().inflate(layout, mainContent);
     }
 
+    public void setToolbarIndicatorToUp() {
+        drawerToggle.setDrawerIndicatorEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+    }
+
     private void setUpTopNavPart() {
         topRecyclerView.setHasFixedSize(true);
         topRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));

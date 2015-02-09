@@ -39,7 +39,8 @@
 
         <activity
             android:name=".activities.PrivacyPolicyActivity"
-            android:label="@string/private_policy_title"/>
+            android:label="@string/private_policy_title"
+            android:parentActivityName=".activities.AppListActivity"/>
 
         <receiver
             android:name=".broadcastReciever.AppDetectionReceiver"
