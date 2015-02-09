@@ -19,7 +19,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/background"
     tools:ignore="Overdraw">
 
     <android.support.v7.widget.RecyclerView
@@ -31,7 +31,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/accent"
+        android:background="@color/divider"
         android:layout_marginTop="8dp" />
 
     <android.support.v7.widget.RecyclerView
