@@ -34,6 +34,8 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
         injects = {
                 AppListActivity.class,
                 NavigationActivity.class,
+                ChildrenActivity.class,
+                ToolbarActivity.class,
                 PrivacyPolicyActivity.class
         },
         complete = false,

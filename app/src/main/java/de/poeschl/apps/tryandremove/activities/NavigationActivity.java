@@ -19,24 +19,19 @@ package de.poeschl.apps.tryandremove.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.NavigationItemAdapter;
-import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.NavigationDrawerListener;
 import de.poeschl.apps.tryandremove.layoutManager.SmallLayoutManager;
 import de.poeschl.apps.tryandremove.models.MenuItem;
@@ -44,20 +39,13 @@ import de.poeschl.apps.tryandremove.models.MenuItem;
 /**
  * Created by Markus Pöschl on 17.12.2014.
  */
-public class NavigationActivity extends ActionBarActivity implements NavigationDrawerListener<NavigationActivity.NavItem> {
-
-    protected Toolbar toolbar;
-
-    @Inject
-    AppContainer appContainer;
+public class NavigationActivity extends ToolbarActivity implements NavigationDrawerListener<NavigationActivity.NavItem> {
 
     private RecyclerView topRecyclerView;
     private RecyclerView bottomRecyclerView;
-    private DrawerLayout drawerLayout;
-    private ViewGroup mainContent;
 
-    private FrameLayout navigationDrawer;
     private ActionBarDrawerToggle drawerToggle;
+    private DrawerLayout drawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,14 +67,14 @@ public class NavigationActivity extends ActionBarActivity implements NavigationD
         getLayoutInflater().inflate(R.layout.activity_navigation_drawer, container);
 
         //Inflate navigation drawer
-        navigationDrawer = ButterKnife.findById(container, R.id.navigation_drawer);
+        FrameLayout navigationDrawer = ButterKnife.findById(container, R.id.navigation_drawer);
         getLayoutInflater().inflate(R.layout.navigation_drawer_layout, navigationDrawer);
 
         toolbar = ButterKnife.findById(container, R.id.toolbar);
         topRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_top_recyclerView);
         bottomRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_bottom_recyclerView);
         drawerLayout = ButterKnife.findById(container, R.id.drawer_layout);
-        mainContent = ButterKnife.findById(container, R.id.mainContent);
+        ViewGroup mainContent = ButterKnife.findById(container, R.id.mainContent);
 
         setSupportActionBar(toolbar);
 
@@ -99,13 +87,6 @@ public class NavigationActivity extends ActionBarActivity implements NavigationD
 
         //Inflate the real content into the contentView
         getLayoutInflater().inflate(layout, mainContent);
-    }
-
-    public void setToolbarIndicatorToUp() {
-        drawerToggle.setDrawerIndicatorEnabled(false);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
     }
 
     private void setUpTopNavPart() {
@@ -141,14 +122,24 @@ public class NavigationActivity extends ActionBarActivity implements NavigationD
         switch (targetViewMode) {
             case PRIVACY_POLICY:
                 openIntent = new Intent(this, PrivacyPolicyActivity.class);
+                startChildrenActivity(openIntent);
                 break;
             case APP_LIST:
+                //Ignore when we are in the app list
+                if (this.getClass().equals(AppListActivity.class)) {
+                    openIntent = new Intent(this, AppListActivity.class);
+                    startActivity(openIntent);
+                }
+                break;
             default:
-                openIntent = new Intent(this, AppListActivity.class);
-                openIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 break;
         }
-        startActivity(openIntent);
+        drawerLayout.closeDrawers();
+    }
+
+    private void startChildrenActivity(Intent intent) {
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_left, R.anim.fade_out);
     }
 
     protected enum NavItem {
