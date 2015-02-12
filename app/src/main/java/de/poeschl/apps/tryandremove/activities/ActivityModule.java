@@ -32,8 +32,11 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
  */
 @Module(
         injects = {
-                MainActivity.class,
-                TryAndRemoveActivity.class
+                AppListActivity.class,
+                NavigationActivity.class,
+                ChildrenActivity.class,
+                ToolbarActivity.class,
+                PrivacyPolicyActivity.class
         },
         complete = false,
         library = true

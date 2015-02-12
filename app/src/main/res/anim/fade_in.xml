@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2015 Markus Poeschl
   ~
@@ -14,16 +15,9 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment">
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+       android:fromAlpha="0.0"
+       android:toAlpha="1.0"
+       android:duration="@integer/animation_fast_duration_activities">
 
-
-    <WebView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/private_policy_layout_policy_webView"
-        android:layout_gravity="center" />
-</FrameLayout>
+</alpha>

@@ -15,8 +15,8 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="de.poeschl.apps.tryandremove">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="de.poeschl.apps.tryandremove">
 
     <application
         android:allowBackup="true"
@@ -28,21 +28,26 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.AppListActivity"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.PrivacyPolicyActivity"
+            android:label="@string/private_policy_title"
+            android:parentActivityName=".activities.AppListActivity"/>
+
         <receiver
             android:name=".broadcastReciever.AppDetectionReceiver"
-            android:exported="true" />
+            android:exported="true"/>
 
         <service
             android:name=".service.ApplicationDetectionService"
-            android:exported="false" />
+            android:exported="false"/>
     </application>
 </manifest>

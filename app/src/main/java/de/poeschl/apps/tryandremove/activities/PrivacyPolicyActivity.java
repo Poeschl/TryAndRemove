@@ -16,21 +16,30 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
+import android.os.Bundle;
+import android.webkit.WebView;
 
-import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import de.poeschl.apps.tryandremove.R;
 
-public class MainActivityTest extends BaseInstrumentTestCase<MainActivity> {
+/**
+ * Created by Markus Pöschl on 09.02.15.
+ */
+public class PrivacyPolicyActivity extends ChildrenActivity {
 
-    public MainActivityTest() {
-        super(MainActivity.class);
-    }
+    @InjectView(R.id.private_policy_layout_policy_webView)
+    WebView webView;
 
-    public void setUp() throws Exception {
-        super.setUp();
-        getActivity();
-    }
 
-    public void testStart() {
-        solo.assertCurrentActivity("Assume MainActivity on start", "MainActivity");
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setupLayout(R.layout.activity_privacy_policy);
+
+        ButterKnife.inject(this);
+
+        webView.loadUrl("file:///android_asset/PrivacyPolicy.html");
     }
 }

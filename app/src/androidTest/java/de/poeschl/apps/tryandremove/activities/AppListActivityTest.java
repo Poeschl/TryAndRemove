@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.interfaces;
+package de.poeschl.apps.tryandremove.activities;
 
-import android.app.Fragment;
 
-/**
- * Created by Markus Pöschl on 20.01.2015.
- */
-public interface FragmentChangeListener {
-    /**
-     * Is called when the fragment structure change.
-     *
-     * @param currentFragment The fragment which is currently shown.
-     */
-    public void onFragmentChange(Fragment currentFragment);
+import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
+
+public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity> {
+
+    public AppListActivityTest() {
+        super(AppListActivity.class);
+    }
+
+    public void setUp() throws Exception {
+        super.setUp();
+        getActivity();
+    }
+
+    public void testStart() {
+        solo.assertCurrentActivity("Assume MainActivity on start", "MainActivity");
+    }
 }
