@@ -28,7 +28,7 @@
         android:background="@color/primary_main">
 
         <ImageView
-            android:layout_width="300dp"
+            android:layout_width="304dp"
             android:layout_height="match_parent"
             android:src="@drawable/ic_navigation_logo"
             android:scaleType="centerCrop"
