@@ -95,7 +95,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
 
         List<MenuItem<NavItem>> upItemList = new ArrayList<>();
         upItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
-                getString(R.string.navigation_drawer_app_list_title), R.drawable.ic_launcher_app, NavItem.APP_LIST));
+                getString(R.string.navigation_drawer_app_list_title), R.drawable.ic_menu_collection, NavItem.APP_LIST));
 
         NavigationItemAdapter<NavItem> adapter = new NavigationItemAdapter<>(upItemList);
         adapter.setNavigationListener(this);
