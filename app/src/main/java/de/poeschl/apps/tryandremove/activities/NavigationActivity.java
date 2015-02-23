@@ -109,6 +109,8 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         List<MenuItem<NavItem>> bottomItemList = new ArrayList<>();
         bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
                 getString(R.string.private_policy_title), R.drawable.ic_menu_info, NavItem.PRIVACY_POLICY));
+        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
+                getString(R.string.imprint_title), R.drawable.ic_menu_imprint, NavItem.PRIVACY_POLICY));
 
 
         NavigationItemAdapter<NavItem> adapter = new NavigationItemAdapter<>(bottomItemList);
@@ -120,6 +122,9 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     public void onNavigationItemClick(NavItem targetViewMode) {
         Intent openIntent;
         switch (targetViewMode) {
+            case IMPRINT:
+
+                break;
             case PRIVACY_POLICY:
                 openIntent = new Intent(this, PrivacyPolicyActivity.class);
                 startChildrenActivity(openIntent);
@@ -143,7 +148,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     }
 
     protected enum NavItem {
-        APP_LIST, PRIVACY_POLICY;
+        APP_LIST, PRIVACY_POLICY, IMPRINT;
     }
 
 
