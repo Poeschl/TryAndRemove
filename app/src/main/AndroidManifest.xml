@@ -38,8 +38,7 @@
         </activity>
 
         <activity
-            android:name=".activities.PrivacyPolicyActivity"
-            android:label="@string/private_policy_title"
+            android:name=".activities.WebViewActivity"
             android:parentActivityName=".activities.AppListActivity"/>
 
         <receiver

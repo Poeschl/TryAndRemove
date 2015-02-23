@@ -36,7 +36,7 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
                 NavigationActivity.class,
                 ChildrenActivity.class,
                 ToolbarActivity.class,
-                PrivacyPolicyActivity.class
+                WebViewActivity.class
         },
         complete = false,
         library = true

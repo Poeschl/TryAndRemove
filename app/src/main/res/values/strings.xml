@@ -31,5 +31,6 @@
     <string name="remove_warning_dialog_cancel">Cancel</string>
     <string name="private_policy_title">Privacy Policy</string>
     <string name="navigation_drawer_app_list_title">App List</string>
+    <string name="imprint_title">Imprint</string>
 
 </resources>
