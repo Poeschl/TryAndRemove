@@ -41,6 +41,9 @@ import de.poeschl.apps.tryandremove.models.MenuItem;
  */
 public class NavigationActivity extends ToolbarActivity implements NavigationDrawerListener<NavigationActivity.NavItem> {
 
+    private static final String PRIVACY_POLICY_URL = "file:///android_asset/PrivacyPolicy.html";
+    private static final String IMPRINT_URL = "file:///android_asset/Imprint.html";
+
     private RecyclerView topRecyclerView;
     private RecyclerView bottomRecyclerView;
 
@@ -110,7 +113,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
                 getString(R.string.private_policy_title), R.drawable.ic_menu_info, NavItem.PRIVACY_POLICY));
         bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
-                getString(R.string.imprint_title), R.drawable.ic_menu_imprint, NavItem.PRIVACY_POLICY));
+                getString(R.string.imprint_title), R.drawable.ic_menu_imprint, NavItem.IMPRINT));
 
 
         NavigationItemAdapter<NavItem> adapter = new NavigationItemAdapter<>(bottomItemList);
@@ -123,10 +126,15 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         Intent openIntent;
         switch (targetViewMode) {
             case IMPRINT:
-
+                openIntent = new Intent(this, WebViewActivity.class);
+                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, IMPRINT_URL);
+                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.imprint_title));
+                startChildrenActivity(openIntent);
                 break;
             case PRIVACY_POLICY:
-                openIntent = new Intent(this, PrivacyPolicyActivity.class);
+                openIntent = new Intent(this, WebViewActivity.class);
+                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, PRIVACY_POLICY_URL);
+                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.private_policy_title));
                 startChildrenActivity(openIntent);
                 break;
             case APP_LIST:

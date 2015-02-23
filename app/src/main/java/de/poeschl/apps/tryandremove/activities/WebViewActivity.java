@@ -26,7 +26,10 @@ import de.poeschl.apps.tryandremove.R;
 /**
  * Created by Markus Pöschl on 09.02.15.
  */
-public class PrivacyPolicyActivity extends ChildrenActivity {
+public class WebViewActivity extends ChildrenActivity {
+
+    public static final String URL_EXTRA_KEY = "URL_EXTRA";
+    public static final String ACTIONBAR_TITLE_KEY = "ACTIONBAR_EXTRA";
 
     @InjectView(R.id.private_policy_layout_policy_webView)
     WebView webView;
@@ -40,6 +43,17 @@ public class PrivacyPolicyActivity extends ChildrenActivity {
 
         ButterKnife.inject(this);
 
-        webView.loadUrl("file:///android_asset/PrivacyPolicy.html");
+        Bundle extras = getIntent().getExtras();
+
+        if (extras.containsKey(URL_EXTRA_KEY)) {
+            webView.loadUrl(extras.getString(URL_EXTRA_KEY));
+
+            if (extras.containsKey(ACTIONBAR_TITLE_KEY)) {
+                getSupportActionBar().setTitle(extras.getString(ACTIONBAR_TITLE_KEY));
+            }
+
+        } else {
+            finish();
+        }
     }
 }
