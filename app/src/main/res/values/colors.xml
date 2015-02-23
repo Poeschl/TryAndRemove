@@ -24,6 +24,7 @@
     <color name="accent_dark">#2962FF</color>
 
     <color name="primary_text">#DE000000</color>
+    <color name="primary_text_light">#DEFFFFFF</color>
     <color name="secondary_text">#89000000</color>
     <color name="disabled">#66000000</color>
     <color name="hint">@color/disabled</color>
