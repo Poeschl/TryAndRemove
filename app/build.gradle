@@ -16,23 +16,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
         classpath 'io.fabric.tools:gradle:1.14.4'
+        classpath 'de.undercouch:gradle-download-task:1.2'
     }
 }
 
@@ -45,6 +35,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'hugo'
+apply plugin: 'de.undercouch.download'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
@@ -127,24 +118,38 @@ androidUnitTest {
 apply plugin: 'checkstyle'
 
 checkstyle {
-    configFile new File("${project.projectDir}/../checkstyle/checkstyle.xml")
-    reportsDir new File("${project.projectDir}/build/outputs")
+    configFile new File("${project.buildDir}/checkstyle.xml")
+    reportsDir new File("${project.buildDir}/outputs")
     toolVersion "6.2"
 }
 
-//Add checkstyle execution on debug and release build
-assembleRelease {
-    it.dependsOn 'checkstyle'
-}
-assembleDebug {
-    it.dependsOn 'checkstyle'
-}
+//Add checkstyle execution
+preBuild.dependsOn('checkstyle')
+
 task checkstyle(type: Checkstyle) {
     source 'src'
     include '**/*.java'
     exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
 
+    def configProps = ['proj.module.dir': buildDir]
+    configProperties configProps
+
+    //If you are offline and the checkstyle stuff was downloaded once you can comment the next line out
+    it.dependsOn 'downloadCheckstyleConfig'
     classpath = files()
+}
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadCheckstyleConfig(type: Download) {
+    src([
+            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/checkstyle.xml',
+            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/suppressions.xml'
+    ])
+    dest buildDir
+    overwrite true
+    onlyIfNewer true
 }
 
 //Get environment variable of keystore settings folder location.
