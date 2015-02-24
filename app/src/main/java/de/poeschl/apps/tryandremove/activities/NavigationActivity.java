@@ -110,10 +110,9 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         bottomRecyclerView.setLayoutManager(new SmallLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         List<MenuItem<NavItem>> bottomItemList = new ArrayList<>();
-        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
-                getString(R.string.private_policy_title), R.drawable.ic_menu_info, NavItem.PRIVACY_POLICY));
-        bottomItemList.add(new de.poeschl.apps.tryandremove.models.MenuItem<>(
-                getString(R.string.imprint_title), R.drawable.ic_menu_imprint, NavItem.IMPRINT));
+        bottomItemList.add(new MenuItem<NavItem>(getString(R.string.settings_title), R.drawable.ic_menu_settings, NavItem.SETTINGS));
+        bottomItemList.add(new MenuItem<>(getString(R.string.private_policy_title), R.drawable.ic_menu_info, NavItem.PRIVACY_POLICY));
+        bottomItemList.add(new MenuItem<>(getString(R.string.imprint_title), R.drawable.ic_menu_imprint, NavItem.IMPRINT));
 
 
         NavigationItemAdapter<NavItem> adapter = new NavigationItemAdapter<>(bottomItemList);
@@ -125,24 +124,31 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     public void onNavigationItemClick(NavItem targetViewMode) {
         Intent openIntent;
         switch (targetViewMode) {
-            case IMPRINT:
-                openIntent = new Intent(this, WebViewActivity.class);
-                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, IMPRINT_URL);
-                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.imprint_title));
-                startChildrenActivity(openIntent);
-                break;
-            case PRIVACY_POLICY:
-                openIntent = new Intent(this, WebViewActivity.class);
-                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, PRIVACY_POLICY_URL);
-                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.private_policy_title));
-                startChildrenActivity(openIntent);
-                break;
             case APP_LIST:
                 //Ignore when we are in the app list
                 if (this.getClass().equals(AppListActivity.class)) {
                     openIntent = new Intent(this, AppListActivity.class);
                     startActivity(openIntent);
                 }
+                break;
+
+            case SETTINGS:
+                openIntent = new Intent(this, WebViewActivity.class);
+                startChildrenActivity(openIntent);
+                break;
+
+            case PRIVACY_POLICY:
+                openIntent = new Intent(this, WebViewActivity.class);
+                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, PRIVACY_POLICY_URL);
+                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.private_policy_title));
+                startChildrenActivity(openIntent);
+                break;
+
+            case IMPRINT:
+                openIntent = new Intent(this, WebViewActivity.class);
+                openIntent.putExtra(WebViewActivity.URL_EXTRA_KEY, IMPRINT_URL);
+                openIntent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, getString(R.string.imprint_title));
+                startChildrenActivity(openIntent);
                 break;
             default:
                 break;
@@ -156,7 +162,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     }
 
     protected enum NavItem {
-        APP_LIST, PRIVACY_POLICY, IMPRINT;
+        APP_LIST, PRIVACY_POLICY, IMPRINT, SETTINGS;
     }
 
 

@@ -42,7 +42,7 @@
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_menu_delete"
+            fab:fab_icon="@drawable/ic_action_delete"
             fab:fab_title="@string/app_list_layout_remove_apps_title"
             android:id="@+id/app_list_layout_remove_action_button"
             style="@style/TryAndRemoveTheme.FloatingButton"/>
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_title="@string/app_list_layout_clear_app_list_title"
-            fab:fab_icon="@drawable/ic_menu_clear"
+            fab:fab_icon="@drawable/ic_action_clear"
             android:id="@+id/app_list_layout_clear_action_button"
             style="@style/TryAndRemoveTheme.FloatingButton"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
