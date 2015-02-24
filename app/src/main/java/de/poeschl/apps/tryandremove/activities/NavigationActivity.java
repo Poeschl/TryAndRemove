@@ -51,7 +51,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     private DrawerLayout drawerLayout;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);
@@ -133,7 +133,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
                 break;
 
             case SETTINGS:
-                openIntent = new Intent(this, WebViewActivity.class);
+                openIntent = new Intent(this, SettingActivity.class);
                 startChildrenActivity(openIntent);
                 break;
 

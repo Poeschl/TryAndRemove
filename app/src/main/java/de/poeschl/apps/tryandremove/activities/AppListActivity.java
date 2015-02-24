@@ -67,7 +67,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     private MenuItem reloadToolbarButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);

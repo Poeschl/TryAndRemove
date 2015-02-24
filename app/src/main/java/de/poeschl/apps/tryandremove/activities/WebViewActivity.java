@@ -36,7 +36,7 @@ public class WebViewActivity extends ChildrenActivity {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setupLayout(R.layout.activity_privacy_policy);
