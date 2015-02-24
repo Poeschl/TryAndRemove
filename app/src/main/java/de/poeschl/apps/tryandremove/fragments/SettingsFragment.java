@@ -20,8 +20,14 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.SwitchPreference;
+import android.widget.Toast;
+
+import javax.inject.Inject;
 
 import de.poeschl.apps.tryandremove.R;
+import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
 /**
  * Created by Markus Pöschl on 24.02.2015.
@@ -30,25 +36,35 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     private static final String CRASHLYTICS_ENABLED_KEY = "preferences_crashlytics_enabled";
 
+    @Inject
+    @CrashlyticsEnabled
+    protected BooleanPreference crashlyticsEnabled;
+
     private SwitchPreference crashlyticsEnabledPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        TryAndRemoveApp.get(getActivity()).inject(this);
+
         addPreferencesFromResource(R.xml.preferences);
 
         crashlyticsEnabledPreference = (SwitchPreference) findPreference(CRASHLYTICS_ENABLED_KEY);
+        crashlyticsEnabledPreference.setChecked(crashlyticsEnabled.get());
         crashlyticsEnabledPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference.getKey().equals(CRASHLYTICS_ENABLED_KEY)) {
+            boolean newState = (boolean) newValue;
+            ((SwitchPreference) preference).setChecked(newState);
+            crashlyticsEnabled.set(newState);
 
-            ((SwitchPreference) preference).setChecked((boolean) newValue);
-
-            //TODO: Set the boolean and disable / enable crashlytics
+            if (!newState) {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.preferences_crashlytics_enabled_toast), Toast.LENGTH_SHORT).show();
+            }
         }
         return false;
     }

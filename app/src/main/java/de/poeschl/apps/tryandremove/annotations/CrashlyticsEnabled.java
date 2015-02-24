@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.fragments;
+package de.poeschl.apps.tryandremove.annotations;
 
-import dagger.Module;
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Created by Markus Pöschl on 24.02.2015.
  */
-@Module(
-        injects = {
-                SettingsFragment.class
-        },
-        complete = false,
-        library = true
-)
-public class FragmentsModule {
+@Qualifier
+@Retention(RUNTIME)
+public @interface CrashlyticsEnabled {
 }

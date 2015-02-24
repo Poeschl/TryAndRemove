@@ -81,6 +81,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListView.setHasFixedSize(true);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
     }
 
     @Override
