@@ -45,7 +45,7 @@ public class WebViewActivity extends ChildrenActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if (extras.containsKey(URL_EXTRA_KEY)) {
+        if (extras != null && extras.containsKey(URL_EXTRA_KEY)) {
             webView.loadUrl(extras.getString(URL_EXTRA_KEY));
 
             if (extras.containsKey(ACTIONBAR_TITLE_KEY)) {
