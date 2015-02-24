@@ -15,7 +15,7 @@
   -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/app_list_toolbar_action_record"
         android:icon="@drawable/ic_menu_record_drawable"
@@ -25,6 +25,6 @@
     <item
         android:id="@+id/app_list_toolbar_action_refresh"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_menu_refresh"
-        android:title="@string/app_list_toolbar_action_refresh_title" />
+        android:icon="@drawable/ic_action_refresh"
+        android:title="@string/app_list_toolbar_action_refresh_title"/>
 </menu>

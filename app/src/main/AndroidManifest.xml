@@ -14,17 +14,18 @@
   ~ limitations under the License.
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="de.poeschl.apps.tryandremove">
+<manifest
+    package="de.poeschl.apps.tryandremove"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher_app"
-        android:theme="@style/TryAndRemoveTheme"
         android:name=".TryAndRemoveApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher_app"
+        android:label="@string/app_name"
         android:supportsRtl="true"
+        android:theme="@style/TryAndRemoveTheme"
         tools:ignore="UnusedAttribute">
 
         <activity
@@ -39,6 +40,10 @@
 
         <activity
             android:name=".activities.WebViewActivity"
+            android:parentActivityName=".activities.AppListActivity"/>
+        <activity
+            android:name=".activities.SettingActivity"
+            android:label="@string/settings_title"
             android:parentActivityName=".activities.AppListActivity"/>
 
         <receiver

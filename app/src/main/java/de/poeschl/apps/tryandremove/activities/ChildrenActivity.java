@@ -31,7 +31,7 @@ import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 public class ChildrenActivity extends ToolbarActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);

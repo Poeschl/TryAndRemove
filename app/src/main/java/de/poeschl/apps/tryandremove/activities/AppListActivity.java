@@ -67,7 +67,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     private MenuItem reloadToolbarButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);
@@ -81,6 +81,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListView.setHasFixedSize(true);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
     }
 
     @Override
@@ -126,10 +128,10 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     private void setRecordButtonState(boolean active) {
         if (active) {
             Timber.d("App tracking activated");
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_on);
         } else {
             Timber.d("App tracking deactivated");
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_off);
         }
     }
 

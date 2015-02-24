@@ -36,7 +36,7 @@ public class WebViewActivity extends ChildrenActivity {
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setupLayout(R.layout.activity_privacy_policy);
@@ -45,7 +45,7 @@ public class WebViewActivity extends ChildrenActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        if (extras.containsKey(URL_EXTRA_KEY)) {
+        if (extras != null && extras.containsKey(URL_EXTRA_KEY)) {
             webView.loadUrl(extras.getString(URL_EXTRA_KEY));
 
             if (extras.containsKey(ACTIONBAR_TITLE_KEY)) {

@@ -36,7 +36,8 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
                 NavigationActivity.class,
                 ChildrenActivity.class,
                 ToolbarActivity.class,
-                WebViewActivity.class
+                WebViewActivity.class,
+                SettingActivity.class
         },
         complete = false,
         library = true

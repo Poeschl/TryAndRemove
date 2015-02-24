@@ -32,5 +32,10 @@
     <string name="private_policy_title">Privacy Policy</string>
     <string name="navigation_drawer_app_list_title">App List</string>
     <string name="imprint_title">Imprint</string>
+    <string name="settings_title">Settings</string>
+    <string name="preferences_crashlytics_switch_title">Collect Analysis Data</string>
+    <string name="preferences_crashlytics_switch_summary">Enables the tracking by Crashlytics and helping the developer to fix bugs and app crashes. All data is send anonymously.</string>
+    <string name="preferences_crashlytics_section_title">Crashlytics</string>
+    <string name="preferences_crashlytics_enabled_toast">Crashlytics gets disabled the next time you restart the app.</string>
 
 </resources>
