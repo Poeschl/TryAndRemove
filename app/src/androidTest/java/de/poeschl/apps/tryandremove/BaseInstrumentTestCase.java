@@ -17,8 +17,6 @@
 package de.poeschl.apps.tryandremove;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.robotium.solo.Solo;
@@ -30,8 +28,10 @@ import com.robotium.solo.Solo;
 public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
     public static final int TIMEOUT = 500;
+    public static final int SHORT_SLEEP_INTERVAL = 50;
 
     protected Solo solo;
+    protected TestUtils testUtils;
 
     public BaseInstrumentTestCase(Class<T> testClass) {
         super(testClass);
@@ -41,7 +41,7 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
     protected void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation());
-        getActivity();
+        testUtils = new TestUtils(solo);
     }
 
     @Override
@@ -55,8 +55,5 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
         return super.getActivity();
     }
 
-    public void setMockMode(boolean enabled) {
-        SharedPreferences prefs = getActivity().getSharedPreferences(getActivity().getPackageName(), Context.MODE_PRIVATE);
-        prefs.edit().putBoolean("debug_mock_mode_boolean", enabled).commit();
-    }
+
 }
