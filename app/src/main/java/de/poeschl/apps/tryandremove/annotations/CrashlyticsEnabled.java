@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.interfaces;
+package de.poeschl.apps.tryandremove.annotations;
 
-import android.app.Fragment;
+import java.lang.annotation.Retention;
+
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 20.01.2015.
+ * Created by Markus Pöschl on 24.02.2015.
  */
-public interface FragmentChangeListener {
-    /**
-     * Is called when the fragment structure change.
-     *
-     * @param currentFragment The fragment which is currently shown.
-     */
-    public void onFragmentChange(Fragment currentFragment);
+@Qualifier
+@Retention(RUNTIME)
+public @interface CrashlyticsEnabled {
 }

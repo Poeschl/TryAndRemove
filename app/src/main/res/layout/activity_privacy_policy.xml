@@ -14,12 +14,16 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <dimen name="appList_bottomRightButton_margin">5dp</dimen>
-    <dimen name="navigation_drawer_title_offset">72dp</dimen>
-    <dimen name="navigation_drawer_side_offset">16dp</dimen>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment">
 
-    <integer name="animation_duration_activities">300</integer>
-    <integer name="animation_fast_duration_activities">200</integer>
-    <integer name="animation_slow_duration_activities">500</integer>
-</resources>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/private_policy_layout_policy_webView"
+        android:layout_gravity="center"/>
+</FrameLayout>

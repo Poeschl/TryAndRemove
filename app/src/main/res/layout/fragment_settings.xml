@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2015 Markus Poeschl
   ~
@@ -15,15 +16,14 @@
   -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.poeschl.apps.tryandremove.fragments.PrivatePolicyFragment">
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-
-    <WebView
+    <fragment
+        android:id="@+id/fragment"
+        android:name="de.poeschl.apps.tryandremove.fragments.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/private_policy_layout_policy_webView"
-        android:layout_gravity="center" />
+        tools:layout="@android:layout/preference_category"/>
 </FrameLayout>

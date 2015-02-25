@@ -16,17 +16,13 @@
 
 
 
-
-
-
-
-
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
         classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
         classpath 'io.fabric.tools:gradle:1.14.4'
+        classpath 'de.undercouch:gradle-download-task:1.2'
     }
 }
 
@@ -39,6 +35,7 @@ apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'hugo'
+apply plugin: 'de.undercouch.download'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
@@ -118,6 +115,43 @@ androidUnitTest {
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
 
+apply plugin: 'checkstyle'
+
+checkstyle {
+    configFile new File("${project.buildDir}/checkstyle.xml")
+    reportsDir new File("${project.buildDir}/outputs")
+    toolVersion "6.2"
+}
+
+//Add checkstyle execution
+preBuild.dependsOn('checkstyle')
+
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    def configProps = ['proj.module.dir': buildDir]
+    configProperties configProps
+
+    //If you are offline and the checkstyle stuff was downloaded once you can comment the next line out
+    it.dependsOn 'downloadCheckstyleConfig'
+    classpath = files()
+}
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadCheckstyleConfig(type: Download) {
+    src([
+            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/checkstyle.xml',
+            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/suppressions.xml'
+    ])
+    dest buildDir
+    overwrite true
+    onlyIfNewer true
+}
+
 //Get environment variable of keystore settings folder location.
 def keyStorePath = System.getenv('Android_Keystore_Path')
 
@@ -178,18 +212,21 @@ dependencies {
     compile 'com.jakewharton:butterknife:6.0.0'
     compile 'com.jakewharton.timber:timber:2.5.0'
     compile 'com.squareup.dagger:dagger:1.2.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.1@aar') {
         transitive = true;
     }
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.getbase:floatingactionbutton:1.4.0'
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
+
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
+
     androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     androidTestCompile 'org.hamcrest:hamcrest-core:1.3'
     androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+
     debugCompile 'com.android.support:support-v4:21.0.3'
     debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
 }

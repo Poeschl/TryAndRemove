@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2014 Markus Poeschl
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,6 +15,9 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="nav_bar_color">#5892BE</color>
-</resources>
+<alpha xmlns:android="http://schemas.android.com/apk/res/android"
+       android:fromAlpha="0.0"
+       android:toAlpha="1.0"
+       android:duration="@integer/animation_fast_duration_activities">
+
+</alpha>

@@ -19,15 +19,15 @@ package de.poeschl.apps.tryandremove.fragments;
 
 import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
 import de.poeschl.apps.tryandremove.R;
-import de.poeschl.apps.tryandremove.activities.MainActivity;
+import de.poeschl.apps.tryandremove.activities.AppListActivity;
 
 /**
  * Created by Markus Pöschl on 30.01.2015.
  */
-public class AppListFragmentTest extends BaseInstrumentTestCase<MainActivity> {
+public class AppListFragmentTest extends BaseInstrumentTestCase<AppListActivity> {
 
     public AppListFragmentTest() {
-        super(MainActivity.class);
+        super(AppListActivity.class);
     }
 
     public void setUp() throws Exception {

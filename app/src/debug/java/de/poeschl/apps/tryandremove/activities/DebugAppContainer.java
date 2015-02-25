@@ -381,7 +381,7 @@ public class DebugAppContainer implements AppContainer {
     }
 
     private void restartApp() {
-        Intent newApp = new Intent(app, MainActivity.class);
+        Intent newApp = new Intent(app, AppListActivity.class);
         newApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         tracking.set(false);
         app.startActivity(newApp);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Markus Poeschl
+ * Copyright 2014 Markus Pöschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.fragments;
-
-import dagger.Module;
+package de.poeschl.apps.tryandremove;
 
 /**
- * Created by Markus Pöschl on 24.02.2015.
+ * Created by Markus Pöschl on 05.12.14.
  */
-@Module(
-        injects = {
-                SettingsFragment.class
-        },
-        complete = false,
-        library = true
-)
-public class FragmentsModule {
+public class Modules {
+
+    private Modules() {
+
+    }
+
+    static Object[] list(TryAndRemoveApp app) {
+        return new Object[]{
+                new AppModule(app)
+        };
+    }
 }

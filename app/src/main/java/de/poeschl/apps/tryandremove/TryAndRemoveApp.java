@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,11 @@ import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 
+import javax.inject.Inject;
+
 import dagger.ObjectGraph;
+import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.trees.CrashlyticsReportTree;
 import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
@@ -32,24 +36,32 @@ import timber.log.Timber;
 public class TryAndRemoveApp extends Application {
     private ObjectGraph objectGraph;
 
+    @Inject
+    @CrashlyticsEnabled
+    protected BooleanPreference crashlyticsEnabled;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        buildObjectGraphAndInject();
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
 
         } else {
-            Fabric.with(this, new Crashlytics());
-
-            Timber.plant(new CrashlyticsReportTree());
+            if (crashlyticsEnabled.get()) {
+                Fabric.with(this, new Crashlytics());
+                Timber.plant(new CrashlyticsReportTree());
+            }
         }
 
-        buildObjectGraphAndInject();
+        Timber.v("Crashlytics enabled: " + crashlyticsEnabled.get());
     }
 
     public void buildObjectGraphAndInject() {
         objectGraph = ObjectGraph.create(Modules.list(this));
+        objectGraph.inject(this);
         Timber.v("Objectgraph created");
     }
 

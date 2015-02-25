@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,8 +32,12 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
  */
 @Module(
         injects = {
-                MainActivity.class,
-                TryAndRemoveActivity.class
+                AppListActivity.class,
+                NavigationActivity.class,
+                ChildrenActivity.class,
+                ToolbarActivity.class,
+                WebViewActivity.class,
+                SettingActivity.class
         },
         complete = false,
         library = true

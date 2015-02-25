@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+                xmlns:fab="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/app_list_layout_apps_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"/>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/app_list_layout_floating_menu"
@@ -37,26 +37,23 @@
         android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        fab:fab_addButtonColorNormal="@color/primary"
-        fab:fab_addButtonColorPressed="@color/accent"
-        fab:fab_addButtonPlusIconColor="@color/textColorPrimary"
-        fab:fab_expandDirection="up">
+        style="@style/TryAndRemoveTheme.FloatingMenuButton">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_menu_delete"
+            fab:fab_icon="@drawable/ic_action_delete"
             fab:fab_title="@string/app_list_layout_remove_apps_title"
             android:id="@+id/app_list_layout_remove_action_button"
-            style="@style/AppTheme.FloatingButton" />
+            style="@style/TryAndRemoveTheme.FloatingButton"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_title="@string/app_list_layout_clear_app_list_title"
-            fab:fab_icon="@drawable/ic_menu_clear"
+            fab:fab_icon="@drawable/ic_action_clear"
             android:id="@+id/app_list_layout_clear_action_button"
-            style="@style/AppTheme.FloatingButton" />
+            style="@style/TryAndRemoveTheme.FloatingButton"/>
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Markus Pöschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove;
+package de.poeschl.apps.tryandremove.activities;
 
-/**
- * Created by Markus Pöschl on 05.12.14.
- */
-public class Modules {
 
-    private Modules(){}
+import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
 
-    static Object[] list(TryAndRemoveApp app){
-        return new Object[] {
-               new AppModule(app)
-        };
+public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity> {
+
+    public AppListActivityTest() {
+        super(AppListActivity.class);
+    }
+
+    public void setUp() throws Exception {
+        super.setUp();
+        getActivity();
+    }
+
+    public void testStart() {
+        solo.assertCurrentActivity("Assume MainActivity on start", "MainActivity");
     }
 }

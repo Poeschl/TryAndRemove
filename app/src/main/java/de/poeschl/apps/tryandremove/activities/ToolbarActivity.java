@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package de.poeschl.apps.tryandremove.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.ViewGroup;
+import android.support.v7.widget.Toolbar;
 
 import javax.inject.Inject;
 
@@ -26,23 +26,21 @@ import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 
 /**
- * Created by Markus Pöschl on 17.12.2014.
+ * Created by Markus Pöschl on 12.02.15.
  */
-public class TryAndRemoveActivity extends ActionBarActivity {
+public abstract class ToolbarActivity extends ActionBarActivity {
+
+    protected Toolbar toolbar;
 
     @Inject
     AppContainer appContainer;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);
     }
 
-    protected void setupLayout(int layout) {
-        ViewGroup container = appContainer.get(this);
-        //Inflate navigation drawer layout
-        getLayoutInflater().inflate(layout, container);
-    }
+    protected abstract void setupLayout(int layout);
 }

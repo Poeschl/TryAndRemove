@@ -16,21 +16,22 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
+import android.os.Bundle;
 
-import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
+import de.poeschl.apps.tryandremove.R;
+import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 
-public class MainActivityTest extends BaseInstrumentTestCase<MainActivity> {
+/**
+ * Created by Markus Pöschl on 24.02.2015.
+ */
+public class SettingActivity extends ChildrenActivity {
 
-    public MainActivityTest() {
-        super(MainActivity.class);
-    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    public void setUp() throws Exception {
-        super.setUp();
-        getActivity();
-    }
+        TryAndRemoveApp.get(this).inject(this);
 
-    public void testStart() {
-        solo.assertCurrentActivity("Assume MainActivity on start", "MainActivity");
+        setupLayout(R.layout.fragment_settings);
     }
 }
