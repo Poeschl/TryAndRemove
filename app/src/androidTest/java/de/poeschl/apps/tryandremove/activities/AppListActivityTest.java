@@ -22,7 +22,13 @@ import android.view.View;
 import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
 import de.poeschl.apps.tryandremove.R;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+
 public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity> {
+
+    private static final String MOCK_DUMMY = "de.mock.Dummy0";
 
     public AppListActivityTest() {
         super(AppListActivity.class);
@@ -30,9 +36,10 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
 
     public void setUp() throws Exception {
         super.setUp();
+        setMockMode(true);
         getActivity();
-        testUtils.resetSharedPreferences();
-
+        //Ensure that we always have at least this dummy on the list.
+        getActivity().packageListData.addPackage(MOCK_DUMMY);
     }
 
     public void testStart() {
@@ -64,15 +71,71 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         solo.sleep(SHORT_SLEEP_INTERVAL);
         assertEquals("Tracking should be disabled after click", false, getActivity().isTracking.get());
 
-        String testAppName = "Telefon";
-        getActivity().packageListData.addPackage("com.android.phone");
+        String testAppName = "Added";
+        getActivity().packageListData.addPackage("de.dummy.Added");
         assertFalse(solo.searchText(testAppName, true));
         solo.clickOnView(reloadButton);
         solo.sleep(500);
         assertTrue("Dummy list entry should be visible after reload click", solo.searchText(testAppName));
     }
 
-    public void testFloatingButton() {
-        //TODO: Write tests
+    public void testClearButton() {
+        View clearButton = solo.getView(R.id.app_list_layout_clear_action_button);
+
+        solo.clickOnView(solo.getView(R.id.fab_expand_menu_button));
+        solo.sleep(LONG_SLEEP_INTERVAL);
+
+        //Check if button is expanded
+        assertThat("Clear button is not expanded", clearButton.getTranslationY(), equalTo(0f));
+
+        solo.clickOnView(clearButton);
+
+        solo.waitForDialogToOpen();
+        assertTrue("Wrong dialog message", solo.searchText("Clear app list?", true));
+
+        solo.clickOnButton("Cancel");
+        solo.waitForDialogToClose();
+
+        assertTrue("List shouldn't be cleared on cancel", solo.searchText("Dummy0", true));
+
+        solo.clickOnView(clearButton);
+        solo.waitForDialogToOpen();
+
+        solo.clickOnButton("Clear");
+        solo.waitForDialogToClose();
+
+        //Check if button is hidden in menu again
+        assertThat("Clear button is not collapsed", clearButton.getTranslationY(), greaterThan(0f));
+        assertFalse("List should be cleared on clear", solo.searchText("Dummy0", true));
+    }
+
+    public void testRemoveButton() {
+        View removeButton = solo.getView(R.id.app_list_layout_remove_action_button);
+
+        solo.clickOnView(solo.getView(R.id.fab_expand_menu_button));
+        solo.sleep(LONG_SLEEP_INTERVAL);
+
+        //Check if button is expanded
+        assertThat("Remove button is not expanded", removeButton.getTranslationY(), equalTo(0f));
+
+        solo.clickOnView(removeButton);
+
+        solo.waitForDialogToOpen();
+        assertTrue("Wrong dialog message", solo.searchText("Remove all apps in the list from your phone?", true));
+
+        solo.clickOnButton("Cancel");
+        solo.waitForDialogToClose();
+
+        assertTrue("List shouldn't be cleared on cancel", solo.searchText("Dummy0", true));
+
+        solo.clickOnView(removeButton);
+        solo.waitForDialogToOpen();
+
+        solo.clickOnButton("Remove");
+        solo.waitForDialogToClose();
+
+        //Check if button is hidden in menu again
+        assertThat("Remove button is not collapsed", removeButton.getTranslationY(), greaterThan(0f));
+        assertFalse("List should be clean on clear", solo.searchText("Dummy0", true));
     }
 }

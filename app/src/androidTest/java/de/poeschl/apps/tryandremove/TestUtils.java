@@ -16,8 +16,6 @@
 
 package de.poeschl.apps.tryandremove;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Point;
 
 import com.robotium.solo.Solo;
@@ -31,16 +29,6 @@ public class TestUtils {
 
     public TestUtils(Solo solo) {
         this.solo = solo;
-    }
-
-    public void setMockMode(boolean enabled) {
-        SharedPreferences prefs = solo.getCurrentActivity().getSharedPreferences(solo.getCurrentActivity().getPackageName(), Context.MODE_PRIVATE);
-        prefs.edit().putBoolean("debug_mock_mode_boolean", enabled).apply();
-    }
-
-    public void resetSharedPreferences() {
-        SharedPreferences prefs = solo.getCurrentActivity().getSharedPreferences(solo.getCurrentActivity().getPackageName(), Context.MODE_PRIVATE);
-        prefs.edit().clear();
     }
 
     /**

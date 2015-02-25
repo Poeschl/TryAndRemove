@@ -81,8 +81,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListView.setHasFixedSize(true);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-
     }
 
     @Override
@@ -208,6 +206,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Override
     public void onUserConfirmedRemove() {
         appManager.remove(packageListData.getPackages());
+        updatePackageList();
         floatMenu.collapse();
     }
 

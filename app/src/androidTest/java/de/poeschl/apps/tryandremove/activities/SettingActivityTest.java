@@ -30,7 +30,6 @@ public class SettingActivityTest extends BaseInstrumentTestCase<SettingActivity>
     public void setUp() throws Exception {
         super.setUp();
         getActivity();
-        testUtils.resetSharedPreferences();
     }
 
     public void testStart() {

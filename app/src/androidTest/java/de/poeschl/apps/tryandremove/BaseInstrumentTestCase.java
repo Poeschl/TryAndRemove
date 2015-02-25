@@ -17,6 +17,8 @@
 package de.poeschl.apps.tryandremove;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
 
 import com.robotium.solo.Solo;
@@ -29,6 +31,9 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
 
     public static final int TIMEOUT = 500;
     public static final int SHORT_SLEEP_INTERVAL = 50;
+    public static final int MEDIUM_SLEEP_INTERVAL = 200;
+    public static final int LONG_SLEEP_INTERVAL = 500;
+
 
     protected Solo solo;
     protected TestUtils testUtils;
@@ -42,6 +47,7 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
         super.setUp();
         solo = new Solo(getInstrumentation());
         testUtils = new TestUtils(solo);
+        resetSharedPreferences();
     }
 
     @Override
@@ -55,5 +61,18 @@ public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrume
         return super.getActivity();
     }
 
+    private void resetSharedPreferences() {
+        SharedPreferences prefs = getInstrumentation().getTargetContext().getSharedPreferences(getInstrumentation().getTargetContext().getPackageName(), Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
+    }
 
+    /**
+     * Enables mock mode. Needs to be called before the activity is initiatied.
+     *
+     * @param enabled If mock mode should be on of off.
+     */
+    protected void setMockMode(boolean enabled) {
+        SharedPreferences prefs = getInstrumentation().getTargetContext().getSharedPreferences(getInstrumentation().getTargetContext().getPackageName(), Context.MODE_PRIVATE);
+        prefs.edit().putBoolean("debug_mock_mode_boolean", enabled).apply();
+    }
 }

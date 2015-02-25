@@ -37,8 +37,6 @@ public class WebViewActivityTest extends BaseInstrumentTestCase<WebViewActivity>
         intent.putExtra(WebViewActivity.ACTIONBAR_TITLE_KEY, "TITLE");
         setActivityIntent(intent);
         getActivity();
-
-        testUtils.resetSharedPreferences();
     }
 
     public void testStart() {

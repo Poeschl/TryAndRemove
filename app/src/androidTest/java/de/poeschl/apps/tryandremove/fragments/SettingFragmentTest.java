@@ -34,7 +34,6 @@ public class SettingFragmentTest extends BaseInstrumentTestCase<SettingActivity>
     public void setUp() throws Exception {
         super.setUp();
         getActivity();
-        testUtils.resetSharedPreferences();
 
         settingsFragment = (SettingsFragment) getActivity().getFragmentManager().findFragmentById(R.id.settings_fragment);
     }
@@ -43,7 +42,7 @@ public class SettingFragmentTest extends BaseInstrumentTestCase<SettingActivity>
         assertTrue("Crashlytics should be enabled by default", settingsFragment.crashlyticsEnabled.get());
 
         solo.clickOnText("Collect Analysis Data");
-        assertTrue("Toast with hint is not shown", solo.waitForText("Crashlytics gets disabled the next"));
+        assertTrue("Toast with hint is not shown", solo.waitForText("Crashlytics gets disabled the next", 1, TIMEOUT));
         assertFalse("Crashlytics should be disabled after click", settingsFragment.crashlyticsEnabled.get());
     }
 }
