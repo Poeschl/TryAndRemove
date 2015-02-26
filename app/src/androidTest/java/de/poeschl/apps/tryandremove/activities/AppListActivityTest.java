@@ -138,4 +138,34 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         assertThat("Remove button is not collapsed", removeButton.getTranslationY(), greaterThan(0f));
         assertFalse("List should be clean on clear", solo.searchText("Dummy0", true));
     }
+
+    public void testNavigationToImprint() {
+        testUtils.openNavigationDrawer();
+
+        solo.clickOnText("Imprint");
+
+        assertTrue("WebViewActivity should be started.", solo.waitForActivity(WebViewActivity.class));
+
+        assertTrue("Imprint should be shown", solo.searchText("Imprint"));
+        assertTrue("Imprint content should be shown", solo.searchText("Impressum"));
+    }
+
+    public void testNavigationToPrivacyPolicy() {
+        testUtils.openNavigationDrawer();
+
+        solo.clickOnText("Privacy Policy");
+
+        assertTrue("WebViewActivity should be started.", solo.waitForActivity(WebViewActivity.class));
+
+        assertTrue("Policy should be shown", solo.searchText("Privacy Policy", 2));
+        assertTrue("Policy content should be shown", solo.searchText("Contact"));
+    }
+
+    public void testNavigationToSettings() {
+        testUtils.openNavigationDrawer();
+
+        solo.clickOnText("Settings");
+
+        assertTrue("SettingActivity should be started.", solo.waitForActivity(SettingActivity.class));
+    }
 }

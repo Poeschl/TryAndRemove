@@ -47,5 +47,6 @@ public class TestUtils {
         int toY = fromY;
 
         solo.drag(fromX, toX, fromY, toY, 1);
+        solo.sleep(20);
     }
 }
