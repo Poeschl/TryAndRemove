@@ -18,6 +18,8 @@ package de.poeschl.apps.tryandremove.interfaces;
 
 import java.util.List;
 
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
+
 /**
  * Created by Markus Pöschl on 11.12.2014.
  */
@@ -51,4 +53,6 @@ public interface PackageList {
     public void clear();
 
     public boolean isEmpty();
+
+    public void setPackageUpdateHandler(ListUpdateHandler listener);
 }

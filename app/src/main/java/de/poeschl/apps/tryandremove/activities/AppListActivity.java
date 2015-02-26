@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove.activities;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -38,6 +39,7 @@ import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
@@ -79,6 +81,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListView.setAdapter(appAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(this));
         appListView.setHasFixedSize(true);
+
+        packageListData.setPackageUpdateHandler(new UpdateHandler());
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -190,7 +194,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Override
     public void onUserConfirmedClear() {
         packageListData.clear();
-        updatePackageList();
         floatMenu.collapse();
     }
 
@@ -206,11 +209,20 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Override
     public void onUserConfirmedRemove() {
         appManager.remove(packageListData.getPackages());
-        updatePackageList();
         floatMenu.collapse();
     }
 
     private void updatePackageList() {
         appAdapter.updateAdapter(packageListData);
+    }
+
+    public class UpdateHandler extends ListUpdateHandler {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data.getString(ListUpdateHandler.CHANGE_KEY).equals(ListUpdateHandler.APP_LIST_CHANGE)) {
+                updatePackageList();
+            }
+        }
     }
 }
