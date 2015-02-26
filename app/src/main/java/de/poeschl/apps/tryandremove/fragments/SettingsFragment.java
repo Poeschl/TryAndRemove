@@ -34,7 +34,7 @@ import de.poeschl.apps.tryandremove.models.BooleanPreference;
  */
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
-    private static final String CRASHLYTICS_ENABLED_KEY = "preferences_crashlytics_enabled";
+    protected static final String CRASHLYTICS_ENABLED_KEY = "preferences_crashlytics_enabled";
 
     @Inject
     @CrashlyticsEnabled

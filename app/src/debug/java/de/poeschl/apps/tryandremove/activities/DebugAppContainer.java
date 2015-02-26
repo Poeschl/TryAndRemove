@@ -37,7 +37,6 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
@@ -190,7 +189,7 @@ public class DebugAppContainer implements AppContainer {
                 @Override
                 public void run() {
 //                    drawerLayout.openDrawer(Gravity.END);
-                    Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_SHORT).show();
                 }
             }, TOAST_TIME);
             seenDebugDrawer.set(true);

@@ -21,7 +21,7 @@
              android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/settings_fragment"
         android:name="de.poeschl.apps.tryandremove.fragments.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
