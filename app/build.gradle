@@ -16,6 +16,8 @@
 
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -217,7 +219,9 @@ dependencies {
     }
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.getbase:floatingactionbutton:1.4.0'
+//    Is replaced with local aar until changes gets merged
+//    compile 'com.getbase:floatingactionbutton:1.4.0'
+    compile project(':android-floating-action-button')
     provided 'com.squareup.dagger:dagger-compiler:1.2.1'
 
     testCompile 'junit:junit:4.10'

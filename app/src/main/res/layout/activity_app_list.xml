@@ -37,9 +37,12 @@
         android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        style="@style/TryAndRemoveTheme.FloatingMenuButton">
+        style="@style/TryAndRemoveTheme.FloatingMenuButton"
+        fab:fab_collapsedIcon="@drawable/ic_action_delete"
+        fab:fab_labelStyle="@style/TryAndRemoveTheme.FloatingActionButtonLabel"
+        fab:fab_labelsPosition="left">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_icon="@drawable/ic_action_delete"

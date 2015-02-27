@@ -31,4 +31,5 @@
     <color name="divider">#1E000000</color>
 
     <color name="background">#fff</color>
+    <color name="background_dark">@color/primary_main</color>
 </resources>
