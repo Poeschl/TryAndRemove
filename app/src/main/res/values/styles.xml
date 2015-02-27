@@ -58,4 +58,9 @@
         <item name="color">@color/primary_text_light</item>
     </style>
 
+    <style name="TryAndRemoveTheme.FloatingActionButtonLabel">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/primary_text_light</item>
+    </style>
+
 </resources>
