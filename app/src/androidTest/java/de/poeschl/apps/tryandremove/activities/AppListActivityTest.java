@@ -64,19 +64,17 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         assertTrue("Refresh button not showing", reloadButton.getVisibility() == View.VISIBLE);
 
         solo.clickOnView(recordButton);
-        solo.sleep(SHORT_SLEEP_INTERVAL);
+        solo.sleep(MEDIUM_SLEEP_INTERVAL);
         assertEquals("Tracking should be enabled after click", true, getActivity().isTracking.get());
 
         solo.clickOnView(recordButton);
-        solo.sleep(SHORT_SLEEP_INTERVAL);
+        solo.sleep(MEDIUM_SLEEP_INTERVAL);
         assertEquals("Tracking should be disabled after click", false, getActivity().isTracking.get());
 
         String testAppName = "Added";
-        getActivity().packageListData.addPackage("de.dummy.Added");
-        assertFalse(solo.searchText(testAppName, true));
-        solo.clickOnView(reloadButton);
-        solo.sleep(500);
-        assertTrue("Dummy list entry should be visible after reload click", solo.searchText(testAppName));
+        getActivity().packageListData.addPackage("de.dummy." + testAppName);
+        solo.sleep(MEDIUM_SLEEP_INTERVAL);
+        assertTrue("Test package not found", solo.searchText(testAppName, true));
     }
 
     public void testClearButton() {
@@ -134,9 +132,19 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         solo.clickOnButton("Remove");
         solo.waitForDialogToClose();
 
+        solo.sleep(SHORT_SLEEP_INTERVAL);
+
         //Check if button is hidden in menu again
         assertThat("Remove button is not collapsed", removeButton.getTranslationY(), greaterThan(0f));
         assertFalse("List should be clean on clear", solo.searchText("Dummy0", true));
+    }
+
+    public void testFloatingButton() {
+        solo.clickOnView(solo.getView(R.id.fab_expand_menu_button));
+        solo.sleep(LONG_SLEEP_INTERVAL);
+
+        assertTrue("Clear list label is not shown.", solo.searchText("Clear list", true));
+        assertTrue("Remove app label not shown.", solo.searchText("Remove all shown apps", true));
     }
 
     public void testNavigationToImprint() {
