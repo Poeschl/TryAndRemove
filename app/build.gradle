@@ -75,8 +75,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false //Don't forget to set crashlytics up for proguard
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.googlePlay
 
 
