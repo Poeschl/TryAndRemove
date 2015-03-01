@@ -51,6 +51,7 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
         for (int i = 0; i < 6; i++) {
             ApplicationInfo appInfo = new ApplicationInfo();
             appInfo.icon = android.R.drawable.ic_menu_edit;
+            appInfo.packageName = MOCK_PACKAGE + i;
 
             PackageInfo temp = new PackageInfo();
             temp.applicationInfo = appInfo;
@@ -105,6 +106,11 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
     }
 
     public Drawable loadItemIcon(PackageItemInfo info, ApplicationInfo appInfo) {
+        return app.getResources().getDrawable(appInfo.icon);
+    }
+
+    @Override
+    public Drawable getDrawable(String packageName, int resid, ApplicationInfo appInfo) {
         return app.getResources().getDrawable(appInfo.icon);
     }
 }
