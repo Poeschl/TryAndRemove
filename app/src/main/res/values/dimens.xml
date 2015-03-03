@@ -15,9 +15,12 @@
   -->
 
 <resources>
-    <dimen name="appList_bottomRightButton_margin">5dp</dimen>
+    <dimen name="appList_floating_menu_margin">4dp</dimen>
     <dimen name="navigation_drawer_title_offset">72dp</dimen>
     <dimen name="navigation_drawer_side_offset">16dp</dimen>
+
+    <dimen name="toolbar_spinner_width">52dp</dimen>
+    <dimen name="toolbar_spinner_text_left_padding">4dp</dimen>
 
     <integer name="animation_duration_activities">300</integer>
     <integer name="animation_fast_duration_activities">200</integer>
