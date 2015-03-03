@@ -65,7 +65,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Inject
     AppManager appManager;
 
-    private MenuItem recordToolbarButton;
     private MenuItem reloadToolbarButton;
 
     @Override
@@ -105,7 +104,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
 
         getMenuInflater().inflate(R.menu.app_list_toolbar_actions, menu);
 
-        recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
         reloadToolbarButton = menu.findItem(R.id.app_list_toolbar_action_refresh);
 
         return true;
@@ -114,9 +112,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.app_list_toolbar_action_record:
-                toggleRecording();
-                return true;
             case R.id.app_list_toolbar_action_refresh:
                 updatePackageList();
                 return true;
