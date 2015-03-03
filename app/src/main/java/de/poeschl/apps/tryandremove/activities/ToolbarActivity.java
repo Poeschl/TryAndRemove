@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Spinner;
 
 import javax.inject.Inject;
 
@@ -31,6 +32,7 @@ import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 public abstract class ToolbarActivity extends ActionBarActivity {
 
     protected Toolbar toolbar;
+    protected Spinner toolbarSpinner;
 
     @Inject
     AppContainer appContainer;

@@ -74,6 +74,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         getLayoutInflater().inflate(R.layout.navigation_drawer_layout, navigationDrawer);
 
         toolbar = ButterKnife.findById(container, R.id.toolbar);
+        toolbarSpinner = ButterKnife.findById(this, R.id.toolbar_spinner);
         topRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_top_recyclerView);
         bottomRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_bottom_recyclerView);
         drawerLayout = ButterKnife.findById(container, R.id.drawer_layout);
