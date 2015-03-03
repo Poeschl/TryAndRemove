@@ -19,15 +19,10 @@ package de.poeschl.apps.tryandremove.activities;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 
 import javax.inject.Inject;
 
-import butterknife.ButterKnife;
-import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 
@@ -37,7 +32,7 @@ import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 public abstract class ToolbarActivity extends ActionBarActivity {
 
     protected Toolbar toolbar;
-    private Spinner toolbarSpinner;
+    protected Spinner toolbarSpinner;
 
     @Inject
     AppContainer appContainer;
@@ -47,20 +42,6 @@ public abstract class ToolbarActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);
-        toolbarSpinner = ButterKnife.findById(this, R.id.toolbar_spinner);
-
-    }
-
-    protected void enableToolbarSpinner() {
-        toolbarSpinner.setVisibility(View.VISIBLE);
-    }
-
-    protected void setToolbarSpinnerAdapter(SpinnerAdapter adapter) {
-        toolbarSpinner.setAdapter(adapter);
-    }
-
-    protected void setToolbarSpinnerItemClickListener(AdapterView.OnItemClickListener onItemClickListener) {
-        toolbarSpinner.setOnItemClickListener(onItemClickListener);
     }
 
     protected abstract void setupLayout(int layout);

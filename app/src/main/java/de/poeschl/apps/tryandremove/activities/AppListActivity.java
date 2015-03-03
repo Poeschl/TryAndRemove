@@ -24,6 +24,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -35,6 +37,7 @@ import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.RecordAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
@@ -46,7 +49,7 @@ import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
 
-public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
+public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AdapterView.OnItemSelectedListener {
 
     @InjectView(R.id.app_list_layout_apps_recyclerView)
     RecyclerView appListView;
@@ -84,6 +87,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         packageListData.setPackageUpdateHandler(new UpdateHandler());
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        setupRecordSpinner();
     }
 
     @Override
@@ -120,16 +125,29 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         }
     }
 
-    private void toggleRecording() {
-        boolean newTrackState = !isTracking.get();
-
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        boolean newTrackState = ((RecordAdapter.RecordState) parent.getItemAtPosition(position)).isEnable();
         Timber.d("Listener Status: " + newTrackState);
-
         if (newTrackState) {
             registerReceiver();
         } else {
             unregisterReceiver();
         }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        //Do nothing
+    }
+
+    /**
+     * Prepares the spinner in the toolbar to looks right.
+     */
+    private void setupRecordSpinner() {
+        toolbarSpinner.setVisibility(View.VISIBLE);
+        toolbarSpinner.setAdapter(new RecordAdapter(this));
+        toolbarSpinner.setOnItemSelectedListener(this);
     }
 
     private void registerReceiver() {
