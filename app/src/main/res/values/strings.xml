@@ -19,7 +19,7 @@
     <string name="app_name">Try and Remove</string>
     <string name="app_name_not_found">Name not found</string>
     <string name="app_list_toolbar_action_refresh_title">Refresh list</string>
-    <string name="app_list_toolbar_action_record_title">Record app Installs</string>
+    <string name="app_list_toolbar_action_record_title">Toggle record</string>
     <string name="toolbar_back">Back</string>
     <string name="app_list_layout_remove_apps_title">Remove all shown apps</string>
     <string name="app_list_layout_clear_app_list_title">Clear list</string>

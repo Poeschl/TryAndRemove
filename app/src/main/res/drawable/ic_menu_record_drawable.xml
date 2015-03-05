@@ -14,17 +14,7 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/app_list_toolbar_action_record"
-        android:icon="@drawable/ic_menu_record_drawable"
-        app:showAsAction="always"
-        android:title="@string/app_list_toolbar_action_record_title"/>
-
-    <item
-        android:id="@+id/app_list_toolbar_action_refresh"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_refresh"
-        android:title="@string/app_list_toolbar_action_refresh_title"/>
-</menu>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_action_record_off" android:state_checked="false"/>
+    <item android:drawable="@drawable/ic_action_record_on" android:state_checked="true"/>
+</selector>

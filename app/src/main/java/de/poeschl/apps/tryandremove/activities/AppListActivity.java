@@ -108,6 +108,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
         reloadToolbarButton = menu.findItem(R.id.app_list_toolbar_action_refresh);
 
+        setRecordButtonState(isTracking.get());
+
         return true;
     }
 
@@ -125,16 +127,34 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         }
     }
 
+    private void setRecordButtonState(boolean active) {
+        if (active) {
+            Timber.d("App tracking activated");
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_on);
+        } else {
+            Timber.d("App tracking deactivated");
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_off);
+        }
+    }
+
     private void toggleRecording() {
         boolean newTrackState = !isTracking.get();
 
         Timber.d("Listener Status: " + newTrackState);
+        setRecordState(newTrackState);
 
         if (newTrackState) {
             registerReceiver();
         } else {
             unregisterReceiver();
         }
+    }
+
+    private void setRecordState(boolean state) {
+        if (isTracking.get() == state) {
+            return;
+        }
+        setRecordButtonState(state);
     }
 
     private void registerReceiver() {
