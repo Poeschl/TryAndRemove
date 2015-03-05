@@ -26,7 +26,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -128,10 +127,9 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        RecordAdapter.RecordState state = ((RecordAdapter.RecordState) parent.getItemAtPosition(position));
-        Toast.makeText(this, state.getMessageRes(), Toast.LENGTH_SHORT).show();
-        Timber.d("Listener Status: " + state.isEnable());
-        if (state.isEnable()) {
+        boolean newTrackState = ((RecordAdapter.RecordState) parent.getItemAtPosition(position)).isEnable();
+        Timber.d("Listener Status: " + newTrackState);
+        if (newTrackState) {
             registerReceiver();
         } else {
             unregisterReceiver();

@@ -17,13 +17,14 @@
 package de.poeschl.apps.tryandremove.adapter;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,26 +39,26 @@ import de.poeschl.apps.tryandremove.R;
 public class RecordAdapter extends ArrayAdapter<RecordAdapter.RecordState> {
 
     public RecordAdapter(Context context) {
-        super(context, R.layout.cell_record_spinner_actionbar, RecordState.generateStates());
+        super(context, R.layout.cell_record_spinner, RecordState.generateStates());
     }
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent, R.layout.cell_record_spinner_dropdown);
+        return getCustomView(position, convertView, parent);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return getCustomView(position, convertView, parent, R.layout.cell_record_spinner_actionbar);
+        return getCustomView(position, convertView, parent);
     }
 
-    private View getCustomView(int position, View convertView, ViewGroup parent, @LayoutRes int cellLayout) {
+    private View getCustomView(int position, View convertView, ViewGroup parent) {
 
         View v;
         ViewHolder viewHolder;
 
         if (convertView == null) {
-            v = LayoutInflater.from(parent.getContext()).inflate(cellLayout, parent, false);
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_record_spinner, parent, false);
             viewHolder = new ViewHolder(v);
         } else {
             v = convertView;
@@ -66,11 +67,8 @@ public class RecordAdapter extends ArrayAdapter<RecordAdapter.RecordState> {
 
         RecordState state = getItem(position);
 
-        if (state.isEnable()) {
-            viewHolder.icon.setImageResource(cellLayout == R.layout.cell_record_spinner_actionbar ? R.drawable.ic_action_record_active : R.drawable.ic_action_record_active_dark);
-        } else {
-            viewHolder.icon.setImageResource(cellLayout == R.layout.cell_record_spinner_actionbar ? R.drawable.ic_action_record_inactive : R.drawable.ic_action_record_inactive_dark);
-        }
+        viewHolder.icon.setImageResource(state.getIconRes());
+        viewHolder.title.setText(state.getTitleRes());
 
         v.setTag(viewHolder);
         return v;
@@ -80,6 +78,9 @@ public class RecordAdapter extends ArrayAdapter<RecordAdapter.RecordState> {
         @InjectView(R.id.cell_record_spinner_icon)
         ImageView icon;
 
+        @InjectView(R.id.cell_record_spinner_text)
+        TextView title;
+
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
@@ -87,24 +88,31 @@ public class RecordAdapter extends ArrayAdapter<RecordAdapter.RecordState> {
 
     public static class RecordState {
 
+        @DrawableRes
+        private int iconRes;
         @StringRes
-        private int messageRes;
+        private int titleRes;
         private boolean enable;
 
-        public RecordState(int messageRes, boolean enable) {
-            this.messageRes = messageRes;
+        public RecordState(int iconRes, int titleRes, boolean enable) {
+            this.iconRes = iconRes;
+            this.titleRes = titleRes;
             this.enable = enable;
         }
 
         public static List<RecordState> generateStates() {
             List<RecordState> states = new ArrayList<>();
-            states.add(new RecordState(R.string.record_state_active_title, true));
-            states.add(new RecordState(R.string.record_state_inactive_title, false));
+            states.add(new RecordState(R.drawable.ic_action_record, R.string.record_state_active_title, true));
+            states.add(new RecordState(R.drawable.ic_action_record, R.string.record_state_inactive_title, false));
             return states;
         }
 
-        public int getMessageRes() {
-            return messageRes;
+        public int getIconRes() {
+            return iconRes;
+        }
+
+        public int getTitleRes() {
+            return titleRes;
         }
 
         public boolean isEnable() {
