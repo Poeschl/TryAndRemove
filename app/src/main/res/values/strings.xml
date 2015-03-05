@@ -19,7 +19,6 @@
     <string name="app_name">Try and Remove</string>
     <string name="app_name_not_found">Name not found</string>
     <string name="app_list_toolbar_action_refresh_title">Refresh list</string>
-    <string name="app_list_toolbar_action_record_title">Toggle record</string>
     <string name="toolbar_back">Back</string>
     <string name="app_list_layout_remove_apps_title">Remove all shown apps</string>
     <string name="app_list_layout_clear_app_list_title">Clear list</string>
@@ -37,5 +36,7 @@
     <string name="preferences_crashlytics_switch_summary">Enables the tracking by Crashlytics and helping the developer to fix bugs and app crashes. All data is send anonymously.</string>
     <string name="preferences_crashlytics_section_title">Crashlytics</string>
     <string name="preferences_crashlytics_enabled_toast">Crashlytics gets disabled the next time you restart the app.</string>
+    <string name="app_list_toolbar_action_record_enable">Enable Recording</string>
+    <string name="app_list_toolbar_action_record_disable">Disable Recording</string>
 
 </resources>

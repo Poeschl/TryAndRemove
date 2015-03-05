@@ -130,10 +130,12 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     private void setRecordButtonState(boolean active) {
         if (active) {
             Timber.d("App tracking activated");
-            recordToolbarButton.setIcon(R.drawable.ic_action_record_on);
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_disable);
+            recordToolbarButton.setTitle(R.string.app_list_toolbar_action_record_disable);
         } else {
             Timber.d("App tracking deactivated");
-            recordToolbarButton.setIcon(R.drawable.ic_action_record_off);
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_enable);
+            recordToolbarButton.setTitle(R.string.app_list_toolbar_action_record_enable);
         }
     }
 
