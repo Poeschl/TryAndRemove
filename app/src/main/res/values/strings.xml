@@ -36,7 +36,7 @@
     <string name="preferences_crashlytics_switch_summary">Enables the tracking by Crashlytics and helping the developer to fix bugs and app crashes. All data is send anonymously.</string>
     <string name="preferences_crashlytics_section_title">Crashlytics</string>
     <string name="preferences_crashlytics_enabled_toast">Crashlytics gets disabled the next time you restart the app.</string>
-    <string name="record_state_active_title">Tracking active</string>
-    <string name="record_state_inactive_title">Tracking inactive</string>
+    <string name="app_list_toolbar_action_record_enable">Enable Recording</string>
+    <string name="app_list_toolbar_action_record_disable">Disable Recording</string>
 
 </resources>

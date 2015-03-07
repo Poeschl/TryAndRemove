@@ -34,13 +34,14 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/appList_floating_menu_margin"
-        android:layout_marginEnd="@dimen/appList_floating_menu_margin"
-        android:layout_marginRight="@dimen/appList_floating_menu_margin"
+        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
+        android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
         style="@style/TryAndRemoveTheme.FloatingMenuButton"
         fab:fab_collapsedIcon="@drawable/ic_action_delete"
         fab:fab_labelStyle="@style/TryAndRemoveTheme.FloatingActionButtonLabel"
-        fab:fab_labelsPosition="left">
+        fab:fab_labelsPosition="left"
+        android:elevation="8dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
