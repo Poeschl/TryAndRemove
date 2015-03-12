@@ -20,6 +20,8 @@ import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorRes;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.utils.BitmapHelper;
 import timber.log.Timber;
 
 /**
@@ -76,7 +79,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final String itemPackage = packages.get(position);
         ApplicationInfo appInfo = null;
 
@@ -97,6 +100,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             holder.appIcon.setImageDrawable(appIcon);
             holder.appName.setText(appName);
             holder.appPackage.setText(appPackage);
+
+            Palette.generateAsync(BitmapHelper.drawableToBitmap(appIcon), new Palette.PaletteAsyncListener() {
+                @Override
+                public void onGenerated(Palette palette) {
+                    holder.setOverlayColor(palette.getVibrantColor(0));
+                }
+            });
+
         } else {
             Timber.w("No matching app found - hide cell");
             holder.hide();
@@ -123,6 +134,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         @InjectView(R.id.app_list_cell_root)
         View cellRoot;
+        @InjectView(R.id.app_list_cell_root_overlay)
+        View cellRootColorOverlay;
         @InjectView(R.id.app_list_cell_app_icon)
         ImageView appIcon;
         @InjectView(R.id.app_list_cell_app_name)
@@ -141,6 +154,15 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         public void hide() {
             cellRoot.setVisibility(View.GONE);
+        }
+
+        public void setOverlayColor(@ColorRes int color) {
+            if (color != 0) {
+                cellRootColorOverlay.setVisibility(View.VISIBLE);
+                cellRootColorOverlay.setBackgroundColor(color);
+            } else {
+                cellRootColorOverlay.setVisibility(View.GONE);
+            }
         }
     }
 
