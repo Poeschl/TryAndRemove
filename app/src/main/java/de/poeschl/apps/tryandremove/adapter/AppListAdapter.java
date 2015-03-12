@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,21 +41,21 @@ import timber.log.Timber;
 /**
  * Created by markus on 16.12.14.
  */
-public class AppAdapter extends RecyclerView.Adapter<AppAdapter.ViewHolder> {
+public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
 
     private List<String> packages;
     private PackageManager packageManager;
     private Application app;
 
     @Inject
-    public AppAdapter(PackageList packageList, PackageManager packageManager, Application app) {
+    public AppListAdapter(PackageList packageList, PackageManager packageManager, Application app) {
         this.packages = new LinkedList<>();
         this.packages.addAll(packageList.getPackages());
         this.packageManager = packageManager;
         this.app = app;
     }
 
-    public void updateAdapter(PackageList packageList) {
+    public void updateApps(PackageList packageList) {
         packages.clear();
         packages.addAll(packageList.getPackages());
         Timber.v("Adapter updated");

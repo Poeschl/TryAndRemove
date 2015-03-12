@@ -23,7 +23,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
@@ -50,7 +50,7 @@ public class ActivityModule {
     }
 
     @Provides
-    AppAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
-        return new AppAdapter(packageList, manager, app);
+    AppListAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
+        return new AppListAdapter(packageList, manager, app);
     }
 }

@@ -34,7 +34,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
@@ -61,7 +61,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Inject
     PackageList packageListData;
     @Inject
-    AppAdapter appAdapter;
+    AppListAdapter appListAdapter;
     @Inject
     AppManager appManager;
 
@@ -78,7 +78,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
 
         ButterKnife.inject(this);
 
-        appListView.setAdapter(appAdapter);
+        appListView.setAdapter(appListAdapter);
         appListView.setLayoutManager(new LinearLayoutManager(this));
         appListView.setHasFixedSize(true);
 
@@ -215,7 +215,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     }
 
     private void updatePackageList() {
-        appAdapter.updateAdapter(packageListData);
+        appListAdapter.updateApps(packageListData);
     }
 
     public class UpdateHandler extends ListUpdateHandler {
