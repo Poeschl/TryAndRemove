@@ -37,7 +37,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.poeschl.apps.tryandremove.R;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.utils.BitmapHelper;
 import timber.log.Timber;
 
@@ -49,13 +51,15 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private List<String> packages;
     private PackageManager packageManager;
     private Application app;
+    private BooleanPreference coloredCellsEnabled;
 
     @Inject
-    public AppListAdapter(PackageList packageList, PackageManager packageManager, Application app) {
+    public AppListAdapter(PackageList packageList, PackageManager packageManager, Application app, @ColoredCellsEnabled BooleanPreference coloredCellsEnabled) {
         this.packages = new LinkedList<>();
         this.packages.addAll(packageList.getPackages());
         this.packageManager = packageManager;
         this.app = app;
+        this.coloredCellsEnabled = coloredCellsEnabled;
     }
 
     public void updateApps(PackageList packageList) {
@@ -101,12 +105,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             holder.appName.setText(appName);
             holder.appPackage.setText(appPackage);
 
-            Palette.generateAsync(BitmapHelper.drawableToBitmap(appIcon), new Palette.PaletteAsyncListener() {
-                @Override
-                public void onGenerated(Palette palette) {
-                    holder.setOverlayColor(palette.getVibrantColor(0));
-                }
-            });
+            if (coloredCellsEnabled.get()) {
+                Palette.generateAsync(BitmapHelper.drawableToBitmap(appIcon), new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(Palette palette) {
+                        holder.setOverlayColor(palette.getVibrantColor(0));
+                    }
+                });
+            }
 
         } else {
             Timber.w("No matching app found - hide cell");

@@ -39,5 +39,8 @@
     <string name="app_list_toolbar_action_record_enable">Enable Recording</string>
     <string name="app_list_toolbar_action_record_disable">Disable Recording</string>
     <string name="app_package_not_found">Unknown Package</string>
+    <string name="preferences_appearance_section_title">Appearance</string>
+    <string name="preferences_appearance_switch_title">Colored Cells</string>
+    <string name="preferences_appearance_switch_summary">Colors the cells background in the main color according to the app icon.</string>
 
 </resources>

@@ -24,8 +24,10 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
 /**
  * Created by Markus Pöschl on 09.12.14.
@@ -50,7 +52,7 @@ public class ActivityModule {
     }
 
     @Provides
-    AppListAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
-        return new AppListAdapter(packageList, manager, app);
+    AppListAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app, @ColoredCellsEnabled BooleanPreference coloredCellsEnabled) {
+        return new AppListAdapter(packageList, manager, app, coloredCellsEnabled);
     }
 }
