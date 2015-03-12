@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove.adapter;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorRes;
 import android.support.v7.graphics.Palette;
@@ -165,7 +166,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         public void setOverlayColor(@ColorRes int color) {
             if (color != 0) {
                 cellRootColorOverlay.setVisibility(View.VISIBLE);
-                cellRootColorOverlay.setBackgroundColor(color);
+                Drawable cellBack = cellRootColorOverlay.getBackground();
+                if (cellBack == null || ((ColorDrawable) cellBack).getColor() != color) {
+                    cellRootColorOverlay.setBackgroundColor(color);
+                }
             } else {
                 cellRootColorOverlay.setVisibility(View.GONE);
             }

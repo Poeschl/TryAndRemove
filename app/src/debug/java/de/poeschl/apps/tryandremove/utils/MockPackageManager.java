@@ -52,27 +52,7 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
         for (int i = 0; i < 6; i++) {
             ApplicationInfo appInfo = new ApplicationInfo();
 
-            int rand = new Random().nextInt(5);
-
-            switch (rand) {
-                case 0:
-                    appInfo.icon = android.R.drawable.sym_def_app_icon;
-                    break;
-                case 1:
-                    appInfo.icon = R.drawable.ic_launcher_app;
-                    break;
-                case 2:
-                    appInfo.icon = android.R.drawable.sym_call_missed;
-                    break;
-                case 3:
-                    appInfo.icon = android.R.drawable.btn_star_big_on;
-                    break;
-                case 4:
-                    appInfo.icon = android.R.drawable.presence_video_busy;
-                    break;
-
-            }
-
+            appInfo.icon = createRandomResource();
             appInfo.packageName = MOCK_PACKAGE + i;
 
             PackageInfo temp = new PackageInfo();
@@ -111,7 +91,7 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
 
         if (packageName.contains("Added")) {
             ApplicationInfo appInfo = new ApplicationInfo();
-            appInfo.icon = android.R.drawable.ic_dialog_alert;
+            appInfo.icon = createRandomResource();
 
             appInfo.nonLocalizedLabel = packageName.substring(packageName.lastIndexOf('.') + 1, packageName.length());
             result = appInfo;
@@ -134,5 +114,37 @@ public class MockPackageManager extends android.test.mock.MockPackageManager {
     @Override
     public Drawable getDrawable(String packageName, int resid, ApplicationInfo appInfo) {
         return app.getResources().getDrawable(appInfo.icon);
+    }
+
+    private Drawable createRandomDrawable() {
+        return app.getResources().getDrawable(createRandomResource());
+    }
+
+    private int createRandomResource() {
+        int iconRes = R.drawable.ic_menu_info;
+        int rand = new Random().nextInt(6);
+
+        switch (rand) {
+            case 0:
+                iconRes = android.R.drawable.sym_def_app_icon;
+                break;
+            case 1:
+                iconRes = R.drawable.ic_launcher_app;
+                break;
+            case 2:
+                iconRes = android.R.drawable.sym_call_missed;
+                break;
+            case 3:
+                iconRes = android.R.drawable.btn_star_big_on;
+                break;
+            case 4:
+                iconRes = android.R.drawable.presence_video_busy;
+                break;
+            case 5:
+                iconRes = R.drawable.square_app;
+                break;
+        }
+
+        return iconRes;
     }
 }
