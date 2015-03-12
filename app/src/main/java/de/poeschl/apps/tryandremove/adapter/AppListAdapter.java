@@ -87,13 +87,16 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         }
 
         String appName = app.getString(R.string.app_name_not_found);
+        String appPackage = app.getString(R.string.app_package_not_found);
 
         if (appInfo != null) {
             Drawable appIcon = appInfo.loadIcon(packageManager);
             appName = appInfo.loadLabel(packageManager).toString();
+            appPackage = appInfo.packageName;
 
             holder.appIcon.setImageDrawable(appIcon);
             holder.appName.setText(appName);
+            holder.appPackage.setText(appPackage);
         } else {
             Timber.w("No matching app found - hide cell");
             holder.hide();
@@ -124,6 +127,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         ImageView appIcon;
         @InjectView(R.id.app_list_cell_app_name)
         TextView appName;
+        @InjectView(R.id.app_list_cell_app_package)
+        TextView appPackage;
 
         public ViewHolder(View view) {
             super(view);

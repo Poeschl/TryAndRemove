@@ -38,5 +38,6 @@
     <string name="preferences_crashlytics_enabled_toast">Crashlytics gets disabled the next time you restart the app.</string>
     <string name="app_list_toolbar_action_record_enable">Enable Recording</string>
     <string name="app_list_toolbar_action_record_disable">Disable Recording</string>
+    <string name="app_package_not_found">Unknown Package</string>
 
 </resources>
