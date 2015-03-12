@@ -27,8 +27,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -144,7 +145,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         @InjectView(R.id.app_list_cell_root_overlay)
         View cellRootColorOverlay;
         @InjectView(R.id.app_list_cell_app_icon)
-        ImageView appIcon;
+        RoundedImageView appIcon;
         @InjectView(R.id.app_list_cell_app_name)
         TextView appName;
         @InjectView(R.id.app_list_cell_app_package)
