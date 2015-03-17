@@ -20,6 +20,8 @@
 
 
 
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -149,8 +151,8 @@ import de.undercouch.gradle.tasks.download.Download
 
 task downloadCheckstyleConfig(type: Download) {
     src([
-            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/checkstyle.xml',
-            'https://bitbucket.org/Poeschl/android-checkstyle/raw/master/suppressions.xml'
+            'https://raw.githubusercontent.com/Poeschl/Android-Checkstyle/master/checkstyle.xml',
+            'https://raw.githubusercontent.com/Poeschl/Android-Checkstyle/master/suppressions.xml'
     ])
     dest buildDir
     overwrite true
