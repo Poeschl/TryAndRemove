@@ -29,8 +29,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.adapters.RecyclerSwipeAdapter;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.LinkedList;
@@ -50,12 +53,13 @@ import timber.log.Timber;
 /**
  * Created by markus on 16.12.14.
  */
-public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
+public class AppListAdapter extends RecyclerSwipeAdapter<AppListAdapter.ViewHolder> implements View.OnClickListener {
 
     private List<String> packages;
     private PackageManager packageManager;
     private Application app;
     private BooleanPreference coloredCellsEnabled;
+    private AppListAdapterListener listener;
 
     @Inject
     public AppListAdapter(PackageList packageList, PackageManager packageManager, Application app, @ColoredCellsEnabled BooleanPreference coloredCellsEnabled) {
@@ -64,6 +68,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         this.packageManager = packageManager;
         this.app = app;
         this.coloredCellsEnabled = coloredCellsEnabled;
+    }
+
+    public void setListener(AppListAdapterListener listener) {
+        this.listener = listener;
     }
 
     public void updateApps(PackageList packageList) {
@@ -82,7 +90,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cell_app_list, parent, false);
 
         ViewHolder vh = new ViewHolder(v);
-
         return vh;
     }
 
@@ -109,6 +116,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             holder.appName.setText(appName);
             holder.appPackage.setText(appPackage);
 
+            holder.setClickClearListener(this, position);
+            holder.setClickRemoveListener(this, position);
+
             if (coloredCellsEnabled.get()) {
                 Palette.generateAsync(BitmapHelper.drawableToBitmap(appIcon), new Palette.PaletteAsyncListener() {
                     @Override
@@ -122,23 +132,32 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             Timber.w("No matching app found - hide cell");
             holder.hide();
         }
-
-        holder.setClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Make selector for single action
-//                Intent intent = new Intent(Intent.ACTION_DELETE, Uri.fromParts("package", itemPackage, null));
-//                v.getContext().startActivity(intent);
-            }
-        });
     }
-
 
     @Override
     public int getItemCount() {
         return packages.size();
     }
 
+    @Override
+    public int getSwipeLayoutResourceId(int i) {
+        return R.id.app_list_cell_swipe;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (listener != null) {
+            int position = (Integer) v.getTag();
+            switch (v.getId()) {
+                case R.id.app_list_cell_clear:
+                    listener.onItemClearClick(packages.get(position), position);
+                    break;
+                case R.id.app_list_cell_remove:
+                    listener.onItemRemoveClick(packages.get(position), position);
+                    break;
+            }
+        }
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -152,6 +171,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         TextView appName;
         @InjectView(R.id.app_list_cell_app_package)
         TextView appPackage;
+        @InjectView(R.id.app_list_cell_swipe)
+        SwipeLayout swipeLayout;
+        @InjectView(R.id.app_list_cell_clear)
+        ImageView clearButton;
+        @InjectView(R.id.app_list_cell_remove)
+        ImageView removeButton;
 
         public ViewHolder(View view) {
             super(view);
@@ -161,10 +186,20 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             ShapeDrawable background = new ShapeDrawable(new OvalShape());
             background.getPaint().setColor(view.getResources().getColor(R.color.background));
             this.appIcon.setBackground(background);
+
+            swipeLayout.setShowMode(SwipeLayout.ShowMode.LayDown);
+            swipeLayout.setDragEdge(SwipeLayout.DragEdge.Right);
         }
 
-        public void setClickListener(View.OnClickListener clickListener) {
-            cellRoot.setOnClickListener(clickListener);
+        public void setClickRemoveListener(View.OnClickListener listener, int position) {
+            removeButton.setOnClickListener(listener);
+            removeButton.setTag(position);
+        }
+
+        public void setClickClearListener(View.OnClickListener listener, int position) {
+            clearButton.setOnClickListener(listener);
+            clearButton.setTag(position);
+
         }
 
         public void hide() {
@@ -187,4 +222,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         }
     }
 
+    public static interface AppListAdapterListener {
+        public void onItemClearClick(String packageName, int position);
+
+        public void onItemRemoveClick(String packageName, int position);
+    }
 }

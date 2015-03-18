@@ -46,7 +46,7 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
-public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
+public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AppListAdapter.AppListAdapterListener {
 
     @InjectView(R.id.app_list_layout_apps_recyclerView)
     RecyclerView appListView;
@@ -84,6 +84,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListView.setHasFixedSize(true);
 
         packageListData.setPackageUpdateHandler(new UpdateHandler());
+
+        appListAdapter.setListener(this);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -213,6 +215,17 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     public void onUserConfirmedRemove() {
         appManager.remove(packageListData.getPackages());
         floatMenu.collapse();
+    }
+
+    @Override
+    public void onItemClearClick(String packageName, int position) {
+        packageListData.removePackage(packageName);
+    }
+
+    @Override
+    public void onItemRemoveClick(String packageName, int position) {
+        appManager.remove(packageName);
+
     }
 
     private void updatePackageList() {

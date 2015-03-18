@@ -52,7 +52,7 @@ public class ModelModule {
     @Provides
     @ColoredCellsEnabled
     BooleanPreference provideColoredCellsEnabled(SharedPreferences sharedPreferences) {
-        return new BooleanPreference(sharedPreferences, COLORED_CELLS_ENABLED_KEY, true);
+        return new BooleanPreference(sharedPreferences, COLORED_CELLS_ENABLED_KEY, false);
     }
 
 }

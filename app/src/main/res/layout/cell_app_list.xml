@@ -14,69 +14,98 @@
   ~ limitations under the License.
   -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/app_list_cell_root"
-    android:background="@color/background">
-
-    <FrameLayout
-        android:id="@+id/app_list_cell_root_overlay"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:alpha="0.2"
-        android:visibility="gone" />
+    android:id="@+id/app_list_cell_swipe">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:background="@color/accent_light"
+        android:layout_width="wrap_content"
+        android:weightSum="1"
         android:layout_height="match_parent"
-
-        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="4dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:gravity="center_vertical">
 
-        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/app_list_cell_app_icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_launcher_app"
-            app:riv_border_color="@color/primary_main"
-            app:riv_border_width="2dip"
-            app:riv_mutate_background="true"
-            app:riv_oval="true" />
-
-        <LinearLayout
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical">
+            android:id="@+id/app_list_cell_clear"
+            android:src="@drawable/ic_action_clear"
+            style="@style/TryAndRemoveTheme.Swipe.Item" />
 
-            <TextView
-                android:id="@+id/app_list_cell_app_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:text="App Name"
-                android:textColor="@color/primary_text"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/app_list_cell_app_package"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
-                android:singleLine="true"
-                android:text="com.example.package.something.app.mine.long.tufff"
-                android:textColor="@color/secondary_text"
-                tools:ignore="HardcodedText" />
-
-        </LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/app_list_cell_remove"
+            android:src="@drawable/ic_action_delete"
+            style="@style/TryAndRemoveTheme.Swipe.Item" />
     </LinearLayout>
-</FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_list_cell_root"
+        android:background="@color/background">
+
+        <FrameLayout
+            android:id="@+id/app_list_cell_root_overlay"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:alpha="0.2"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/app_list_cell_app_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher_app"
+                app:riv_border_color="@color/primary_main"
+                app:riv_border_width="2dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/app_list_cell_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="App Name"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/app_list_cell_app_package"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:singleLine="true"
+                    android:text="com.example.package.something.app.mine.long.tufff"
+                    android:textColor="@color/secondary_text"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</com.daimajia.swipe.SwipeLayout>
