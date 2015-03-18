@@ -10,7 +10,7 @@ The app allows you to enable or disable the recording of your app installs / rem
 
 To use this app you need to have Android 4.0.3 +. To get your hands on a pre-compiled version, you can download it in the download section of this repository.
 
-If you have any bugs or improvements, it would be nice to add an entry in the [issue tracker](https://bitbucket.org/Poeschl/tryandremove/issues) here on bitbucket.
+If you have any bugs or improvements, it would be nice to add an entry in the [issue tracker](https://github.com/Poeschl/TryAndRemove/issues).
 
 Note
 ======
@@ -20,7 +20,7 @@ This is in the main a private project to learn something more about some librari
 Change log
 ===========
 
-See [change log file](src/master/changelog.md)
+See [change log file](https://github.com/Poeschl/TryAndRemove/blob/master/changelog.md)
 
 License
 =========
