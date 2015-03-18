@@ -173,7 +173,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         public void setOverlayColor(@ColorRes int color) {
             if (color != 0) {
-                cellRootColorOverlay.setVisibility(View.VISIBLE);
+                if (cellRootColorOverlay.getVisibility() != View.VISIBLE) {
+                    cellRootColorOverlay.setVisibility(View.VISIBLE);
+                }
+
                 Drawable cellBack = cellRootColorOverlay.getBackground();
                 if (cellBack == null || ((ColorDrawable) cellBack).getColor() != color) {
                     cellRootColorOverlay.setBackgroundColor(color);
