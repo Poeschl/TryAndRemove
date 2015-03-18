@@ -21,6 +21,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.ColorRes;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
@@ -154,6 +156,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
             ButterKnife.inject(this, view);
+
+            //FIXME: Fix for wrong background in circled image
+            ShapeDrawable background = new ShapeDrawable(new OvalShape());
+            background.getPaint().setColor(view.getResources().getColor(R.color.background));
+            this.appIcon.setBackground(background);
         }
 
         public void setClickListener(View.OnClickListener clickListener) {

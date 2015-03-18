@@ -20,6 +20,10 @@
 
 
 
+
+
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -222,7 +226,6 @@ dependencies {
     }
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:22.0.0'
-    compile 'com.android.support:cardview-v7:22.0.0'
     compile 'com.android.support:palette-v7:22.0.0'
     compile 'com.makeramen:roundedimageview:2.0.0'
     //    Is replaced with local aar until changes gets merged
