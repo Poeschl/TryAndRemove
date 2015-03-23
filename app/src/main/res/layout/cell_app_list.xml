@@ -21,7 +21,7 @@
     android:id="@+id/app_list_cell_swipe">
 
     <LinearLayout
-        android:background="@color/accent_light"
+        android:background="@color/accent_main"
         android:layout_width="wrap_content"
         android:weightSum="1"
         android:layout_height="match_parent"
@@ -29,15 +29,20 @@
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:id="@+id/app_list_cell_clear"
             android:src="@drawable/ic_action_clear"
             style="@style/TryAndRemoveTheme.Swipe.Item" />
 
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/background" />
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:id="@+id/app_list_cell_remove"
             android:src="@drawable/ic_action_delete"
             style="@style/TryAndRemoveTheme.Swipe.Item" />
