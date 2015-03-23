@@ -63,4 +63,9 @@
         <item name="android:textColor">@color/primary_text_light</item>
     </style>
 
+    <style name="TryAndRemoveTheme.Swipe.Item" parent="">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
 </resources>

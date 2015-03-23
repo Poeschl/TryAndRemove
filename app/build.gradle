@@ -22,6 +22,10 @@
 
 
 
+
+
+
+
 buildscript {
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
@@ -224,8 +228,11 @@ dependencies {
     }
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:22.0.0'
-//    Is replaced with local aar until changes gets merged
-//    compile 'com.getbase:floatingactionbutton:1.4.0'
+    compile 'com.android.support:palette-v7:22.0.0'
+    compile 'com.makeramen:roundedimageview:2.0.0'
+    compile "com.daimajia.swipelayout:library:1.1.8@aar"
+    //    Is replaced with local aar until changes gets merged
+    //    compile 'com.getbase:floatingactionbutton:1.4.0'
     compile project(':android-floating-action-button')
     provided 'com.squareup.dagger:dagger-compiler:1.2.2'
 

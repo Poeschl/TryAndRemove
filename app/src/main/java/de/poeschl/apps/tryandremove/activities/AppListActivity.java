@@ -34,7 +34,8 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
+import de.poeschl.apps.tryandremove.adapter.ListDividerDecoration;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
@@ -45,8 +46,7 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import timber.log.Timber;
 
-
-public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
+public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AppListAdapter.AppListAdapterListener {
 
     @InjectView(R.id.app_list_layout_apps_recyclerView)
     RecyclerView appListView;
@@ -61,7 +61,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Inject
     PackageList packageListData;
     @Inject
-    AppAdapter appAdapter;
+    AppListAdapter appListAdapter;
     @Inject
     AppManager appManager;
 
@@ -78,11 +78,14 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
 
         ButterKnife.inject(this);
 
-        appListView.setAdapter(appAdapter);
+        appListView.setAdapter(appListAdapter);
+        appListView.addItemDecoration(new ListDividerDecoration(this, null));
         appListView.setLayoutManager(new LinearLayoutManager(this));
         appListView.setHasFixedSize(true);
 
         packageListData.setPackageUpdateHandler(new UpdateHandler());
+
+        appListAdapter.setListener(this);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
@@ -214,8 +217,19 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         floatMenu.collapse();
     }
 
+    @Override
+    public void onItemClearClick(String packageName, int position) {
+        packageListData.removePackage(packageName);
+    }
+
+    @Override
+    public void onItemRemoveClick(String packageName, int position) {
+        appManager.remove(packageName);
+
+    }
+
     private void updatePackageList() {
-        appAdapter.updateAdapter(packageListData);
+        appListAdapter.updateApps(packageListData);
     }
 
     public class UpdateHandler extends ListUpdateHandler {

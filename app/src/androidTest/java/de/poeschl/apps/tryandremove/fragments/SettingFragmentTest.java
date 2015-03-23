@@ -45,4 +45,14 @@ public class SettingFragmentTest extends BaseInstrumentTestCase<SettingActivity>
         assertTrue("Toast with hint is not shown", solo.waitForText("Crashlytics gets disabled the next", 1, TIMEOUT));
         assertFalse("Crashlytics should be disabled after click", settingsFragment.crashlyticsEnabled.get());
     }
+
+    public void testColoredCellsSetting() {
+        assertTrue("Colored cells should be enabled per default.", settingsFragment.coloredCellsEnabled.get());
+
+        solo.clickOnText("Colored Cells");
+        //Set the sleep to wait for the shared preferences writing.
+        solo.sleep(MEDIUM_SLEEP_INTERVAL);
+        assertFalse("Colored cells should be disabled after click", settingsFragment.coloredCellsEnabled.get());
+
+    }
 }

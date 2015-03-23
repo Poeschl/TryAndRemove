@@ -22,4 +22,5 @@
     <integer name="animation_duration_activities">300</integer>
     <integer name="animation_fast_duration_activities">200</integer>
     <integer name="animation_slow_duration_activities">500</integer>
+
 </resources>

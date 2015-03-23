@@ -14,36 +14,103 @@
   ~ limitations under the License.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:background="@color/background"
-    android:gravity="center_vertical"
-    android:id="@+id/app_list_cell_root"
-    android:padding="8dp"
-    android:layout_marginBottom="1dp"
-    android:layout_marginLeft="2dp"
-    android:layout_marginRight="2dp"
-    tools:ignore="Overdraw">
+    android:layout_height="wrap_content"
+    android:id="@+id/app_list_cell_swipe">
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:id="@+id/app_list_cell_app_icon"
-        android:layout_marginStart="3dp"
-        android:layout_marginLeft="3dp"
-        android:src="@drawable/ic_launcher_app"
-        tools:ignore="ContentDescription" />
-
-    <TextView
+    <LinearLayout
+        android:background="@color/accent_main"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
-        android:text="App Name"
-        android:id="@+id/app_list_cell_app_name"
-        tools:ignore="HardcodedText" />
+        android:weightSum="1"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/app_list_cell_clear"
+            android:src="@drawable/ic_action_clear"
+            style="@style/TryAndRemoveTheme.Swipe.Item" />
+
+        <FrameLayout
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/background" />
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/app_list_cell_remove"
+            android:src="@drawable/ic_action_delete"
+            style="@style/TryAndRemoveTheme.Swipe.Item" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/app_list_cell_root"
+        android:background="@color/background">
+
+        <FrameLayout
+            android:id="@+id/app_list_cell_root_overlay"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:alpha="0.2"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="4dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/app_list_cell_app_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_launcher_app"
+                app:riv_border_color="@color/primary_main"
+                app:riv_border_width="2dip"
+                app:riv_mutate_background="true"
+                app:riv_oval="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/app_list_cell_app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:text="App Name"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/app_list_cell_app_package"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
+                    android:singleLine="true"
+                    android:text="com.example.package.something.app.mine.long.tufff"
+                    android:textColor="@color/secondary_text"
+                    tools:ignore="HardcodedText" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</com.daimajia.swipe.SwipeLayout>

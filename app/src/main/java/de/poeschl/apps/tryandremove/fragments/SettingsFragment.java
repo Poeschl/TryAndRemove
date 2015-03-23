@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
@@ -35,12 +36,18 @@ import de.poeschl.apps.tryandremove.models.BooleanPreference;
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
     protected static final String CRASHLYTICS_ENABLED_KEY = "preferences_crashlytics_enabled";
+    protected static final String COLORED_CELLS_ENABLED_KEY = "preferences_colored_cells_enabled";
 
     @Inject
     @CrashlyticsEnabled
     protected BooleanPreference crashlyticsEnabled;
 
+    @Inject
+    @ColoredCellsEnabled
+    protected BooleanPreference coloredCellsEnabled;
+
     private SwitchPreference crashlyticsEnabledPreference;
+    private SwitchPreference coloredCellsPreference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +60,10 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         crashlyticsEnabledPreference = (SwitchPreference) findPreference(CRASHLYTICS_ENABLED_KEY);
         crashlyticsEnabledPreference.setChecked(crashlyticsEnabled.get());
         crashlyticsEnabledPreference.setOnPreferenceChangeListener(this);
+
+        coloredCellsPreference = (SwitchPreference) findPreference(COLORED_CELLS_ENABLED_KEY);
+        coloredCellsPreference.setChecked(coloredCellsEnabled.get());
+        coloredCellsPreference.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -65,6 +76,11 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
             if (!newState) {
                 Toast.makeText(getActivity(), getActivity().getString(R.string.preferences_crashlytics_enabled_toast), Toast.LENGTH_SHORT).show();
             }
+
+        } else if (preference.getKey().equals(COLORED_CELLS_ENABLED_KEY)) {
+            boolean newState = (boolean) newValue;
+            ((SwitchPreference) preference).setChecked(newState);
+            coloredCellsEnabled.set(newState);
         }
         return false;
     }

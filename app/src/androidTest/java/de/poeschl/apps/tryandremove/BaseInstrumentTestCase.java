@@ -30,7 +30,7 @@ import com.robotium.solo.Solo;
 public class BaseInstrumentTestCase<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
     public static final int TIMEOUT = 500;
-    public static final int SHORT_SLEEP_INTERVAL = 50;
+    public static final int SHORT_SLEEP_INTERVAL = 100;
     public static final int MEDIUM_SLEEP_INTERVAL = 200;
     public static final int LONG_SLEEP_INTERVAL = 500;
 

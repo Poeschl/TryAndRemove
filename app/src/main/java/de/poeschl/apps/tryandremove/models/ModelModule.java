@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 
@@ -34,6 +35,7 @@ public class ModelModule {
 
     private static final String IS_TRACKING_KEY = "IS_TRACKING";
     private static final String CRASHLYTICS_ENABLED_KEY = "CRASHLYTICS_ENABLED";
+    private static final String COLORED_CELLS_ENABLED_KEY = "COLORED_CELLS_ENABLED";
 
     @Provides
     @IsTracking
@@ -45,6 +47,12 @@ public class ModelModule {
     @CrashlyticsEnabled
     BooleanPreference provideCrashlyticsEnabled(SharedPreferences sharedPreferences) {
         return new BooleanPreference(sharedPreferences, CRASHLYTICS_ENABLED_KEY, true);
+    }
+
+    @Provides
+    @ColoredCellsEnabled
+    BooleanPreference provideColoredCellsEnabled(SharedPreferences sharedPreferences) {
+        return new BooleanPreference(sharedPreferences, COLORED_CELLS_ENABLED_KEY, false);
     }
 
 }
