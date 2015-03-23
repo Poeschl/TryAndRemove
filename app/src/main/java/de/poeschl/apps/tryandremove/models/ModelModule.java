@@ -18,8 +18,11 @@ package de.poeschl.apps.tryandremove.models;
 
 import android.content.SharedPreferences;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.tryandremove.annotations.BannerAdId;
 import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
@@ -53,6 +56,13 @@ public class ModelModule {
     @ColoredCellsEnabled
     BooleanPreference provideColoredCellsEnabled(SharedPreferences sharedPreferences) {
         return new BooleanPreference(sharedPreferences, COLORED_CELLS_ENABLED_KEY, false);
+    }
+
+    @Provides
+    @Singleton
+    @BannerAdId
+    String provideBannerAdId() {
+        return "64c74fd8826641de9dbc67b866429d72";
     }
 
 }

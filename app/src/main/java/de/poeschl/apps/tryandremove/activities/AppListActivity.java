@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.mopub.mobileads.MoPubView;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,7 @@ import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
 import de.poeschl.apps.tryandremove.adapter.ListDividerDecoration;
+import de.poeschl.apps.tryandremove.annotations.BannerAdId;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
@@ -44,6 +46,7 @@ import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
+import de.poeschl.apps.tryandremove.utils.AdManager;
 import timber.log.Timber;
 
 public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AppListAdapter.AppListAdapterListener {
@@ -52,6 +55,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     RecyclerView appListView;
     @InjectView(R.id.app_list_layout_floating_menu)
     FloatingActionsMenu floatMenu;
+    @InjectView(R.id.app_list_layout_ad_banner)
+    MoPubView bannerAd;
 
     @Inject
     AppDetectionReceiver receiver;
@@ -64,6 +69,11 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     AppListAdapter appListAdapter;
     @Inject
     AppManager appManager;
+    @Inject
+    AdManager bannerAdManager;
+    @Inject
+    @BannerAdId
+    String bannerAdId;
 
     private MenuItem recordToolbarButton;
     private MenuItem reloadToolbarButton;
@@ -88,6 +98,9 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         appListAdapter.setListener(this);
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        bannerAdManager.setAdView(bannerAd);
+        bannerAdManager.registerAdUnitId(bannerAdId);
     }
 
     @Override

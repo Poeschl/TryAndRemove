@@ -14,35 +14,18 @@
  * limitations under the License.
  */
 
-package de.poeschl.apps.tryandremove.utils;
+package de.poeschl.apps.tryandremove.annotations;
 
-import javax.inject.Singleton;
+import java.lang.annotation.Retention;
 
-import dagger.Module;
-import dagger.Provides;
-import de.poeschl.apps.tryandremove.interfaces.AppManager;
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Created by Markus Pöschl on 18.12.2014.
+ * Created by Markus Pöschl on 24.02.2015.
  */
-
-@Module(
-        injects = {
-                AndroidAppManager.class
-        },
-        library = true,
-        complete = false
-)
-public class UtilsModule {
-
-    @Provides
-    @Singleton
-    AppManager provideAppManager(AndroidAppManager androidAppManager) {
-        return androidAppManager;
-    }
-
-    @Provides
-    AdManager provideAdManager() {
-        return new AdManager();
-    }
+@Qualifier
+@Retention(RUNTIME)
+public @interface BannerAdId {
 }

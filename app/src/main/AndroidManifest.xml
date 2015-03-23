@@ -19,6 +19,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".TryAndRemoveApp"
         android:allowBackup="true"
@@ -27,6 +30,14 @@
         android:supportsRtl="true"
         android:theme="@style/TryAndRemoveTheme"
         tools:ignore="UnusedAttribute">
+
+        <receiver
+            android:name=".broadcastReciever.AppDetectionReceiver"
+            android:exported="true" />
+
+        <service
+            android:name=".service.ApplicationDetectionService"
+            android:exported="false" />
 
         <activity
             android:name=".activities.AppListActivity"
@@ -46,12 +57,19 @@
             android:label="@string/settings_title"
             android:parentActivityName=".activities.AppListActivity"/>
 
-        <receiver
-            android:name=".broadcastReciever.AppDetectionReceiver"
-            android:exported="true"/>
-
-        <service
-            android:name=".service.ApplicationDetectionService"
-            android:exported="false"/>
+        <activity
+            android:name="com.mopub.mobileads.MoPubActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.mopub.mobileads.MraidActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.mopub.common.MoPubBrowser"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
     </application>
+
+
 </manifest>

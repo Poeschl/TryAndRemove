@@ -20,6 +20,10 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.mopub.common.MoPub;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,17 +32,18 @@ import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.trees.CrashlyticsReportTree;
 import io.fabric.sdk.android.Fabric;
+import io.fabric.sdk.android.Kit;
 import timber.log.Timber;
 
 /**
  * Created by markus on 05.12.14.
  */
 public class TryAndRemoveApp extends Application {
-    private ObjectGraph objectGraph;
-
     @Inject
     @CrashlyticsEnabled
     protected BooleanPreference crashlyticsEnabled;
+
+    private ObjectGraph objectGraph;
 
     @Override
     public void onCreate() {
@@ -46,15 +51,7 @@ public class TryAndRemoveApp extends Application {
 
         buildObjectGraphAndInject();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-
-        } else {
-            if (crashlyticsEnabled.get()) {
-                Fabric.with(this, new Crashlytics());
-                Timber.plant(new CrashlyticsReportTree());
-            }
-        }
+        initFabric();
 
         Timber.v("Crashlytics enabled: " + crashlyticsEnabled.get());
     }
@@ -71,5 +68,30 @@ public class TryAndRemoveApp extends Application {
 
     public static TryAndRemoveApp get(Context context) {
         return (TryAndRemoveApp) context.getApplicationContext();
+    }
+
+    private void initFabric() {
+        List<Kit> kits = new ArrayList<>();
+        kits.add(new MoPub());
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+
+        } else {
+            if (crashlyticsEnabled.get()) {
+                kits.add(new Crashlytics());
+            }
+        }
+
+        Kit[] kitArray = new Kit[kits.size()];
+        for (int i = 0; i < kits.size(); i++) {
+            kitArray[i] = kits.get(i);
+        }
+
+        Fabric.with(this, kitArray);
+
+        if (!BuildConfig.DEBUG && crashlyticsEnabled.get()) {
+            Timber.plant(new CrashlyticsReportTree());
+        }
     }
 }

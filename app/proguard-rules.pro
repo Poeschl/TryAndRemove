@@ -16,9 +16,10 @@
 #   public *;
 #}
 
-#Crashlytics
+#Crashlytics + MoPub
 -keep class com.crashlytics.** { *; }
 -keepattributes SourceFile,LineNumberTable
+-include ../proguard-com.mopub.sdk.android.mopub.txt
 
 
 #Butterknife

@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/app_list_layout_ad_banner" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/app_list_layout_floating_menu"
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/app_list_layout_ad_banner"
         android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
@@ -59,5 +60,12 @@
             android:id="@+id/app_list_layout_clear_action_button"
             style="@style/TryAndRemoveTheme.FloatingButton" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+    <com.mopub.mobileads.MoPubView
+        android:id="@+id/app_list_layout_ad_banner"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        layout_gravity="bottom" />
 
 </RelativeLayout>
