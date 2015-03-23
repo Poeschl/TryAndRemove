@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ package de.poeschl.apps.tryandremove.trees;/*
  * limitations under the License.
  */
 
+import android.provider.Settings;
+
 import com.crashlytics.android.Crashlytics;
 
 import de.poeschl.apps.tryandremove.BuildConfig;
@@ -47,9 +49,11 @@ public final class CrashlyticsReportTree extends Timber.HollowTree {
     private static final String INFO_TAG = "";
 
     private static final String GIT_SHA_PREF = "GIT_SHA";
+    private static final String ANDROID_ID = "ANDROID_ID";
 
     public CrashlyticsReportTree() {
         Crashlytics.setString(GIT_SHA_PREF, BuildConfig.GIT_SHA);
+        Crashlytics.setString(ANDROID_ID, Settings.Secure.ANDROID_ID);
     }
 
     @Override
