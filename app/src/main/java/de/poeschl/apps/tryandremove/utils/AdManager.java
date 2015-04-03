@@ -23,6 +23,7 @@ import com.mopub.mobileads.MoPubView;
 
 import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
+import timber.log.Timber;
 
 /**
  * Created by Markus Pöschl on 23.03.2015.
@@ -55,6 +56,7 @@ public class AdManager implements MoPubView.BannerAdListener {
 
     @Override
     public void onBannerFailed(MoPubView moPubView, MoPubErrorCode moPubErrorCode) {
+        Timber.i(moPubErrorCode.toString());
         adView.setVisibility(View.GONE);
     }
 
