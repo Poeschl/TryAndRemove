@@ -228,6 +228,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:palette-v7:22.0.0'
+    compile 'com.google.android.gms:play-services-ads:7.0.0'
 
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.jakewharton.timber:timber:2.7.1'
@@ -241,9 +242,6 @@ dependencies {
     compile project(':android-floating-action-button')
 
     compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar') {
-        transitive = true;
-    }
-    compile('com.mopub.sdk.android:mopub:3.5.0@aar') {
         transitive = true;
     }
 

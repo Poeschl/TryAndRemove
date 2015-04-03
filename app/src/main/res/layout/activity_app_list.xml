@@ -16,6 +16,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -61,11 +62,12 @@
             style="@style/TryAndRemoveTheme.FloatingButton" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
-    <com.mopub.mobileads.MoPubView
+    <com.google.android.gms.ads.AdView
         android:id="@+id/app_list_layout_ad_banner"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        layout_gravity="bottom" />
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5950397312285216/6676795285" />
 
 </RelativeLayout>

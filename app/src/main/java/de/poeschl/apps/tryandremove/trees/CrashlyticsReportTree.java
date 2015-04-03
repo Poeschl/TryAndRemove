@@ -30,8 +30,6 @@ package de.poeschl.apps.tryandremove.trees;/*
  * limitations under the License.
  */
 
-import android.provider.Settings;
-
 import com.crashlytics.android.Crashlytics;
 
 import de.poeschl.apps.tryandremove.BuildConfig;
@@ -53,7 +51,6 @@ public final class CrashlyticsReportTree extends Timber.HollowTree {
 
     public CrashlyticsReportTree() {
         Crashlytics.setString(GIT_SHA_PREF, BuildConfig.GIT_SHA);
-        Crashlytics.setString(ANDROID_ID, Settings.Secure.ANDROID_ID);
     }
 
     @Override

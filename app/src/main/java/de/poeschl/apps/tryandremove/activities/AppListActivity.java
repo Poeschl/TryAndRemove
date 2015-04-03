@@ -26,7 +26,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.mopub.mobileads.MoPubView;
+import com.google.android.gms.ads.AdView;
 
 import javax.inject.Inject;
 
@@ -37,7 +37,6 @@ import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
 import de.poeschl.apps.tryandremove.adapter.ListDividerDecoration;
-import de.poeschl.apps.tryandremove.annotations.BannerAdId;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
@@ -56,7 +55,7 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @InjectView(R.id.app_list_layout_floating_menu)
     FloatingActionsMenu floatMenu;
     @InjectView(R.id.app_list_layout_ad_banner)
-    MoPubView bannerAd;
+    AdView bannerAd;
 
     @Inject
     AppDetectionReceiver receiver;
@@ -71,9 +70,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     AppManager appManager;
     @Inject
     AdManager bannerAdManager;
-    @Inject
-    @BannerAdId
-    String bannerAdId;
 
     private MenuItem recordToolbarButton;
     private MenuItem reloadToolbarButton;
@@ -100,13 +96,20 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         bannerAdManager.setAdView(bannerAd);
-        bannerAdManager.registerAdUnitId(bannerAdId);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updatePackageList();
+
+        bannerAdManager.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        bannerAdManager.onPause();
     }
 
     @Override
@@ -114,6 +117,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         super.onDestroy();
         unregisterReceiver();
         Timber.v("Called onDestroy - unregister receiver");
+
+        bannerAdManager.onDestroy();
     }
 
     @Override

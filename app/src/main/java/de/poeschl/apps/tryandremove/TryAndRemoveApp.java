@@ -20,10 +20,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
-import com.mopub.common.MoPub;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,7 +28,6 @@ import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.trees.CrashlyticsReportTree;
 import io.fabric.sdk.android.Fabric;
-import io.fabric.sdk.android.Kit;
 import timber.log.Timber;
 
 /**
@@ -71,27 +66,15 @@ public class TryAndRemoveApp extends Application {
     }
 
     private void initFabric() {
-        List<Kit> kits = new ArrayList<>();
-        kits.add(new MoPub());
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
 
         } else {
             if (crashlyticsEnabled.get()) {
-                kits.add(new Crashlytics());
+                Fabric.with(this, new Crashlytics());
+                Timber.plant(new CrashlyticsReportTree());
             }
-        }
-
-        Kit[] kitArray = new Kit[kits.size()];
-        for (int i = 0; i < kits.size(); i++) {
-            kitArray[i] = kits.get(i);
-        }
-
-        Fabric.with(this, kitArray);
-
-        if (!BuildConfig.DEBUG && crashlyticsEnabled.get()) {
-            Timber.plant(new CrashlyticsReportTree());
         }
     }
 }
