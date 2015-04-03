@@ -34,11 +34,11 @@ import timber.log.Timber;
  * Created by markus on 05.12.14.
  */
 public class TryAndRemoveApp extends Application {
-    private ObjectGraph objectGraph;
-
     @Inject
     @CrashlyticsEnabled
     protected BooleanPreference crashlyticsEnabled;
+
+    private ObjectGraph objectGraph;
 
     @Override
     public void onCreate() {
@@ -46,15 +46,7 @@ public class TryAndRemoveApp extends Application {
 
         buildObjectGraphAndInject();
 
-        if (BuildConfig.DEBUG) {
-            Timber.plant(new Timber.DebugTree());
-
-        } else {
-            if (crashlyticsEnabled.get()) {
-                Fabric.with(this, new Crashlytics());
-                Timber.plant(new CrashlyticsReportTree());
-            }
-        }
+        initFabric();
 
         Timber.v("Crashlytics enabled: " + crashlyticsEnabled.get());
     }
@@ -71,5 +63,18 @@ public class TryAndRemoveApp extends Application {
 
     public static TryAndRemoveApp get(Context context) {
         return (TryAndRemoveApp) context.getApplicationContext();
+    }
+
+    private void initFabric() {
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+
+        } else {
+            if (crashlyticsEnabled.get()) {
+                Fabric.with(this, new Crashlytics());
+                Timber.plant(new CrashlyticsReportTree());
+            }
+        }
     }
 }

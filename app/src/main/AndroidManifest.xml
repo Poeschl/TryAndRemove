@@ -19,6 +19,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".TryAndRemoveApp"
         android:allowBackup="true"
@@ -27,6 +30,21 @@
         android:supportsRtl="true"
         android:theme="@style/TryAndRemoveTheme"
         tools:ignore="UnusedAttribute">
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="5a3d09763a712b539db92fd4cfa28b0b183fcc06" />
+
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <receiver
+            android:name=".broadcastReciever.AppDetectionReceiver"
+            android:exported="true" />
+
+        <service
+            android:name=".service.ApplicationDetectionService"
+            android:exported="false" />
 
         <activity
             android:name=".activities.AppListActivity"
@@ -46,12 +64,8 @@
             android:label="@string/settings_title"
             android:parentActivityName=".activities.AppListActivity"/>
 
-        <receiver
-            android:name=".broadcastReciever.AppDetectionReceiver"
-            android:exported="true"/>
-
-        <service
-            android:name=".service.ApplicationDetectionService"
-            android:exported="false"/>
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
     </application>
+
 </manifest>

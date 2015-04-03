@@ -14,19 +14,8 @@
  * limitations under the License.
  */
 
-
-
-
-
-
-
-
-
-
-
-
-
 buildscript {
+
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
@@ -73,6 +62,12 @@ android {
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+        //Setup the fabric keys
+        def properties = getExternalProperties()
+        resValue "string", "fabric_key", properties["crashlytics_apiKey"]
+        resValue "string", "fabric_appSecret", properties["crashlytics_appSecret"]
+        println "Setup fabric api keys"
     }
 
     lintOptions {
@@ -163,48 +158,58 @@ task downloadCheckstyleConfig(type: Download) {
     onlyIfNewer true
 }
 
-//Get environment variable of keystore settings folder location.
-def keyStorePath = System.getenv('Android_Keystore_Path')
+def getExternalProperties() {
+    //Get environment variable of keystore settings folder location.
+    def keyStorePath = System.getenv('Android_Keystore_Path')
+
+    //Name of the properties file
+    def propertiesFileName = 'TryAndRemove.keyproperties'
+
+    def propsFile = file(keyStorePath + '/' + propertiesFileName)
+
+    def properties;
+    if (propsFile.exists()) {
+        properties = new Properties()
+        properties.load(new FileInputStream(propsFile))
+        properties.put('path', keyStorePath)
+
+    } else {
+        System.err.println("File " + propsFile.name + " for setup not available");
+    }
+
+    return properties
+}
+
+def setupSigning(properties) {
+    if(properties == null) {
+        System.err.println("Could not set signing config. No properties");
+        return;
+    }
+
+    def configName = 'googlePlay'
+
+    if (android.signingConfigs.hasProperty(configName)) {
+
+        //Android signing information
+        android.signingConfigs[configName].storeFile = file(properties['path'] + '/' + properties['storeFile'])
+        android.signingConfigs[configName].storePassword = properties['storePassword']
+        android.signingConfigs[configName].keyAlias = properties['keyAlias']
+        android.signingConfigs[configName].keyPassword = properties['keyPassword']
+        println("Setup keystore settings.")
+    }
+}
 
 /*
  * Adds dynamically keys and secret stuff to the project
  */
 afterEvaluate { project ->
-    def propsFile = file(keyStorePath + '/TryAndRemove.keyproperties')
 
-    def configName = 'googlePlay'
-    if (propsFile.exists()) {
-        def props = new Properties()
-        props.load(new FileInputStream(propsFile))
+    def props = getExternalProperties();
 
-        if (android.signingConfigs.hasProperty(configName)) {
-
-            //Android signing information
-            android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
-            android.signingConfigs[configName].storePassword = props['storePassword']
-            android.signingConfigs[configName].keyAlias = props['keyAlias']
-            android.signingConfigs[configName].keyPassword = props['keyPassword']
-            println("Setup keystore settings.")
-        }
-
-        //Fabric keys
-        File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
-        FileWriter writer = new FileWriter(crashlyticsProps, false);
-
-        try {
-            writer.write("apiSecret=" + props["crashlytics_appSecret"]);
-            writer.write("\n")
-            writer.write("apiKey=" + props["crashlytics_apiKey"]);
-        } finally {
-            writer.close();
-        }
-        println("Setup crashlytics keys.")
-
-
-    } else {
-        System.err.println("File " + propsFile.name + " for key setup not available");
-    }
+    setupSigning(props)
 }
+
+
 
 /*
  * Gives the output apks the right names. Automatic file name convention.
@@ -220,21 +225,25 @@ def renameReleasePackage(variant, defaultConfig) {
 }
 
 dependencies {
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.jakewharton.timber:timber:2.7.1'
-    compile 'com.squareup.dagger:dagger:1.2.2'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.2@aar') {
-        transitive = true;
-    }
     compile 'com.android.support:recyclerview-v7:21.0.3'
     compile 'com.android.support:appcompat-v7:22.0.0'
     compile 'com.android.support:palette-v7:22.0.0'
+    compile 'com.google.android.gms:play-services-ads:7.0.0'
+
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.jakewharton.timber:timber:2.7.1'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
     compile 'com.makeramen:roundedimageview:2.0.0'
     compile "com.daimajia.swipelayout:library:1.1.8@aar"
     //    Is replaced with local aar until changes gets merged
     //    compile 'com.getbase:floatingactionbutton:1.4.0'
     compile project(':android-floating-action-button')
-    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar') {
+        transitive = true;
+    }
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'

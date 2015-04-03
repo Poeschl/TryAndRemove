@@ -9,3 +9,4 @@ app/app.iml
 app/crashlytics.properties
 app/src/main/res/values/com_crashlytics_export_strings.xml
 android-floating-action-button/android-floating-action-button.iml
+proguard-com.mopub.sdk.android.mopub.txt
