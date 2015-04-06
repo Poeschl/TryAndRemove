@@ -126,7 +126,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         switch (targetViewMode) {
             case APP_LIST:
                 //Ignore when we are in the app list
-                if (this.getClass().equals(AppListActivity.class)) {
+                if (!this.getClass().equals(AppListActivity.class)) {
                     openIntent = new Intent(this, AppListActivity.class);
                     startActivity(openIntent);
                 }
