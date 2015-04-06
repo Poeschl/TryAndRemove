@@ -16,8 +16,12 @@
 
 package de.poeschl.apps.tryandremove.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -31,19 +35,22 @@ public class WebViewActivity extends ChildrenActivity {
     public static final String URL_EXTRA_KEY = "URL_EXTRA";
     public static final String ACTIONBAR_TITLE_KEY = "ACTIONBAR_EXTRA";
 
-    @InjectView(R.id.private_policy_layout_policy_webView)
+    @InjectView(R.id.webView_layout_policy_webView)
     WebView webView;
-
+    @InjectView(R.id.webView_layout_progressbar)
+    ProgressBar loadingIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupLayout(R.layout.activity_privacy_policy);
+        setupLayout(R.layout.activity_webview);
 
         ButterKnife.inject(this);
 
         Bundle extras = getIntent().getExtras();
+
+        webView.setWebViewClient(new CustomWebViewClient());
 
         if (extras != null && extras.containsKey(URL_EXTRA_KEY)) {
             webView.loadUrl(extras.getString(URL_EXTRA_KEY));
@@ -54,6 +61,30 @@ public class WebViewActivity extends ChildrenActivity {
 
         } else {
             finish();
+        }
+    }
+
+    private void showLoadingIndicator() {
+        loadingIndicator.setVisibility(View.VISIBLE);
+    }
+
+    private void hideLoadingIndicator() {
+        loadingIndicator.setVisibility(View.GONE);
+    }
+
+    private class CustomWebViewClient extends WebViewClient {
+        @Override
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            showLoadingIndicator();
+            view.setVisibility(View.INVISIBLE);
+            super.onPageStarted(view, url, favicon);
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            view.setVisibility(View.VISIBLE);
+            hideLoadingIndicator();
+            super.onPageFinished(view, url);
         }
     }
 }
