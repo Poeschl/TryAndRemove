@@ -18,7 +18,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cell_navigation_root"
     android:layout_width="fill_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:background="@drawable/navigation_selection_background">
 
     <ImageView
         android:id="@+id/cell_navigation_icon"
