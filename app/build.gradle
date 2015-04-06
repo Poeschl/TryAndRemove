@@ -18,8 +18,6 @@ buildscript {
 
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'io.fabric.tools:gradle:1.14.4'
         classpath 'de.undercouch:gradle-download-task:1.2'
     }
@@ -30,10 +28,8 @@ def versionMajor = 1
 def versionMinor = 0
 def versionPatch = 0
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'hugo'
 apply plugin: 'de.undercouch.download'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -181,7 +177,7 @@ def getExternalProperties() {
 }
 
 def setupSigning(properties) {
-    if(properties == null) {
+    if (properties == null) {
         System.err.println("Could not set signing config. No properties");
         return;
     }
@@ -208,8 +204,6 @@ afterEvaluate { project ->
 
     setupSigning(props)
 }
-
-
 
 /*
  * Gives the output apks the right names. Automatic file name convention.
