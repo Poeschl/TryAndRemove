@@ -195,6 +195,21 @@ def setupSigning(properties) {
     }
 }
 
+def setupFabricApiFile(properties) {
+
+    File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
+    FileWriter writer = new FileWriter(crashlyticsProps, false);
+
+    try {
+        writer.write("apiSecret=" + properties["crashlytics_appSecret"]);
+        writer.write("\n")
+        writer.write("apiKey=" + properties["crashlytics_apiKey"]);
+    } finally {
+        writer.close();
+    }
+    println("Setup crashlytics key file.")
+}
+
 /*
  * Adds dynamically keys and secret stuff to the project
  */
@@ -203,6 +218,7 @@ afterEvaluate { project ->
     def props = getExternalProperties();
 
     setupSigning(props)
+    setupFabricApiFile(props)
 }
 
 /*
