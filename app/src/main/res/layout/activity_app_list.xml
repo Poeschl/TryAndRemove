@@ -65,9 +65,10 @@
     <com.google.android.gms.ads.AdView
         android:id="@+id/app_list_layout_ad_banner"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/ad_banner_height"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
+        android:layout_alignWithParentIfMissing="true"
+        ads:adSize="SMART_BANNER"
         ads:adUnitId="ca-app-pub-5950397312285216/6676795285"
         android:visibility="gone" />
 
