@@ -52,6 +52,7 @@ public class AdManager extends AdListener {
     public void onAdFailedToLoad(int errorCode) {
         super.onAdFailedToLoad(errorCode);
         adView.setVisibility(View.GONE);
+
         Timber.i("Ad failed to load errorCode: " + errorCode);
     }
 
