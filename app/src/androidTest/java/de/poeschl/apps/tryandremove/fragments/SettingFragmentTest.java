@@ -47,12 +47,12 @@ public class SettingFragmentTest extends BaseInstrumentTestCase<SettingActivity>
     }
 
     public void testColoredCellsSetting() {
-        assertTrue("Colored cells should be enabled per default.", settingsFragment.coloredCellsEnabled.get());
+        assertFalse("Colored cells should be disabled per default.", settingsFragment.coloredCellsEnabled.get());
 
         solo.clickOnText("Colored Cells");
         //Set the sleep to wait for the shared preferences writing.
         solo.sleep(MEDIUM_SLEEP_INTERVAL);
-        assertFalse("Colored cells should be disabled after click", settingsFragment.coloredCellsEnabled.get());
+        assertTrue("Colored cells should be disabled after click", settingsFragment.coloredCellsEnabled.get());
 
     }
 }

@@ -34,7 +34,6 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:divider">@color/divider</item>
         <item name="windowActionBar">false</item>
-        <item name="drawerArrowStyle">@style/TryAndRemoveTheme.Toolbar</item>
     </style>
 
     <style name="TryAndRemoveTheme.FloatingButton">
@@ -54,8 +53,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TryAndRemoveTheme.Toolbar" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/primary_text_light</item>
+    <style name="TryAndRemoveTheme.Toolbar.DrawerArrow" parent="Widget.AppCompat.DrawerArrowToggle">
+    <item name="color">@color/primary_text_light</item>
+    </style>
+
+    <style name="TryAndRemoveTheme.Toolbar" parent="TryAndRemoveTheme">
+        <item name="android:textColorPrimary">@color/primary_text_light</item>
+        <item name="android:textColorSecondary">@color/primary_text_light</item>
+        <item name="drawerArrowStyle">@style/TryAndRemoveTheme.Toolbar.DrawerArrow</item>
     </style>
 
     <style name="TryAndRemoveTheme.FloatingActionButtonLabel">

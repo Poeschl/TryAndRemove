@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import hugo.weaving.DebugLog;
 
 
 /**
@@ -103,7 +102,6 @@ public class ApplicationDetectionService extends IntentService {
         }
     }
 
-    @DebugLog
     String extractPackageString(String intentData) {
         String packagePre = "intent:";
         String packageSuf = "#Intent";

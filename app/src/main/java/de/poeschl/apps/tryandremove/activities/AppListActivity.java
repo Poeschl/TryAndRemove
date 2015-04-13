@@ -22,8 +22,10 @@ import android.os.Bundle;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.ads.AdView;
@@ -166,11 +168,18 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         Timber.d("Listener Status: " + newTrackState);
         setRecordState(newTrackState);
 
+        Toast hint;
         if (newTrackState) {
             registerReceiver();
+            hint = Toast.makeText(this, getString(R.string.app_list_hint_enabled), Toast.LENGTH_SHORT);
         } else {
             unregisterReceiver();
+            hint = Toast.makeText(this, getString(R.string.app_list_hint_disabled), Toast.LENGTH_SHORT);
         }
+        hint.setGravity(Gravity.CENTER, 0, 0);
+        hint.show();
+
+
     }
 
     private void setRecordState(boolean state) {

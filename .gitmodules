@@ -1,3 +1,0 @@
-[submodule "checkstyle"]
-	path = checkstyle
-	url = git@bitbucket.org:Poeschl/android-checkstyle.git

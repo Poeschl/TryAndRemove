@@ -15,12 +15,12 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="match_parent"
-              android:background="@color/background"
-              tools:ignore="Overdraw">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:ignore="Overdraw">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:scaleType="centerCrop"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:scrollY="-16dp"/>
+            android:scrollY="-16dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            style="@style/TryAndRemoveTheme.NavigationDrawer.Title"/>
+            style="@style/TryAndRemoveTheme.NavigationDrawer.Title" />
 
     </RelativeLayout>
 
@@ -55,17 +55,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:overScrollMode="never" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="2dp"
         android:background="@color/divider"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/navigation_drawer_bottom_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"/>
+        android:background="@android:color/transparent"
+        android:overScrollMode="never" />
 </LinearLayout>

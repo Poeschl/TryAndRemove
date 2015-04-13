@@ -20,12 +20,12 @@ This is in the main a private project to learn something more about some librari
 Change log
 ===========
 
-See [change log file](https://github.com/Poeschl/TryAndRemove/blob/master/changelog.md)
+See [change log file](https://github.com/Poeschl/TryAndRemove/blob/master/Changelog.md)
 
 License
 =========
 
-    Copyright (c) 2014 Markus Poeschl
+    Copyright (c) 2015 Markus Poeschl
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

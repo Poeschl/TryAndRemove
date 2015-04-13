@@ -18,6 +18,7 @@ package de.poeschl.apps.tryandremove.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
 
     private static final String PRIVACY_POLICY_URL = "file:///android_asset/PrivacyPolicy.html";
     private static final String IMPRINT_URL = "file:///android_asset/Imprint.html";
+    private static final Handler drawerHandler = new Handler();
 
     private RecyclerView topRecyclerView;
     private RecyclerView bottomRecyclerView;
@@ -121,12 +123,27 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     }
 
     @Override
-    public void onNavigationItemClick(NavItem targetViewMode) {
+    public void onNavigationItemClick(final NavItem targetViewMode) {
+
+        // Clears any previously posted runnables, for double clicks
+        drawerHandler.removeCallbacksAndMessages(null);
+        drawerHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                onItemSelection(targetViewMode);
+            }
+        }, 250);
+        //The delay comes from trial and error
+        drawerLayout.closeDrawers();
+    }
+
+    private void onItemSelection(NavItem targetViewMode) {
         Intent openIntent;
         switch (targetViewMode) {
             case APP_LIST:
                 //Ignore when we are in the app list
-                if (this.getClass().equals(AppListActivity.class)) {
+                if (!this.getClass().equals(AppListActivity.class)) {
                     openIntent = new Intent(this, AppListActivity.class);
                     startActivity(openIntent);
                 }
@@ -153,7 +170,6 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
             default:
                 break;
         }
-        drawerLayout.closeDrawers();
     }
 
     private void startChildrenActivity(Intent intent) {

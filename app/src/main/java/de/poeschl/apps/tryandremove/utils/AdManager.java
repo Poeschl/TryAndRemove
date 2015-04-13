@@ -27,6 +27,7 @@ import com.google.android.gms.ads.mediation.admob.AdMobExtras;
 
 import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
+import timber.log.Timber;
 
 /**
  * Created by Markus Pöschl on 23.03.2015.
@@ -42,8 +43,16 @@ public class AdManager extends AdListener {
     }
 
     @Override
+    public void onAdLoaded() {
+        super.onAdLoaded();
+        adView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onAdFailedToLoad(int errorCode) {
+        super.onAdFailedToLoad(errorCode);
         adView.setVisibility(View.GONE);
+        Timber.i("Ad failed to load errorCode: " + errorCode);
     }
 
     public void onPause() {

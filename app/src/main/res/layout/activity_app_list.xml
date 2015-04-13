@@ -35,8 +35,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@+id/app_list_layout_ad_banner"
-        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/ad_banner_height"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
         style="@style/TryAndRemoveTheme.FloatingMenuButton"
@@ -65,9 +65,10 @@
     <com.google.android.gms.ads.AdView
         android:id="@+id/app_list_layout_ad_banner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/ad_banner_height"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-5950397312285216/6676795285" />
+        ads:adUnitId="ca-app-pub-5950397312285216/6676795285"
+        android:visibility="gone" />
 
 </RelativeLayout>
