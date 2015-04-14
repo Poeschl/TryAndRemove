@@ -16,6 +16,8 @@
 
 package de.poeschl.apps.tryandremove.utils;
 
+import android.app.Application;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -44,5 +46,11 @@ public class UtilsModule {
     @Provides
     AdManager provideAdManager() {
         return new AdManager();
+    }
+
+    @Provides
+    @Singleton
+    NotificationManager provideNotificationManager(Application app) {
+        return new NotificationManager(app);
     }
 }

@@ -48,6 +48,7 @@ import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
 import de.poeschl.apps.tryandremove.utils.AdManager;
+import de.poeschl.apps.tryandremove.utils.NotificationManager;
 import timber.log.Timber;
 
 public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AppListAdapter.AppListAdapterListener {
@@ -72,6 +73,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     AppManager appManager;
     @Inject
     AdManager bannerAdManager;
+    @Inject
+    NotificationManager notificationManager;
 
     private MenuItem recordToolbarButton;
     private MenuItem reloadToolbarButton;
@@ -199,6 +202,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         receiver.setRegistered(true);
         isTracking.set(true);
         registerReceiver(receiver, filter);
+
+        notificationManager.createRecordNotification();
     }
 
     private void unregisterReceiver() {
@@ -212,6 +217,8 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
         } catch (IllegalArgumentException e) {
             Timber.e(e, "App install receiver was unregistered while not registered.");
         }
+
+        notificationManager.hideRecordNotification();
     }
 
     @OnClick(R.id.app_list_layout_clear_action_button)

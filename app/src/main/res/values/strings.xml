@@ -44,5 +44,7 @@
     <string name="preferences_appearance_switch_summary">Colors the cells background in the main color according to the app icon.</string>
     <string name="app_list_hint_enabled">Recording enabled</string>
     <string name="app_list_hint_disabled">Recording disabled</string>
+    <string name="notification_title">@string/app_name</string>
+    <string name="notification_message">App installations are recorded.</string>
 
 </resources>
