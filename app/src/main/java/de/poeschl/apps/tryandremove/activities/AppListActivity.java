@@ -120,9 +120,6 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver();
-        Timber.v("Called onDestroy - unregister receiver");
-
         bannerAdManager.onDestroy();
     }
 
@@ -207,16 +204,15 @@ public class AppListActivity extends NavigationActivity implements ClearWarningD
     }
 
     private void unregisterReceiver() {
-        try {
-            if (receiver.isRegistered()) {
+        if (receiver.isRegistered()) {
+            try {
                 unregisterReceiver(receiver);
+            } catch (IllegalArgumentException e) {
+                Timber.d("App install receiver was unregistered while not registered.");
             }
-            isTracking.set(false);
-            receiver.setRegistered(false);
-
-        } catch (IllegalArgumentException e) {
-            Timber.e(e, "App install receiver was unregistered while not registered.");
         }
+        isTracking.set(false);
+        receiver.setRegistered(false);
 
         notificationManager.hideRecordNotification();
     }

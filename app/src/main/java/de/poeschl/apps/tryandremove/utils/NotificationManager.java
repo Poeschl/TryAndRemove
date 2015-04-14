@@ -16,10 +16,13 @@
 
 package de.poeschl.apps.tryandremove.utils;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 
 import de.poeschl.apps.tryandremove.R;
+import de.poeschl.apps.tryandremove.activities.AppListActivity;
 
 /**
  * Created by Markus Pöschl on 14.04.2015.
@@ -35,10 +38,23 @@ public class NotificationManager {
 
         notificationManager = (android.app.NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        buildRecordNotification(context);
+    }
+
+    private void buildRecordNotification(Context context) {
         recordNotificationBuilder = new NotificationCompat.Builder(context);
         recordNotificationBuilder.setSmallIcon(R.drawable.ic_launcher_app);
         recordNotificationBuilder.setContentTitle(context.getString(R.string.notification_title));
         recordNotificationBuilder.setContentText(context.getString(R.string.notification_message));
+        recordNotificationBuilder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        recordNotificationBuilder.setPriority(NotificationCompat.PRIORITY_LOW);
+        recordNotificationBuilder.setAutoCancel(false);
+        recordNotificationBuilder.setOngoing(true);
+
+        Intent action = new Intent(context, AppListActivity.class);
+        action.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+
+        recordNotificationBuilder.setContentIntent(PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT));
     }
 
     public void createRecordNotification() {
