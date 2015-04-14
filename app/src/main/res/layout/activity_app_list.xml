@@ -42,14 +42,13 @@
         style="@style/TryAndRemoveTheme.FloatingMenuButton"
         fab:fab_collapsedIcon="@drawable/ic_action_delete"
         fab:fab_labelStyle="@style/TryAndRemoveTheme.FloatingActionButtonLabel"
-        fab:fab_labelsPosition="left"
-        android:elevation="8dp">
+        fab:fab_labelsPosition="left">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_action_delete"
             fab:fab_title="@string/app_list_layout_remove_apps_title"
+            fab:fab_icon="@drawable/ic_action_delete"
             android:id="@+id/app_list_layout_remove_action_button"
             style="@style/TryAndRemoveTheme.FloatingButton" />
 
