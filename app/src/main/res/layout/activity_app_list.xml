@@ -42,14 +42,14 @@
         style="@style/TryAndRemoveTheme.FloatingMenuButton"
         fab:fab_collapsedIcon="@drawable/ic_action_delete"
         fab:fab_labelStyle="@style/TryAndRemoveTheme.FloatingActionButtonLabel"
-        fab:fab_labelsPosition="left"
-        android:elevation="8dp">
+        fab:fab_labelsPosition="left">
 
+        <!-- I used a copied image as workaround, to prevent the vanishing of it on click, because it is also use in the menu button. -->
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_icon="@drawable/ic_action_delete"
             fab:fab_title="@string/app_list_layout_remove_apps_title"
+            fab:fab_icon="@drawable/ic_action_delete1"
             android:id="@+id/app_list_layout_remove_action_button"
             style="@style/TryAndRemoveTheme.FloatingButton" />
 
