@@ -15,51 +15,52 @@
   -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/app_list_layout_apps_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"
+        android:layout_above="@+id/app_list_layout_ad_banner"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/app_list_layout_ad_banner" />
+        android:background="@android:color/transparent" />
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/app_list_layout_floating_menu"
+        style="@style/TryAndRemoveTheme.FloatingMenuButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@id/app_list_layout_ad_banner"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/ad_banner_height"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_marginBottom="@dimen/appList_bottomRightButton_margin"
         android:layout_marginEnd="@dimen/appList_bottomRightButton_margin"
         android:layout_marginRight="@dimen/appList_bottomRightButton_margin"
-        style="@style/TryAndRemoveTheme.FloatingMenuButton"
         fab:fab_collapsedIcon="@drawable/ic_action_delete"
         fab:fab_labelStyle="@style/TryAndRemoveTheme.FloatingActionButtonLabel"
         fab:fab_labelsPosition="left">
 
         <!-- I used a copied image as workaround, to prevent the vanishing of it on click, because it is also use in the menu button. -->
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/app_list_layout_remove_action_button"
+            style="@style/TryAndRemoveTheme.FloatingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_title="@string/app_list_layout_remove_apps_title"
             fab:fab_icon="@drawable/ic_action_delete1"
-            android:id="@+id/app_list_layout_remove_action_button"
-            style="@style/TryAndRemoveTheme.FloatingButton" />
+            fab:fab_title="@string/app_list_layout_remove_apps_title" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/app_list_layout_clear_action_button"
+            style="@style/TryAndRemoveTheme.FloatingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            fab:fab_title="@string/app_list_layout_clear_app_list_title"
             fab:fab_icon="@drawable/ic_action_clear"
-            android:id="@+id/app_list_layout_clear_action_button"
-            style="@style/TryAndRemoveTheme.FloatingButton" />
+            fab:fab_title="@string/app_list_layout_clear_app_list_title" />
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     <com.google.android.gms.ads.AdView
@@ -68,8 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignWithParentIfMissing="true"
+        android:visibility="gone"
         ads:adSize="SMART_BANNER"
-        ads:adUnitId="ca-app-pub-5950397312285216/6676795285"
-        android:visibility="gone" />
+        ads:adUnitId="ca-app-pub-5950397312285216/6676795285" />
 
 </RelativeLayout>
