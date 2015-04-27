@@ -1,10 +1,14 @@
-Record your app installations and remove them all or specific apps from inside the app in a very quick way.
+Zeichne deine App Installationen auf und entferne schnell später alle oder nur einzelne Apps mit dieser Anwendung von deinem Gerät.
 
-<b>Features:</b>
+<b>Eigenschaften:</b>
 
-&#8226;&#8195; Toggle the record of app installations.
-&#8226;&#8195; Remove all recorded apps like a batch uninstall.
-&#8226;&#8195; Remove just specific apps or exclude some from the uninstall process.
+&#8226;&#8195; Aktiviere oder Deaktiviere die Aufzeichung der Installationen.
+&#8226;&#8195; Entferne alle erfassten Apps wie in bei einer Stapelverarbeitung.
+&#8226;&#8195; Entferne nur spezifische Apps oder schließe manche von dem Deinstallationsprozess aus.
+&#8226;&#8195; Komplett in Material Design
 
-<b>Permissions:</b>
-Network - For displaying some nearly invisible ads. Crashlytics is also integrated, but can be opt-out inside the app settings.
+<b>Berechtigungen:</b>
+Netzwerk - Anzeigen von minimaler Werbung.
+
+<b>Changelog</b>
+Für den Changelog gehe zu: https://github.com/Poeschl/TryAndRemove/blob/master/changelog.md.
