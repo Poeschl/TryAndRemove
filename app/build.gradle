@@ -20,6 +20,7 @@ buildscript {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
         classpath 'io.fabric.tools:gradle:1.14.4'
         classpath 'de.undercouch:gradle-download-task:1.2'
+        classpath 'com.github.triplet.gradle:play-publisher:1.0.4'
     }
 }
 
@@ -30,7 +31,6 @@ def versionPatch = 0
 
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'de.undercouch.download'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
@@ -117,6 +117,19 @@ androidUnitTest {
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
 
+apply plugin: 'play'
+play {
+    def properties = getExternalProperties()
+    serviceAccountEmail = properties["serviceAccountMail"]
+    pk12File = file(properties["path"] + '/' + properties["serviceAccountKey"])
+
+    track = 'beta'
+
+    uploadImages = true
+
+    println("Setup Play Store plugin")
+}
+
 apply plugin: 'checkstyle'
 
 checkstyle {
@@ -142,6 +155,7 @@ task checkstyle(type: Checkstyle) {
     it.dependsOn 'downloadCheckstyleConfig'
     classpath = files()
 }
+apply plugin: 'de.undercouch.download'
 import de.undercouch.gradle.tasks.download.Download
 
 task downloadCheckstyleConfig(type: Download) {
@@ -176,6 +190,22 @@ def getExternalProperties() {
     return properties
 }
 
+task setupSigning() {
+    def props = getExternalProperties();
+
+    setupSigning(props)
+    setupFabricApiFile(props)
+}
+
+/*
+ * Adds dynamically keys and secret stuff to the project
+ */
+afterEvaluate { project ->
+
+    def generateReleasePlayResources = project.tasks.getByName("generateReleasePlayResources")
+    generateReleasePlayResources.dependsOn setupSigning
+}
+
 def setupSigning(properties) {
     if (properties == null) {
         System.err.println("Could not set signing config. No properties");
@@ -208,17 +238,6 @@ def setupFabricApiFile(properties) {
         writer.close();
     }
     println("Setup crashlytics key file.")
-}
-
-/*
- * Adds dynamically keys and secret stuff to the project
- */
-afterEvaluate { project ->
-
-    def props = getExternalProperties();
-
-    setupSigning(props)
-    setupFabricApiFile(props)
 }
 
 /*
