@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,17 +24,23 @@ import javax.inject.Inject;
 
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
-import hugo.weaving.DebugLog;
 
 
 /**
- * This intent service cares about the broadcasts from the {@link de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver}
+ * This intent service cares about the broadcasts from the {@link de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver}.
  */
 public class ApplicationDetectionService extends IntentService {
     static final String ACTION_APP_INSTALLED = "APP_INSTALLED";
     static final String ACTION_APP_REMOVED = "APP_REMOVED";
 
     static final String EXTRA_INTENT_STRING = "INTENT_STRING";
+
+    @Inject
+    PackageList packageList;
+
+    public ApplicationDetectionService() {
+        super(ApplicationDetectionService.class.getSimpleName());
+    }
 
     /**
      * Starts this service to perform a app install action.
@@ -58,13 +64,6 @@ public class ApplicationDetectionService extends IntentService {
         intent.setAction(ACTION_APP_REMOVED);
         intent.putExtra(EXTRA_INTENT_STRING, intentString);
         context.startService(intent);
-    }
-
-    @Inject
-    PackageList packageList;
-
-    public ApplicationDetectionService() {
-        super(ApplicationDetectionService.class.getSimpleName());
     }
 
     @Override
@@ -103,7 +102,6 @@ public class ApplicationDetectionService extends IntentService {
         }
     }
 
-    @DebugLog
     String extractPackageString(String intentData) {
         String packagePre = "intent:";
         String packageSuf = "#Intent";

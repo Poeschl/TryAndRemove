@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,18 +37,19 @@ import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.inject.Inject;
@@ -76,6 +77,8 @@ import static butterknife.ButterKnife.findById;
  * Created by markus on 05.12.14.
  */
 public class DebugAppContainer implements AppContainer {
+
+    public static final int TOAST_TIME = 1000;
 
     @InjectView(R.id.debug_drawer_layout)
     DrawerLayout drawerLayout;
@@ -118,12 +121,13 @@ public class DebugAppContainer implements AppContainer {
     TextView deviceApiView;
 
 
+    PackageList packageList;
+
     private final Application app;
     private Activity activity;
     private Context drawerContext;
     private BooleanPreference seenDebugDrawer;
     private AppDetectionReceiver appDetectionReceiver;
-    PackageList packageList;
 
     private BooleanPreference scalpelEnabled;
     private BooleanPreference scalpelWireframeEnabled;
@@ -166,7 +170,7 @@ public class DebugAppContainer implements AppContainer {
         // Inject after inflating the drawer layout so its views are available to inject.
         ButterKnife.inject(this, activity);
 
-        drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
+        drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, Gravity.END);
         drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -179,15 +183,15 @@ public class DebugAppContainer implements AppContainer {
             }
         });
 
-        // If you have not seen the debug drawer before, show it with a message
+        // If you have not seen the debug drawer before, show a message
         if (!seenDebugDrawer.get()) {
-            drawerLayout.postDelayed(new Runnable() {
+            boolean b = drawerLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawerLayout.openDrawer(Gravity.END);
-                    Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
+//                    drawerLayout.openDrawer(Gravity.END);
+//                    Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_SHORT).show();
                 }
-            }, 1000);
+            }, TOAST_TIME);
             seenDebugDrawer.set(true);
         }
 
@@ -245,7 +249,7 @@ public class DebugAppContainer implements AppContainer {
                                 activity.startActivity(intent);
                                 Timber.v("Install real app.");
 
-                            } catch (Exception e) {
+                            } catch (IOException e) {
                                 Timber.e(e, e.getMessage());
                             }
                         }
@@ -330,10 +334,10 @@ public class DebugAppContainer implements AppContainer {
 
         try {
             // Parse ISO8601-format time into local time.
-            DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            DateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
             inFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date buildTime = inFormat.parse(BuildConfig.BUILD_TIME);
-            buildDateView.setText(new SimpleDateFormat("yyyy-MM-dd kk:mm").format(buildTime));
+            buildDateView.setText(new SimpleDateFormat("yyyy-MM-dd kk:mm", Locale.US).format(buildTime));
         } catch (ParseException e) {
             throw new RuntimeException("Unable to decode build time: " + BuildConfig.BUILD_TIME, e);
         }

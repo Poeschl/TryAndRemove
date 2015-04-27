@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,8 +15,12 @@
   -->
 
 <resources>
-    <dimen name="activity_horizontal_margin">8dp</dimen>
-
     <dimen name="appList_bottomRightButton_margin">5dp</dimen>
-    <dimen name="appList_bottomLeftButton_margin">5dp</dimen>
+    <dimen name="navigation_drawer_title_offset">72dp</dimen>
+    <dimen name="navigation_drawer_side_offset">16dp</dimen>
+
+    <integer name="animation_duration_activities">300</integer>
+    <integer name="animation_fast_duration_activities">200</integer>
+    <integer name="animation_slow_duration_activities">500</integer>
+
 </resources>

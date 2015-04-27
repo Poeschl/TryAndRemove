@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@
 package de.poeschl.apps.tryandremove.data;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -25,6 +28,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 
@@ -37,6 +41,8 @@ public class SharedPreferencesPackageList implements PackageList {
 
     private SharedPreferences preferences;
     private AppManager appManager;
+    private Handler updateHandler;
+
 
     @Inject
     SharedPreferencesPackageList(SharedPreferences preferences, AppManager appManager) {
@@ -50,7 +56,7 @@ public class SharedPreferencesPackageList implements PackageList {
     /**
      * Check if the app are really installed right now. Removes them if not found by the package manager.
      */
-    void validatePackages() {
+    public void validatePackages() {
         List<String> savedPackages = getPackages();
 
         List<String> packagesToRemove = new LinkedList<>();
@@ -77,6 +83,7 @@ public class SharedPreferencesPackageList implements PackageList {
         Set<String> saved = getSavedSet();
         boolean success = saved.add(packageName);
         saveSet(saved);
+        triggerUpdateHandler();
         return success;
     }
 
@@ -90,6 +97,7 @@ public class SharedPreferencesPackageList implements PackageList {
         Set<String> saved = getSavedSet();
         boolean success = saved.remove(packageName);
         saveSet(saved);
+        triggerUpdateHandler();
         return success;
     }
 
@@ -106,6 +114,7 @@ public class SharedPreferencesPackageList implements PackageList {
 
     @Override
     public void clear() {
+        triggerUpdateHandler();
         saveSet(new HashSet<String>());
     }
 
@@ -120,5 +129,18 @@ public class SharedPreferencesPackageList implements PackageList {
     @Override
     public boolean isEmpty() {
         return getSavedSet().isEmpty();
+    }
+
+    private void triggerUpdateHandler() {
+        Message message = Message.obtain(updateHandler);
+        Bundle data = new Bundle();
+        data.putString(ListUpdateHandler.CHANGE_KEY, ListUpdateHandler.APP_LIST_CHANGE);
+        message.setData(data);
+        updateHandler.sendMessage(message);
+    }
+
+    @Override
+    public void setPackageUpdateHandler(ListUpdateHandler handler) {
+        this.updateHandler = handler;
     }
 }

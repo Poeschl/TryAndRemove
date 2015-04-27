@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,16 +19,32 @@
     <string name="app_name">Try and Remove</string>
     <string name="app_name_not_found">Name not found</string>
     <string name="app_list_toolbar_action_refresh_title">Refresh list</string>
-    <string name="app_list_toolbar_action_record_title">Toggle record</string>
+    <string name="toolbar_back">Back</string>
     <string name="app_list_layout_remove_apps_title">Remove all shown apps</string>
     <string name="app_list_layout_clear_app_list_title">Clear list</string>
-    <string name="app_list_activity_enable_track_toast_message">App tracking active</string>
-    <string name="app_list_activity_disable_track_toast_message">App tracking deactivated</string>
     <string name="clear_warning_dialog_message">Clear app list?</string>
     <string name="clear_warning_dialog_agree">Clear</string>
     <string name="clear_warning_dialog_cancel">Cancel</string>
     <string name="remove_warning_dialog_message">Remove all apps in the list from your phone?</string>
     <string name="remove_warning_dialog_agree">Remove</string>
     <string name="remove_warning_dialog_cancel">Cancel</string>
+    <string name="private_policy_title">Privacy Policy</string>
+    <string name="navigation_drawer_app_list_title">App List</string>
+    <string name="imprint_title">Imprint</string>
+    <string name="settings_title">Settings</string>
+    <string name="preferences_crashlytics_switch_title">Collect Analysis Data</string>
+    <string name="preferences_crashlytics_switch_summary">Enables the tracking by Crashlytics and helping the developer to fix bugs and app crashes. All data is send anonymously.</string>
+    <string name="preferences_crashlytics_section_title">Crashlytics</string>
+    <string name="preferences_crashlytics_enabled_toast">Crashlytics gets disabled the next time you restart the app.</string>
+    <string name="app_list_toolbar_action_record_enable">Enable Recording</string>
+    <string name="app_list_toolbar_action_record_disable">Disable Recording</string>
+    <string name="app_package_not_found">Unknown Package</string>
+    <string name="preferences_appearance_section_title">Appearance</string>
+    <string name="preferences_appearance_switch_title">Colored Cells</string>
+    <string name="preferences_appearance_switch_summary">Colors the cells background in the main color according to the app icon.</string>
+    <string name="app_list_hint_enabled">Recording enabled</string>
+    <string name="app_list_hint_disabled">Recording disabled</string>
+    <string name="notification_title">@string/app_name</string>
+    <string name="notification_message">App installations are recorded.</string>
 
 </resources>

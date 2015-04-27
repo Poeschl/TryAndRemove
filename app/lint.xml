@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ExportedReceiver" severity="ignore" />
+
+    <issue id="IconMissingDensityFolder">
+        <ignore path="src/debug/res" />
+    </issue>
+</lint>

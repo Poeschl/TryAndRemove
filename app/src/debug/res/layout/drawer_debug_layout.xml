@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright (c) 2014 Markus Poeschl
+  ~ Copyright (c) 2015 Markus Poeschl
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:columnCount="2"
-    tools:ignore="UselessParent"
+    tools:ignore="UselessParent|Overdraw"
     android:background="@android:color/white">
 
     <LinearLayout
@@ -37,9 +37,10 @@
             android:layout_weight="1"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical|right"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="RtlHardcoded">
 
-            <TextView
+        <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
@@ -55,7 +56,9 @@
         <ImageView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_launcher_app" />
+            android:src="@drawable/ic_launcher_app"
+            android:contentDescription="App Icon"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 
     <!-- CONTEXTUAL SECTION -->
@@ -65,12 +68,14 @@
         android:layout_width="0dp"
         android:layout_gravity="start|fill_horizontal"
         android:text="App install"
-        style="@style/Widget.DebugDrawer.Header" />
+        style="@style/Widget.DebugDrawer.Header"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="App Mock Mode"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <Switch
         android:id="@+id/debug_app_mock_mode"
@@ -80,19 +85,22 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Install"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Install"
         android:layout_gravity="start|center_vertical"
-        android:id="@+id/debug_app_install_button" />
+        android:id="@+id/debug_app_install_button"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Remove ext."
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <Spinner
         android:layout_height="40dp"
@@ -108,13 +116,15 @@
         android:layout_width="0dp"
         android:layout_gravity="start|fill_horizontal"
         android:text="User Interface"
-        style="@style/Widget.DebugDrawer.Header" />
+        style="@style/Widget.DebugDrawer.Header"
+        tools:ignore="HardcodedText" />
 
 
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Scalpel"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <Switch
         android:id="@+id/debug_ui_scalpel"
@@ -124,7 +134,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Wireframe"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <Switch
         android:id="@+id/debug_ui_scalpel_wireframe"
@@ -138,12 +149,14 @@
         android:layout_width="0dp"
         android:layout_gravity="start|fill_horizontal"
         android:text="Build Information"
-        style="@style/Widget.DebugDrawer.Header" />
+        style="@style/Widget.DebugDrawer.Header"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Name"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_build_name"
@@ -154,7 +167,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Code"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_build_code"
@@ -165,7 +179,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Git-SHA"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_build_sha"
@@ -176,7 +191,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Date"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_build_date"
@@ -191,12 +207,14 @@
         android:layout_width="0dp"
         android:layout_gravity="start|fill_horizontal"
         android:text="Device Information"
-        style="@style/Widget.DebugDrawer.Header" />
+        style="@style/Widget.DebugDrawer.Header"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Make"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_make"
@@ -207,7 +225,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Model"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_model"
@@ -218,7 +237,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Resolution"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_resolution"
@@ -229,7 +249,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Density"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_density"
@@ -240,7 +261,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="Release"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_release"
@@ -251,7 +273,8 @@
     <TextView
         android:layout_gravity="start|center_vertical"
         android:text="API"
-        style="@style/Widget.DebugDrawer.RowTitle" />
+        style="@style/Widget.DebugDrawer.RowTitle"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/debug_device_api"

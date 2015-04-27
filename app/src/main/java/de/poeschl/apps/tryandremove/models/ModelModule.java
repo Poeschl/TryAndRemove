@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import android.content.SharedPreferences;
 
 import dagger.Module;
 import dagger.Provides;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
+import de.poeschl.apps.tryandremove.annotations.CrashlyticsEnabled;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 
 /**
@@ -31,10 +33,26 @@ import de.poeschl.apps.tryandremove.annotations.IsTracking;
 )
 public class ModelModule {
 
+    private static final String IS_TRACKING_KEY = "IS_TRACKING";
+    private static final String CRASHLYTICS_ENABLED_KEY = "CRASHLYTICS_ENABLED";
+    private static final String COLORED_CELLS_ENABLED_KEY = "COLORED_CELLS_ENABLED";
+
     @Provides
     @IsTracking
     BooleanPreference provideTrackingBoolean(SharedPreferences sharedPreferences) {
-        return new BooleanPreference(sharedPreferences, "IS_TRACKING", false);
+        return new BooleanPreference(sharedPreferences, IS_TRACKING_KEY, false);
+    }
+
+    @Provides
+    @CrashlyticsEnabled
+    BooleanPreference provideCrashlyticsEnabled(SharedPreferences sharedPreferences) {
+        return new BooleanPreference(sharedPreferences, CRASHLYTICS_ENABLED_KEY, true);
+    }
+
+    @Provides
+    @ColoredCellsEnabled
+    BooleanPreference provideColoredCellsEnabled(SharedPreferences sharedPreferences) {
+        return new BooleanPreference(sharedPreferences, COLORED_CELLS_ENABLED_KEY, false);
     }
 
 }

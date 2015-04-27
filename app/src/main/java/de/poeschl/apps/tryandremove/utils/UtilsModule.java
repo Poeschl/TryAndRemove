@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 package de.poeschl.apps.tryandremove.utils;
+
+import android.app.Application;
 
 import javax.inject.Singleton;
 
@@ -39,5 +41,16 @@ public class UtilsModule {
     @Singleton
     AppManager provideAppManager(AndroidAppManager androidAppManager) {
         return androidAppManager;
+    }
+
+    @Provides
+    AdManager provideAdManager() {
+        return new AdManager();
+    }
+
+    @Provides
+    @Singleton
+    NotificationManager provideNotificationManager(Application app) {
+        return new NotificationManager(app);
     }
 }

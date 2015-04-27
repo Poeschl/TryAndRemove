@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,55 +14,71 @@
  * limitations under the License.
  */
 
-
 buildscript {
+
     dependencies {
         classpath 'com.github.jcandksolutions.gradle:android-unit-test:2.0.2'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
         classpath 'io.fabric.tools:gradle:1.14.4'
+        classpath 'de.undercouch:gradle-download-task:1.2'
+        classpath 'com.github.triplet.gradle:play-publisher:1.0.4'
     }
 }
 
 // Manifest version information!
-def versionMajor = 0
-def versionMinor = 2
+def versionMajor = 1
+def versionMinor = 0
 def versionPatch = 0
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'hugo'
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 project.ext.set("gitSha", gitSha)
 
 android {
+
+    compileSdkVersion 21
+    buildToolsVersion "22"
+
     signingConfigs {
         googlePlay {
-            //Placeholder for later in the build process
+            //Placeholder which gets automatically filled during project sync. Needs the right setting file.
+            //This settings is not in the source control, because it contains sensitive information.
         }
     }
-    compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+
     defaultConfig {
         applicationId "de.poeschl.apps.tryandremove"
         minSdkVersion 15
-        targetSdkVersion 21
+        targetSdkVersion 22
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
         buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+        //Setup the fabric keys
+        def properties = getExternalProperties()
+        resValue "string", "fabric_key", properties["crashlytics_apiKey"]
+        resValue "string", "fabric_appSecret", properties["crashlytics_appSecret"]
+        println "Setup fabric api keys"
+    }
+
+    lintOptions {
+        lintConfig file("lint.xml")
+        checkReleaseBuilds true
+        abortOnError true
     }
 
     buildTypes {
         release {
-            minifyEnabled false //Don't forget to set crashlytics up for proguard
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.googlePlay
+
 
             applicationVariants.all { variant ->
                 renameReleasePackage(variant, defaultConfig)
@@ -73,9 +89,16 @@ android {
             ext.enableCrashlytics = false
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 }
 
@@ -93,50 +116,132 @@ androidUnitTest {
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
 }
-def keyStorePath = System.getenv('Android_Keystore_Path')
+
+apply plugin: 'play'
+play {
+    def properties = getExternalProperties()
+    serviceAccountEmail = properties["serviceAccountMail"]
+    pk12File = file(properties["path"] + '/' + properties["serviceAccountKey"])
+
+    track = 'production'
+
+    uploadImages = true
+
+    println("Setup Play Store plugin")
+}
+
+apply plugin: 'checkstyle'
+
+checkstyle {
+    configFile new File("${project.buildDir}/checkstyle.xml")
+    reportsDir new File("${project.buildDir}/outputs")
+    toolVersion "6.2"
+}
+
+//Add checkstyle execution
+preBuild.dependsOn('checkstyle')
+
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+
+    def configProps = ['proj.module.dir': buildDir]
+    configProperties configProps
+
+    //If you are offline and the checkstyle stuff was downloaded once you can comment the next line out
+    it.dependsOn 'downloadCheckstyleConfig'
+    classpath = files()
+}
+apply plugin: 'de.undercouch.download'
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadCheckstyleConfig(type: Download) {
+    src([
+            'https://raw.githubusercontent.com/Poeschl/Android-Checkstyle/master/checkstyle.xml',
+            'https://raw.githubusercontent.com/Poeschl/Android-Checkstyle/master/suppressions.xml'
+    ])
+    dest buildDir
+    overwrite true
+    onlyIfNewer true
+}
+
+def getExternalProperties() {
+    //Get environment variable of keystore settings folder location.
+    def keyStorePath = System.getenv('Android_Keystore_Path')
+
+    //Name of the properties file
+    def propertiesFileName = 'TryAndRemove.keyproperties'
+
+    def propsFile = file(keyStorePath + '/' + propertiesFileName)
+
+    def properties;
+    if (propsFile.exists()) {
+        properties = new Properties()
+        properties.load(new FileInputStream(propsFile))
+        properties.put('path', keyStorePath)
+
+    } else {
+        System.err.println("File " + propsFile.name + " for setup not available");
+    }
+
+    return properties
+}
+
+task setupSigning() {
+    def props = getExternalProperties();
+
+    setupSigning(props)
+    setupFabricApiFile(props)
+}
 
 /*
  * Adds dynamically keys and secret stuff to the project
  */
 afterEvaluate { project ->
-    def propsFile = file(keyStorePath + '/TryAndRemove.keyproperties')
+
+    def generateReleasePlayResources = project.tasks.getByName("generateReleasePlayResources")
+    generateReleasePlayResources.dependsOn setupSigning
+}
+
+def setupSigning(properties) {
+    if (properties == null) {
+        System.err.println("Could not set signing config. No properties");
+        return;
+    }
 
     def configName = 'googlePlay'
-    if (propsFile.exists()) {
-        def props = new Properties()
-        props.load(new FileInputStream(propsFile))
 
-        if (android.signingConfigs.hasProperty(configName)) {
+    if (android.signingConfigs.hasProperty(configName)) {
 
-            //Android signing information
-            android.signingConfigs[configName].storeFile = file(keyStorePath + '/' + props['storeFile'])
-            android.signingConfigs[configName].storePassword = props['storePassword']
-            android.signingConfigs[configName].keyAlias = props['keyAlias']
-            android.signingConfigs[configName].keyPassword = props['keyPassword']
-            println("Setup keystore settings.")
-        }
-
-        //Fabric keys
-        File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
-        FileWriter writer = new FileWriter(crashlyticsProps, false);
-
-        try {
-            writer.write("apiSecret=" + props["crashlytics_appSecret"]);
-            writer.write("\n")
-            writer.write("apiKey=" + props["crashlytics_apiKey"]);
-        } finally {
-            writer.close();
-        }
-        println("Setup crashlytics keys.")
-
-
-    } else {
-        System.err.println("No " + configName + "  settings available");
+        //Android signing information
+        android.signingConfigs[configName].storeFile = file(properties['path'] + '/' + properties['storeFile'])
+        android.signingConfigs[configName].storePassword = properties['storePassword']
+        android.signingConfigs[configName].keyAlias = properties['keyAlias']
+        android.signingConfigs[configName].keyPassword = properties['keyPassword']
+        println("Setup keystore settings.")
     }
 }
 
+def setupFabricApiFile(properties) {
+
+    File crashlyticsProps = new File(getBuildFile().getPath().replace(getBuildFile().getName(), "crashlytics.properties"));
+    FileWriter writer = new FileWriter(crashlyticsProps, false);
+
+    try {
+        writer.write("apiSecret=" + properties["crashlytics_appSecret"]);
+        writer.write("\n")
+        writer.write("apiKey=" + properties["crashlytics_apiKey"]);
+    } finally {
+        writer.close();
+    }
+    println("Setup crashlytics key file.")
+}
+
 /*
- * Gives the output apks the right names. Automatic file name convection.
+ * Gives the output apks the right names. Automatic file name convention.
  */
 
 def renameReleasePackage(variant, defaultConfig) {
@@ -149,18 +254,33 @@ def renameReleasePackage(variant, defaultConfig) {
 }
 
 dependencies {
-    compile 'com.jakewharton:butterknife:6.0.0'
-    compile 'com.jakewharton.timber:timber:2.5.0'
-    compile 'com.squareup.dagger:dagger:1.2.1'
-    compile('com.crashlytics.sdk.android:crashlytics:2.2.0@aar') {
+    compile 'com.android.support:recyclerview-v7:21.0.3'
+    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:palette-v7:22.0.0'
+    compile 'com.google.android.gms:play-services-ads:7.0.0'
+
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.jakewharton.timber:timber:2.7.1'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+    compile 'com.makeramen:roundedimageview:2.0.0'
+    compile "com.daimajia.swipelayout:library:1.1.8@aar"
+    //    Is replaced with local aar until changes gets merged
+    //    compile 'com.getbase:floatingactionbutton:1.4.0'
+    compile project(':android-floating-action-button')
+
+    compile('com.crashlytics.sdk.android:crashlytics:2.2.3@aar') {
         transitive = true;
     }
-    compile 'com.android.support:recyclerview-v7:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.getbase:floatingactionbutton:1.4.0'
-    provided 'com.squareup.dagger:dagger-compiler:1.2.1'
+
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
-    debugCompile 'com.android.support:support-v4:21.0.3'
-    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
+
+    androidTestCompile 'com.jayway.android.robotium:robotium-solo:5.3.1'
+    androidTestCompile 'org.hamcrest:hamcrest-core:1.3'
+    androidTestCompile 'org.hamcrest:hamcrest-library:1.3'
+
+    debugCompile 'com.android.support:support-v4:22.0.0'
+    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,16 @@ package de.poeschl.apps.tryandremove.data;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import timber.log.Timber;
 
@@ -34,6 +38,8 @@ public class MockPackageList implements PackageList {
 
     List<String> apps;
 
+    private Handler updateHandler;
+
     @Inject
     public MockPackageList(PackageManager packageManager) {
         apps = new LinkedList<>();
@@ -43,8 +49,14 @@ public class MockPackageList implements PackageList {
     }
 
     @Override
+    public void validatePackages() {
+        //All packages are valid, for the sake of mocking.
+    }
+
+    @Override
     public boolean addPackage(String packageName) {
         if (!apps.contains(packageName)) {
+            triggerUpdateHandler();
             return apps.add(packageName);
         } else {
             return false;
@@ -53,6 +65,7 @@ public class MockPackageList implements PackageList {
 
     @Override
     public boolean removePackage(String packageName) {
+        triggerUpdateHandler();
         return apps.remove(packageName);
     }
 
@@ -69,11 +82,25 @@ public class MockPackageList implements PackageList {
 
     @Override
     public void clear() {
+        triggerUpdateHandler();
         apps.clear();
     }
 
     @Override
     public boolean isEmpty() {
         return apps.isEmpty();
+    }
+
+    private void triggerUpdateHandler() {
+        Message message = Message.obtain(updateHandler);
+        Bundle data = new Bundle();
+        data.putString(ListUpdateHandler.CHANGE_KEY, ListUpdateHandler.APP_LIST_CHANGE);
+        message.setData(data);
+        updateHandler.sendMessage(message);
+    }
+
+    @Override
+    public void setPackageUpdateHandler(ListUpdateHandler handler) {
+        this.updateHandler = handler;
     }
 }

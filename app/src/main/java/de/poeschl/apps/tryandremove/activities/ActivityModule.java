@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,9 +23,11 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
+import de.poeschl.apps.tryandremove.annotations.ColoredCellsEnabled;
 import de.poeschl.apps.tryandremove.interfaces.AppContainer;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
+import de.poeschl.apps.tryandremove.models.BooleanPreference;
 
 /**
  * Created by Markus Pöschl on 09.12.14.
@@ -33,7 +35,11 @@ import de.poeschl.apps.tryandremove.interfaces.PackageList;
 @Module(
         injects = {
                 AppListActivity.class,
-                TryAndRemoveActivity.class
+                NavigationActivity.class,
+                ChildrenActivity.class,
+                ToolbarActivity.class,
+                WebViewActivity.class,
+                SettingActivity.class
         },
         complete = false,
         library = true
@@ -46,7 +52,7 @@ public class ActivityModule {
     }
 
     @Provides
-    AppAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app) {
-        return new AppAdapter(packageList, manager, app);
+    AppListAdapter provideAppAdapter(PackageList packageList, PackageManager manager, Application app, @ColoredCellsEnabled BooleanPreference coloredCellsEnabled) {
+        return new AppListAdapter(packageList, manager, app, coloredCellsEnabled);
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import dagger.Provides;
 import de.poeschl.apps.tryandremove.activities.ActivityModule;
 import de.poeschl.apps.tryandremove.broadcastReciever.BroadcastReceiverModule;
 import de.poeschl.apps.tryandremove.data.DataModule;
+import de.poeschl.apps.tryandremove.fragments.FragmentsModule;
 import de.poeschl.apps.tryandremove.models.ModelModule;
 import de.poeschl.apps.tryandremove.service.ApplicationDetectionService;
 import de.poeschl.apps.tryandremove.utils.UtilsModule;
@@ -42,7 +43,8 @@ import de.poeschl.apps.tryandremove.utils.UtilsModule;
                 BroadcastReceiverModule.class,
                 DataModule.class,
                 ModelModule.class,
-                UtilsModule.class
+                UtilsModule.class,
+                FragmentsModule.class
         },
         injects = {
                 TryAndRemoveApp.class,

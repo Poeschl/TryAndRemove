@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,16 @@ package de.poeschl.apps.tryandremove.activities;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.gms.ads.AdView;
 
 import javax.inject.Inject;
 
@@ -35,75 +37,103 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
-import de.poeschl.apps.tryandremove.adapter.AppAdapter;
+import de.poeschl.apps.tryandremove.adapter.AppListAdapter;
+import de.poeschl.apps.tryandremove.adapter.ListDividerDecoration;
 import de.poeschl.apps.tryandremove.annotations.IsTracking;
 import de.poeschl.apps.tryandremove.broadcastReciever.AppDetectionReceiver;
 import de.poeschl.apps.tryandremove.dialogs.ClearWarningDialogFragment;
 import de.poeschl.apps.tryandremove.dialogs.RemoveWarningDialogFragment;
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.AppManager;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import de.poeschl.apps.tryandremove.models.BooleanPreference;
+import de.poeschl.apps.tryandremove.utils.AdManager;
+import de.poeschl.apps.tryandremove.utils.NotificationManager;
 import timber.log.Timber;
 
+public class AppListActivity extends NavigationActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener, AppListAdapter.AppListAdapterListener {
 
-public class AppListActivity extends TryAndRemoveActivity implements ClearWarningDialogFragment.ButtonListener, RemoveWarningDialogFragment.ButtonListener {
-
-    @InjectView(R.id.app_list_layout_apps_listView)
+    @InjectView(R.id.app_list_layout_apps_recyclerView)
     RecyclerView appListView;
     @InjectView(R.id.app_list_layout_floating_menu)
     FloatingActionsMenu floatMenu;
-
-    MenuItem recordToolbarButton;
+    @InjectView(R.id.app_list_layout_ad_banner)
+    AdView bannerAd;
 
     @Inject
     AppDetectionReceiver receiver;
     @Inject
+    @IsTracking
+    BooleanPreference isTracking;
+    @Inject
     PackageList packageListData;
     @Inject
-    AppAdapter appAdapter;
+    AppListAdapter appListAdapter;
     @Inject
     AppManager appManager;
     @Inject
-    @IsTracking
-    BooleanPreference isTracking;
+    AdManager bannerAdManager;
+    @Inject
+    NotificationManager notificationManager;
+
+    private MenuItem recordToolbarButton;
+    private MenuItem reloadToolbarButton;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         TryAndRemoveApp.get(this).inject(this);
 
-        setupLayout(this, R.layout.app_list_layout);
+        setupLayout(R.layout.activity_app_list);
 
         ButterKnife.inject(this);
 
-        appListView.setAdapter(appAdapter);
+        appListView.setAdapter(appListAdapter);
+        appListView.addItemDecoration(new ListDividerDecoration(this, null));
         appListView.setLayoutManager(new LinearLayoutManager(this));
+        appListView.setHasFixedSize(true);
+
+        packageListData.setPackageUpdateHandler(new UpdateHandler());
+
+        appListAdapter.setListener(this);
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        bannerAdManager.setAdView(bannerAd);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updatePackageList();
+
+        bannerAdManager.onResume();
     }
 
     @Override
-    protected void onDestroy() {
+    protected void onPause() {
+        super.onPause();
+        bannerAdManager.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
         super.onDestroy();
-        unregisterReceiver();
-        Timber.v("Called onDestroy - unregister reciever");
+        bannerAdManager.onDestroy();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.app_list_toolbar_actions, menu);
+
+        getMenuInflater().inflate(R.menu.app_list_toolbar_actions, menu);
 
         recordToolbarButton = menu.findItem(R.id.app_list_toolbar_action_record);
+        reloadToolbarButton = menu.findItem(R.id.app_list_toolbar_action_refresh);
 
         setRecordButtonState(isTracking.get());
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
 
     @Override
@@ -120,17 +150,36 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         }
     }
 
+    private void setRecordButtonState(boolean active) {
+        if (active) {
+            Timber.d("App tracking activated");
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_disable);
+            recordToolbarButton.setTitle(R.string.app_list_toolbar_action_record_disable);
+        } else {
+            Timber.d("App tracking deactivated");
+            recordToolbarButton.setIcon(R.drawable.ic_action_record_enable);
+            recordToolbarButton.setTitle(R.string.app_list_toolbar_action_record_enable);
+        }
+    }
+
     private void toggleRecording() {
         boolean newTrackState = !isTracking.get();
 
         Timber.d("Listener Status: " + newTrackState);
         setRecordState(newTrackState);
 
+        Toast hint;
         if (newTrackState) {
             registerReceiver();
+            hint = Toast.makeText(this, getString(R.string.app_list_hint_enabled), Toast.LENGTH_SHORT);
         } else {
             unregisterReceiver();
+            hint = Toast.makeText(this, getString(R.string.app_list_hint_disabled), Toast.LENGTH_SHORT);
         }
+        hint.setGravity(Gravity.CENTER, 0, 0);
+        hint.show();
+
+
     }
 
     private void setRecordState(boolean state) {
@@ -138,51 +187,6 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
             return;
         }
         setRecordButtonState(state);
-    }
-
-    private void setRecordButtonState(boolean active) {
-        if (active) {
-            Toast.makeText(this, getString(R.string.app_list_activity_enable_track_toast_message), Toast.LENGTH_SHORT).show();
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_on);
-        } else {
-            Toast.makeText(this, getString(R.string.app_list_activity_disable_track_toast_message), Toast.LENGTH_SHORT).show();
-            recordToolbarButton.setIcon(R.drawable.ic_menu_record_off);
-        }
-    }
-
-    @OnClick(R.id.app_list_layout_clear_action_button)
-    void clearList() {
-        if (!packageListData.isEmpty()) {
-            ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
-            wf.setButtonListener(this);
-            wf.show(getSupportFragmentManager());
-        }
-    }
-
-    @Override
-    public void onUserConfirmedClear() {
-        packageListData.clear();
-        updatePackageList();
-        floatMenu.collapse();
-    }
-
-    @OnClick(R.id.app_list_layout_remove_action_button)
-    void removeAllApps() {
-        if (!packageListData.isEmpty()) {
-            RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
-            rf.setButtonListener(this);
-            rf.show(getSupportFragmentManager());
-        }
-    }
-
-    @Override
-    public void onUserConfirmedRemove() {
-        appManager.remove(packageListData.getPackages());
-        floatMenu.collapse();
-    }
-
-    private void updatePackageList() {
-        appAdapter.updateAdapter(packageListData);
     }
 
     private void registerReceiver() {
@@ -195,18 +199,76 @@ public class AppListActivity extends TryAndRemoveActivity implements ClearWarnin
         receiver.setRegistered(true);
         isTracking.set(true);
         registerReceiver(receiver, filter);
+
+        notificationManager.createRecordNotification();
     }
 
     private void unregisterReceiver() {
-        try {
-            if (receiver.isRegistered()) {
+        if (receiver.isRegistered()) {
+            try {
                 unregisterReceiver(receiver);
+            } catch (IllegalArgumentException e) {
+                Timber.d("App install receiver was unregistered while not registered.");
             }
-            isTracking.set(false);
-            receiver.setRegistered(false);
+        }
+        isTracking.set(false);
+        receiver.setRegistered(false);
 
-        } catch (IllegalArgumentException e) {
-            Timber.e(e, "App install receiver was unregistered while not registered.");
+        notificationManager.hideRecordNotification();
+    }
+
+    @OnClick(R.id.app_list_layout_clear_action_button)
+    void clearList() {
+        if (!packageListData.isEmpty()) {
+            ClearWarningDialogFragment wf = new ClearWarningDialogFragment();
+            wf.setButtonListener(this);
+            wf.show(getFragmentManager());
+        }
+    }
+
+    @Override
+    public void onUserConfirmedClear() {
+        packageListData.clear();
+        floatMenu.collapse();
+    }
+
+    @OnClick(R.id.app_list_layout_remove_action_button)
+    void removeAllApps() {
+        if (!packageListData.isEmpty()) {
+            RemoveWarningDialogFragment rf = new RemoveWarningDialogFragment();
+            rf.setButtonListener(this);
+            rf.show(getFragmentManager());
+        }
+    }
+
+    @Override
+    public void onUserConfirmedRemove() {
+        appManager.remove(packageListData.getPackages());
+        floatMenu.collapse();
+    }
+
+    @Override
+    public void onItemClearClick(String packageName, int position) {
+        packageListData.removePackage(packageName);
+    }
+
+    @Override
+    public void onItemRemoveClick(String packageName, int position) {
+        appManager.remove(packageName);
+
+    }
+
+    private void updatePackageList() {
+        appListAdapter.updateApps(packageListData);
+    }
+
+    public class UpdateHandler extends ListUpdateHandler {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle data = msg.getData();
+            if (data.getString(ListUpdateHandler.CHANGE_KEY).equals(ListUpdateHandler.APP_LIST_CHANGE)) {
+                updatePackageList();
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,6 @@ import static butterknife.ButterKnife.findById;
  */
 public interface AppContainer {
     /**
-     * The root {@link android.view.ViewGroup} into which the activity should place its contents.
-     */
-    ViewGroup get(Activity activity);
-
-    /**
      * An {@link AppContainer} which returns the normal / default activity content view.
      */
     AppContainer DEFAULT = new AppContainer() {
@@ -39,4 +34,9 @@ public interface AppContainer {
             return findById(activity, android.R.id.content);
         }
     };
+
+    /**
+     * The root {@link android.view.ViewGroup} into which the activity should place its contents.
+     */
+    ViewGroup get(Activity activity);
 }

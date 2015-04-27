@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,17 @@ package de.poeschl.apps.tryandremove.interfaces;
 
 import java.util.List;
 
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
+
 /**
  * Created by Markus Pöschl on 11.12.2014.
  */
 public interface PackageList {
+
+    /**
+     * Check if the app are really installed right now. Removes them if not found by the package manager.
+     */
+    public void validatePackages();
 
     /**
      * Adds a package to the list.
@@ -46,4 +53,6 @@ public interface PackageList {
     public void clear();
 
     public boolean isEmpty();
+
+    public void setPackageUpdateHandler(ListUpdateHandler listener);
 }

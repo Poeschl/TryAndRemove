@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package de.poeschl.apps.tryandremove.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ public class RemoveAppAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        @SuppressLint("ViewHolder")
         View view = layoutInflater.inflate(R.layout.debug_simple_spinner_item, parent, false);
         TextView tv = ButterKnife.findById(view, R.id.simple_spinner_item_text1);
         tv.setText(getItem(position));

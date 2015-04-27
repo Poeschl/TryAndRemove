@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 Markus Poeschl
+ * Copyright (c) 2015 Markus Poeschl
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,31 @@ package de.poeschl.apps.tryandremove.data;
 import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-import org.robolectric.res.builder.RobolectricPackageManager;
-import org.robolectric.shadows.ShadowPreferenceManager;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+import de.poeschl.apps.tryandremove.interfaces.AppManager;
+import de.poeschl.apps.tryandremove.mock.MockAppManager;
+import de.poeschl.apps.tryandremove.modules.SharedPreferencePackageListTestModule;
+import de.poeschl.apps.tryandremove.utils.RoboMock;
+
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_0;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_1;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_2;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_3;
+import static de.poeschl.apps.tryandremove.TestConstants.TEST_PACKAGE_NOT_ADDED;
 import static de.poeschl.apps.tryandremove.data.SharedPreferencesPackageList.PREF_PACKAGE_LIST;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_0;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_1;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_2;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_3;
-import static de.poeschl.apps.tryandremove.data.TestMockPackageList.TEST_PACKAGE_NOT_ADDED;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -48,33 +55,56 @@ import static org.junit.Assert.assertTrue;
 @Config(manifest = Config.NONE)
 public class SharedPreferencePackageListTest {
 
+    private static ObjectGraph objectGraph;
+
+    @RoboMock
+    @Inject
+    SharedPreferences mockedPreferences;
+
+    @Inject
+    AppManager mockedAppManager;
+
     private SharedPreferencesPackageList testList;
-    private SharedPreferences preferences;
+
+    @BeforeClass
+    public static void setUpClass() {
+        objectGraph = ObjectGraph.create(SharedPreferencePackageListTestModule.class);
+    }
 
     @SuppressLint("CommitPrefEdits")
     @Before
     public void setUp() {
+
+        objectGraph.inject(this);
+
+        testList = new SharedPreferencesPackageList(mockedPreferences, mockedAppManager);
+
         Set<String> dummys = new HashSet<>();
         dummys.add(TEST_PACKAGE_0);
         dummys.add(TEST_PACKAGE_1);
         dummys.add(TEST_PACKAGE_2);
         dummys.add(TEST_PACKAGE_3);
 
-        preferences = ShadowPreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext());
-        testList = new SharedPreferencesPackageList(preferences, Robolectric.application);
-        preferences.edit().putStringSet(PREF_PACKAGE_LIST, dummys).commit();
+        mockedPreferences.edit().putStringSet(PREF_PACKAGE_LIST, dummys).commit();
+    }
+
+    @SuppressLint("CommitPrefEdits")
+    @After
+    public void tearDown() {
+        mockedPreferences.edit().clear().commit();
+        ((MockAppManager) mockedAppManager).setNotExistingApp("");
     }
 
     @Test
     public void testAddPackage() {
         testList.addPackage(TEST_PACKAGE_NOT_ADDED);
-        assertTrue(preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()).contains(TEST_PACKAGE_NOT_ADDED));
+        assertTrue(mockedPreferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()).contains(TEST_PACKAGE_NOT_ADDED));
     }
 
     @Test
     public void testRemovePackage() {
         testList.removePackage(TEST_PACKAGE_NOT_ADDED);
-        assertFalse(preferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()).contains(TEST_PACKAGE_NOT_ADDED));
+        assertFalse(mockedPreferences.getStringSet(PREF_PACKAGE_LIST, new HashSet<String>()).contains(TEST_PACKAGE_NOT_ADDED));
     }
 
     @Test
@@ -89,19 +119,23 @@ public class SharedPreferencePackageListTest {
         int size = testList.getPackages().size();
         assertEquals("Set should contains the 4 dummys.", 4, size);
 
-        preferences.edit().clear().commit();
+        mockedPreferences.edit().clear().commit();
         size = testList.getPackages().size();
         assertEquals("Set should be empty on fresh start.", 0, size);
     }
 
     @Test
     public void testValidatePackages() {
-        RobolectricPackageManager pm = new RobolectricPackageManager();
-        pm.addPackage(TEST_PACKAGE_2);
+        testList.validatePackages();
 
-        testList.validatePackages(pm);
+        assertEquals("List should contain four item.", 4, testList.getPackages().size());
 
-        assertEquals("List should only contain one item.", 1, testList.getPackages().size());
-        assertTrue("Should contain " + TEST_PACKAGE_2, testList.getPackages().contains(TEST_PACKAGE_2));
+        //Simulate the external uninstall of the app.
+        ((MockAppManager) mockedAppManager).setNotExistingApp(TEST_PACKAGE_2);
+
+        testList.validatePackages();
+
+        assertEquals("List should be of size 3.", 3, testList.getPackages().size());
+
     }
 }
