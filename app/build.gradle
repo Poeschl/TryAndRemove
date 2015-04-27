@@ -123,7 +123,7 @@ play {
     serviceAccountEmail = properties["serviceAccountMail"]
     pk12File = file(properties["path"] + '/' + properties["serviceAccountKey"])
 
-    track = 'beta'
+    track = 'production'
 
     uploadImages = true
 
