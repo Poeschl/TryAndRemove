@@ -3,12 +3,9 @@ Zeichne deine App Installationen auf und entferne schnell später alle oder nur 
 <b>Eigenschaften:</b>
 
 &#8226;&#8195; Aktiviere oder Deaktiviere die Aufzeichung der Installationen.
-&#8226;&#8195; Entferne alle erfassten Apps wie in bei einer Stapelverarbeitung.
+&#8226;&#8195; Entferne alle erfassten Apps wie bei einer Stapelverarbeitung.
 &#8226;&#8195; Entferne nur spezifische Apps oder schließe manche von dem Deinstallationsprozess aus.
 &#8226;&#8195; Komplett in Material Design
-
-<b>Berechtigungen:</b>
-Netzwerk - Anzeigen von minimaler Werbung.
 
 <b>Changelog</b>
 Für den Changelog gehe zu: https://github.com/Poeschl/TryAndRemove/blob/master/Changelog.md.
