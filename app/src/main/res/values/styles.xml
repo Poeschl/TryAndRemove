@@ -73,4 +73,10 @@
         <item name="android:scaleType">center</item>
     </style>
 
+    <style name="TryAndRemoveTheme.Version" parent="">
+        <item name="android:textColor">@color/hint</item>
+        <item name="android:padding">@dimen/fab_labels_margin</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
 </resources>
