@@ -51,9 +51,7 @@ public class AdManager extends AdListener {
     @Override
     public void onAdFailedToLoad(int errorCode) {
         super.onAdFailedToLoad(errorCode);
-        if (!BuildConfig.DEBUG) {
-            adView.setVisibility(View.GONE);
-        }
+        adView.setVisibility(View.GONE);
 
         Timber.i("Ad failed to load errorCode: " + errorCode);
     }
@@ -85,7 +83,6 @@ public class AdManager extends AdListener {
         Resources resources = adView.getContext().getResources();
         if (BuildConfig.DEBUG) {
             requestBuilder = requestBuilder.addTestDevice("1BF359B6E7518CE9D3BE96A3C894F4C3");
-            adView.setVisibility(View.VISIBLE);
             adView.setBackgroundColor(resources.getColor(R.color.primary_dark));
         }
 
