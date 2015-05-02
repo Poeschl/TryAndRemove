@@ -101,7 +101,13 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     }
 
     private void setupVersionTag() {
-        versionInfo.setText(getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.GIT_SHA);
+        String versionString = getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.GIT_SHA;
+
+        if (BuildConfig.DEBUG) {
+            versionString += " - Debug";
+        }
+
+        versionInfo.setText(versionString);
     }
 
     private void setUpTopNavPart() {
