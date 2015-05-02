@@ -25,11 +25,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
 import de.poeschl.apps.tryandremove.TryAndRemoveApp;
 import de.poeschl.apps.tryandremove.adapter.NavigationItemAdapter;
@@ -44,10 +46,11 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
 
     private static final String PRIVACY_POLICY_URL = "file:///android_asset/PrivacyPolicy.html";
     private static final String IMPRINT_URL = "file:///android_asset/Imprint.html";
-    private static final Handler drawerHandler = new Handler();
+    private static final Handler DRAWER_HANDLER = new Handler();
 
     private RecyclerView topRecyclerView;
     private RecyclerView bottomRecyclerView;
+    private TextView versionInfo;
 
     private ActionBarDrawerToggle drawerToggle;
     private DrawerLayout drawerLayout;
@@ -78,6 +81,7 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         toolbar = ButterKnife.findById(container, R.id.toolbar);
         topRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_top_recyclerView);
         bottomRecyclerView = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_bottom_recyclerView);
+        versionInfo = ButterKnife.findById(navigationDrawer, R.id.navigation_drawer_version);
         drawerLayout = ButterKnife.findById(container, R.id.drawer_layout);
         ViewGroup mainContent = ButterKnife.findById(container, R.id.mainContent);
 
@@ -90,8 +94,14 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
         setUpTopNavPart();
         setUpBottomNavPart();
 
+        setupVersionTag();
+
         //Inflate the real content into the contentView
         getLayoutInflater().inflate(layout, mainContent);
+    }
+
+    private void setupVersionTag() {
+        versionInfo.setText(getString(R.string.version) + " " + BuildConfig.VERSION_NAME + " - " + BuildConfig.GIT_SHA);
     }
 
     private void setUpTopNavPart() {
@@ -126,8 +136,8 @@ public class NavigationActivity extends ToolbarActivity implements NavigationDra
     public void onNavigationItemClick(final NavItem targetViewMode) {
 
         // Clears any previously posted runnables, for double clicks
-        drawerHandler.removeCallbacksAndMessages(null);
-        drawerHandler.postDelayed(new Runnable() {
+        DRAWER_HANDLER.removeCallbacksAndMessages(null);
+        DRAWER_HANDLER.postDelayed(new Runnable() {
 
             @Override
             public void run() {
