@@ -79,10 +79,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt')
             signingConfig signingConfigs.googlePlay
 
-
-            applicationVariants.all { variant ->
-                renameReleasePackage(variant, defaultConfig)
-            }
+            archivesBaseName = "Try And Remove - " + defaultConfig.versionName + " - " + project.gitSha
         }
         debug {
             applicationIdSuffix '.dev'
@@ -238,19 +235,6 @@ def setupFabricApiFile(properties) {
         writer.close();
     }
     println("Setup crashlytics key file.")
-}
-
-/*
- * Gives the output apks the right names. Automatic file name convention.
- */
-
-def renameReleasePackage(variant, defaultConfig) {
-    variant.outputs.each { output ->
-        def fileName = "Try And Remove - " + defaultConfig.versionName + " - " + project.gitSha + ".apk";
-
-        def file = output.packageApplication.outputFile
-        output.packageApplication.outputFile = new File(file.parent, fileName)
-    }
 }
 
 dependencies {
