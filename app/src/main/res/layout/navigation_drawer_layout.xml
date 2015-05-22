@@ -13,61 +13,87 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
     tools:ignore="Overdraw">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="92dp"
-        android:background="@color/primary_main">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation_drawer_version"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="304dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_navigation_logo"
-            android:scaleType="centerCrop"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:scrollY="-16dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:background="@color/primary_main">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="304dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop"
+                android:scrollY="-16dp"
+                android:src="@drawable/ic_navigation_logo" />
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/TryAndRemoveTheme.NavigationDrawer.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/navigation_drawer_side_offset"
+                android:layout_marginStart="@dimen/navigation_drawer_side_offset"
+                android:text="@string/app_name" />
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/navigation_drawer_top_recyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
-            android:id="@+id/textView"
-            android:layout_marginStart="@dimen/navigation_drawer_side_offset"
-            android:layout_marginLeft="@dimen/navigation_drawer_side_offset"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            style="@style/TryAndRemoveTheme.NavigationDrawer.Title" />
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:overScrollMode="never" />
 
-    </RelativeLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/divider" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/navigation_drawer_top_recyclerView"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/navigation_drawer_bottom_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:overScrollMode="never" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/navigation_drawer_version"
+        style="@style/TryAndRemoveTheme.Version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:overScrollMode="never" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:text="Version: x.x.x. - XXXXXX" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/divider"
-        android:layout_marginTop="8dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/navigation_drawer_bottom_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:overScrollMode="never" />
-</LinearLayout>
+</RelativeLayout>

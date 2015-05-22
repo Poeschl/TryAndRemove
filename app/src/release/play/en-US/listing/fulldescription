@@ -1,17 +1,12 @@
-Record your app installations and remove them all or specific apps from inside the app in a very quick way.
+Track your app installations and remove multiple apps in a convenient way.
 
-Simple example:
-Want to try out several apps of the same type and keep only one of them after testing. So instead of remove them one by one, you can remove them from your device like a bash uninstall.
+If you want to test several similar apps and keep only one in the end, instead of removing them one by one, uninstall them in bulk.
 
 <b>Features:</b>
 
-&#8226;&#8195; Toggle the record of app installations.
-&#8226;&#8195; Remove all recorded apps like a batch uninstall.
-&#8226;&#8195; Remove just specific apps or exclude some from the uninstall process.
+&#8226;&#8195; Toggle tracking of app installations
+&#8226;&#8195; Remove all tracked apps at once or only specific apps
 &#8226;&#8195; Made with material design
-
-<b>Permissions:</b>
-Network - For displaying some nearly invisible ads.
 
 <b>Changelog</b>
 For the changelog go to: https://github.com/Poeschl/TryAndRemove/blob/master/Changelog.md.

@@ -19,7 +19,10 @@ package de.poeschl.apps.tryandremove.activities;
 
 import android.view.View;
 
+import com.google.android.gms.ads.AdView;
+
 import de.poeschl.apps.tryandremove.BaseInstrumentTestCase;
+import de.poeschl.apps.tryandremove.BuildConfig;
 import de.poeschl.apps.tryandremove.R;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -54,6 +57,7 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         assertTrue("Settings entry is missing", solo.searchText("Settings", true));
         assertTrue("Privacy Policy entry is missing", solo.searchText("Privacy Policy", true));
         assertTrue("Imprint entry is missing", solo.searchText("Imprint", true));
+        assertTrue("Version is missing", solo.searchText("Version: " + BuildConfig.VERSION_NAME + " - " + BuildConfig.GIT_SHA));
     }
 
     public void testToolbar() {
@@ -175,5 +179,12 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         solo.clickOnText("Settings");
 
         assertTrue("SettingActivity should be started.", solo.waitForActivity(SettingActivity.class));
+    }
+
+    public void testAd() {
+
+        boolean adInit = solo.waitForView(AdView.class) || solo.waitForLogMessage("Ad failed to load");
+
+        assertTrue("Ad should be shown", adInit);
     }
 }

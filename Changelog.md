@@ -1,5 +1,9 @@
 Change Log
 ==========
+Version 1.0.1 *(2015-05-02)*
+----------------------------
+- Added version label to navigation menu
+
 Version 1.0.0 *(2015-04-27)*
 ----------------------------
 - Bring app to play store.

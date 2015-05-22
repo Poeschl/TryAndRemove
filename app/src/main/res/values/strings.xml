@@ -46,5 +46,6 @@
     <string name="app_list_hint_disabled">Recording disabled</string>
     <string name="notification_title">@string/app_name</string>
     <string name="notification_message">App installations are recorded.</string>
+    <string name="version">Version:</string>
 
 </resources>
