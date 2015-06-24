@@ -33,6 +33,12 @@ Change log
 ----------
 See [change log file](https://github.com/Poeschl/TryAndRemove/blob/master/Changelog.md)
 
+Visuals
+--------
+The development of V 1.0.1 in [Gource] (https://github.com/acaudwell/Gource)
+
+[![Try and Remove Development Progress](http://img.youtube.com/vi/RHzs74dSQxs/0.jpg)](http://www.youtube.com/watch?v=RHzs74dSQxs)
+
 License
 =========
     Copyright (c) 2015 Markus Poeschl
