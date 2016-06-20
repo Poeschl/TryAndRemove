@@ -34,16 +34,15 @@ android:
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - addon-google_apis-google-22
-    # x86 is not functioning on travis for some reason
-    #- sys-img-x86-addon-google_apis-google-23
-    - sys-img-armeabi-v7a-addon-google_apis-google-22
+	- addon-google_apis-google-23
+    - sys-img-armeabi-v7a-android-2
+    - sys-img-armeabi-v7a-addon-google_apis-google-23
 
   licenses:
       - 'android-sdk-license-.+'
 
 before_install:
-  - echo no | android create avd --force -n test -t "Google Inc.:Google APIs:22" --abi google_apis/armeabi-v7a
+  - echo no | android create avd --force --name test --target "Google Inc.:Google APIs:23" --abi "google_apis/armeabi-v7a"
   - emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device
   - android-wait-for-emulator
