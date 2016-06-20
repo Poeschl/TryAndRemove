@@ -1,4 +1,4 @@
-Try and Remove
+Try and Remove [![Build Status](https://travis-ci.org/Poeschl/TryAndRemove)](https://travis-ci.org/Poeschl/TryAndRemove)
 ================
 Record your app installations and remove them all or specific apps from inside the app in a very quick way.
 
