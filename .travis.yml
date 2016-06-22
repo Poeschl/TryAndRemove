@@ -1,0 +1,62 @@
+language: android
+jdk: oraclejdk8
+
+sudo: false
+
+
+cache:
+  directories:
+    - $HOME/.gradle
+
+env:
+  global:
+    #set the timeout to avoid ShellCommandUnresponsiveException
+    - ADB_INSTALL_TIMEOUT=8
+
+android:
+  components:
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
+    - platform-tools
+    - tools
+
+    # The BuildTools version used by your project
+    - build-tools-23.0.2
+
+    # The SDK version used to compile your project
+    - android-23
+    - android-22
+
+    # Additional components
+    - extra-google-m2repository
+    - extra-android-m2repository
+
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - addon-google_apis-google-22
+    # !!! x86 and api 23 is not working on travis right now !!!
+    - sys-img-armeabi-v7a-google_apis-22
+
+  licenses:
+      - 'android-sdk-license-.+'
+
+before_install:
+  - echo "Travis branch is $TRAVIS_BRANCH"
+  - android list targets
+  - echo no | android create avd --force -n test -t "android-22" --abi google_apis/armeabi-v7a
+  - emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device
+  - android-wait-for-emulator
+  - sleep 30
+  - adb shell input keyevent 82 &
+
+install:
+  - ./gradlew --version # show version and download Gradle Wrapper when is not present in cache
+  - ./gradlew assembleDebug
+
+before_script:
+  - sleep 150
+
+script:
+  - ./gradlew -PdisablePreDex testDebugUnitTest
+  - ./gradlew -PdisablePreDex connectedDebugAndroidTest createDebugAndroidTestCoverageReport

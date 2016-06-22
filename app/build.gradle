@@ -21,6 +21,7 @@ buildscript {
         classpath 'io.fabric.tools:gradle:1.14.4'
         classpath 'de.undercouch:gradle-download-task:1.2'
         classpath 'com.github.triplet.gradle:play-publisher:1.0.4'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }
 }
 
@@ -112,6 +113,14 @@ androidUnitTest {
     //Download the sources.jar for the test dependencies. `true` by default.
     downloadTestDependenciesJavadoc true
     //Download the javadoc.jar for the test dependencies. `false` by default.
+}
+
+apply plugin: 'jacoco-android'
+jacocoAndroidUnitTestReport {
+    excludes += ['**/*$ViewBinder*.*',
+                 '**/*_MembersInjector*.*',
+                 '**/*_Factory*.*']
+    print excludes
 }
 
 apply plugin: 'play'
