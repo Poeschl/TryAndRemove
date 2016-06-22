@@ -190,7 +190,14 @@ def getExternalProperties() {
         properties.put('path', keyStorePath)
 
     } else {
-        System.err.println("File " + propsFile.name + " for setup not available");
+        if (System.getenv('Travis')) {
+            println("Travis detected, using Environment variables for fabric");
+            properties = new Properties()
+            properties.put("crashlytics_appSecret")
+            properties.put("crashlytics_apiKey")
+        } else {
+            System.err.println("File " + propsFile.name + " for setup not available");
+        }
     }
 
     return properties
