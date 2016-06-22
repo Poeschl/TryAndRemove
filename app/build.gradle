@@ -220,7 +220,7 @@ afterEvaluate { project ->
 }
 
 def setupSigning(properties) {
-    if (properties == null) {
+    if (properties == null && properties["storePassword"] != null) {
         System.err.println("Could not set signing config. No properties");
         return;
     }
