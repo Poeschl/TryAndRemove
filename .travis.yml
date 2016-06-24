@@ -60,4 +60,4 @@ before_script:
 
 script:
   - ./gradlew -PdisablePreDex testDebugUnitTest
-  - ./gradlew -PdisablePreDex connectedDebugAndroidTest createDebugAndroidTestCoverageReport
+  - ./gradlew -PdisablePreDex connectedDebugAndroidTest createDebugAndroidTestCoverageReport 
