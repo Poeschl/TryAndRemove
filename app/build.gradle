@@ -197,6 +197,10 @@ def getExternalProperties() {
             properties.put("crashlytics_apiKey", System.getenv('crashlytics_apiKey'))
         } else {
             System.err.println("File " + propsFile.name + " for setup not available");
+            //To let the project at least init
+            properties = new Properties()
+            properties.put("crashlytics_appSecret", "123")
+            properties.put("crashlytics_apiKey", "123")
         }
     }
 
