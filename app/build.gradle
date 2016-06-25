@@ -218,9 +218,12 @@ task setupSigning() {
  * Adds dynamically keys and secret stuff to the project
  */
 afterEvaluate { project ->
-
-    def generateReleasePlayResources = project.tasks.getByName("generateReleasePlayResources")
-    generateReleasePlayResources.dependsOn setupSigning
+//    project.tasks.findByName("generateReleasePlayResources")
+    def generateReleasePlayResources = project.tasks.findByName("generateReleasePlayResources")
+    if (generateReleasePlayResources != null) {
+        println "Play sources generation not available"
+        generateReleasePlayResources.dependsOn setupSigning
+    }
 }
 
 def setupSigning(properties) {
