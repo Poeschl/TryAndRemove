@@ -19,6 +19,7 @@ package de.poeschl.apps.tryandremove.mock;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.poeschl.apps.tryandremove.handler.ListUpdateHandler;
 import de.poeschl.apps.tryandremove.interfaces.PackageList;
 import timber.log.Timber;
 
@@ -71,5 +72,10 @@ public class MockPackageList implements PackageList {
     @Override
     public boolean isEmpty() {
         return apps.isEmpty();
+    }
+
+    @Override
+    public void setPackageUpdateHandler(ListUpdateHandler listener) {
+
     }
 }

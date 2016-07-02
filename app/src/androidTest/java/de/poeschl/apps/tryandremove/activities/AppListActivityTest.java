@@ -170,7 +170,7 @@ public class AppListActivityTest extends BaseInstrumentTestCase<AppListActivity>
         assertTrue("WebViewActivity should be started.", solo.waitForActivity(WebViewActivity.class));
 
         assertTrue("Policy should be shown", solo.searchText("Privacy Policy", 2));
-        assertTrue("Policy content should be shown", solo.searchText("Contact"));
+        assertTrue("Policy content should be shown", solo.searchText("Contact", 1, true));
     }
 
     public void testNavigationToSettings() {
